@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 let backgroundChanger;
 
 function App() {
-  const [colors] = useState(['red', 'black', 'yellow', 'blue', 'orange', 'aqua', 'brown', 'green', 'pink']);
+  const [colors] = useState(['#EF895D', '#FFDD94', '#86E3CE', '#D0E6A5', '#CCABD8', '#FA897B', '#1AA6B7', '#FF414D', '#F56A79', '#D9ECF2', '#BAC94A', '#E2D36B', '#96D7C6']);
   const [speed, speedChanger] = useState(1200);
   const [state, stateUpdater] = useState(true);
   const classes = styles();
@@ -38,48 +38,52 @@ function App() {
   }
   return (
     <>
-    <div className = {classes.speedDiv}>
-      Changes in every {speed / 1000} second
-    </div>
-    <div
-      className = {classes.divMargins}
-    >
-       <Button 
-          style = {{fontSize: '20px', fontFamily: 'sans-serif', fontWeight: 'bold'}}
-          className = {classes.root}
-          variant="contained" 
-          color="primary"
-          onClick = {stateChange}
+      {state ? 
+        <>
+          <div className = {classes.speedDiv}>
+            Changes in every {speed / 1000} second
+          </div>
+        </> : false
+      }
+      <div
+        className = {classes.divMargins}
       >
-        {
-          state ? "Start" : "Stop"
-        }
-      </Button>
-    </div>
-    <div
-      className = {classes.speedDivMargins}
-    >{
-      state ? <> 
-      <Button 
-          style = {{fontSize: '20px', fontFamily: 'sans-serif', fontWeight: 'bold'}}
-          className = {classes.root}
-          variant="contained" 
-          color="primary"
-          onClick = {increaseSpeed}
-      >
-        Faster
-      </Button>
-       <Button 
-          style = {{fontSize: '20px', fontFamily: 'sans-serif', fontWeight: 'bold', marginLeft: '10%'}}
-          className = {classes.root}
-          variant="contained" 
-          color="primary"
-          onClick = {discreaseSpeed}
-      >
-        Slower
-      </Button> </> : false
-    }
-    </div>
+        <Button 
+            style = {{fontSize: '20px', fontFamily: 'sans-serif', fontWeight: 'bold'}}
+            className = {classes.root}
+            variant="contained" 
+            color="primary"
+            onClick = {stateChange}
+        >
+          {
+            state ? "Start" : "Stop"
+          }
+        </Button>
+      </div>
+      <div
+        className = {classes.speedDivMargins}
+      >{
+        state ? <> 
+        <Button 
+            style = {{fontSize: '20px', fontFamily: 'sans-serif', fontWeight: 'bold'}}
+            className = {classes.root}
+            variant="contained" 
+            color="primary"
+            onClick = {increaseSpeed}
+        >
+          Faster
+        </Button>
+        <Button 
+            style = {{fontSize: '20px', fontFamily: 'sans-serif', fontWeight: 'bold', marginLeft: '10%'}}
+            className = {classes.root}
+            variant="contained" 
+            color="primary"
+            onClick = {discreaseSpeed}
+        >
+          Slower
+        </Button> </> : false
+      }
+      </div>
     </>
   );
 }
