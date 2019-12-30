@@ -2,12 +2,13 @@ import React, {useState} from 'react';
 import {styles} from './css.js';
 import Button from '@material-ui/core/Button';
 
+let backgroundChanger;
+
 function App() {
   const [colors] = useState(['red', 'black', 'yellow', 'blue', 'orange', 'aqua', 'brown', 'green', 'pink']);
   const [speed, speedChanger] = useState(1200);
   const [state, stateUpdater] = useState(true);
   const classes = styles();
-  let backgroundChanger;
 
   function changeBackgroundColor(){
     document.body.style = 'background: ' + colors[Math.floor(Math.random() * colors.length)] + ";";
@@ -28,7 +29,6 @@ function App() {
     }
   }
   function stateCheck(){
-    console.log(speed);
     if(state){
       backgroundChanger = setInterval(changeBackgroundColor, speed);
     }else{
@@ -39,7 +39,7 @@ function App() {
   return (
     <>
     <div className = {classes.speedDiv}>
-      Changes in every {speed / 1000} seconds
+      Changes in every {speed / 1000} second
     </div>
     <div
       className = {classes.divMargins}
@@ -58,8 +58,9 @@ function App() {
     </div>
     <div
       className = {classes.speedDivMargins}
-    >
-       <Button 
+    >{
+      state ? <> 
+      <Button 
           style = {{fontSize: '20px', fontFamily: 'sans-serif', fontWeight: 'bold'}}
           className = {classes.root}
           variant="contained" 
@@ -76,7 +77,8 @@ function App() {
           onClick = {discreaseSpeed}
       >
         Slower
-      </Button>
+      </Button> </> : false
+    }
     </div>
     </>
   );
