@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 let backgroundChanger;
 
 function App() {
-  const [colors] = useState(['#EF895D', '#FFDD94', '#86E3CE', '#D0E6A5', '#CCABD8', '#FA897B', '#1AA6B7', '#FF414D', '#F56A79', '#D9ECF2', '#BAC94A', '#E2D36B', '#96D7C6']);
+  const [colors] = useState(['#CE6A6B', '#EBACA2', '#FFDFCB', '#EF895D', '#FFDD94', '#86E3CE', '#D0E6A5', '#CCABD8', '#FA897B', '#1AA6B7', '#FF414D', '#F56A79', '#D9ECF2', '#BAC94A', '#E2D36B', '#96D7C6']);
   const [speed, speedChanger] = useState(1200);
   const [state, stateUpdater] = useState(true);
   const classes = styles();
