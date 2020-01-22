@@ -23,7 +23,6 @@ const styles = makeStyles(theme => ({
         marginLeft:'46.6%',
         marginTop:'2%',
     }
-})
-);
+}));
 
 export {styles};

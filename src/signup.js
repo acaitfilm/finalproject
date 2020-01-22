@@ -122,7 +122,7 @@ function SignUp(props){
         }
         setError({...error});
     }
-    const classes = styles();
+    const classes = () => styles();
     return (
         <>
         <div className = {classes.signupMainDiv}>
@@ -261,7 +261,6 @@ function SignUp(props){
             onChange = {(event) => confirmPasswordUpdater(event)}
             style = {{marginLeft:'10%'}}
         />
-        
             </div>
             <div className = {classes.signupSignUpDiv}>
                 <Button 
