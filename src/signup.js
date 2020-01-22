@@ -151,8 +151,6 @@ function SignUp(props){
         setError({...error});
     }
     const classes = styles();
-    document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1516085216930-c93a002a8b01?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2850&q=80')";
-    document.body.style.backgroundSize = 'cover';
     return (
         <>
         <div 
