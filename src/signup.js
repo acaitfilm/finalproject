@@ -71,7 +71,6 @@ function SignUp(props){
             return false;
     }
     function request(){
-        document.body.style.backgroundImage = "url('https://edkentmedia.com/wp-content/uploads/2018/08/The-Complete-Guide-to-URL-Structuring.jpg')";
         axios.get(`http://127.0.0.1/index.php`)
         .then(res => {
           //console.log(res);
