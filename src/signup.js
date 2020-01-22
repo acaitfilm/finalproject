@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import './App.css';
 import {styles} from './styles.js';
@@ -20,6 +20,7 @@ function SignUp(props){
     const [confirmPassword, setConfirmPassword] = useState('');
     const [gender, setGender] = useState('None');
     const [person, setPerson] = useState('None');
+    const [adminPassword, setAdminPassword] = useState('');
     
     const firstnameUpdater = (event) => {
         setFirstname(event.target.value);
@@ -48,12 +49,20 @@ function SignUp(props){
     const personUpdater = (event) => {
         setPerson(event.target.value);
     }
-    const validateEmail = email => {
+    const adminPasswordUpdater = (event) => {
+        setAdminPassword(event.target.value);
+    }
+    const validateEmail = () => {
         let symbols = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return symbols.test(email);
     }
+    const checkUsername = () => {
+        let symbols = /^[A-Za-z0-9\._]+$/g;
+        return symbols.test(username);
+
+    }
     const validatePassword = password => {
-        if (password.match(/[a-z]/g) && password.match( 
+        if(password.match(/[a-z]/g) && password.match( 
             /[A-Z]/g) && password.match( 
             /[0-9]/g) && password.match( 
             /[^a-zA-Z\d]/g)){
@@ -62,9 +71,10 @@ function SignUp(props){
             return false;
     }
     function request(){
+        document.body.style.backgroundImage = "url('https://edkentmedia.com/wp-content/uploads/2018/08/The-Complete-Guide-to-URL-Structuring.jpg')";
         axios.get(`http://127.0.0.1/index.php`)
         .then(res => {
-          console.log(res);
+          //console.log(res);
           //this.setState({data: res.data});
         },
         () => {
@@ -89,7 +99,7 @@ function SignUp(props){
         }else{
             error.lastname = '';
         }
-        if(!validateEmail(email)){
+        if(!validateEmail()){
             error.email = 'Please, enter valid email.';
             errorCheck = true;
         }else{
@@ -112,105 +122,136 @@ function SignUp(props){
         }
         if(confirmPassword !== password){
             error.confirmpassword = 'Passwords do not match';
-            console.log('firstname error');
             errorCheck = true;
         }else{
             error.confirmpassword = '';
+        }
+        if(username.length < 3 || username.length > 12){
+            error.username = 'Must contain from 3 to 12 symbols.';
+            errorCheck = true;
+        }
+        else if(!checkUsername()){
+            error.username = 'Username is not valid.';
+            errorCheck = true;
+        }else if(username[0] === '_' || username[0] === '.' || !isNaN(username[0])){
+            error.username = "First char must be symbol.";
+            errorCheck = true;
+        }else{
+            error.username = '';
+        }
+        if(person === 'Admin' && adminPassword !== 'adminpass123'){
+            error.admin = "Wrong admin password";
+            errorCheck = true;
+        }else{
+            error.admin = '';
         }
         if(!errorCheck){
             props.history.replace("/users");
         }
         setError({...error});
     }
-    const classes = () => styles();
+    const classes = styles();
+    document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1516085216930-c93a002a8b01?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2850&q=80')";
+    document.body.style.backgroundSize = 'cover';
     return (
         <>
-        <div className = {classes.signupMainDiv}>
-        <div className = {classes.signupMainText}>
-            Sign Up Now!
-        </div>
-        <div className = {classes.signupSecondDiv}>
-        <TextField 
-            id="outlined-basic" 
-            label='First Name'
-            error = {!!error.firstname}
-            helperText={error.firstname}
-            value = {firstname}
-            variant='outlined'
-            size = 'medium'
-            onChange = {(event) => firstnameUpdater(event)}
-        />
-          <TextField 
-            id="outlined-basic" 
-            label='Last Name'
-            error = {!!error.lastname}
-            helperText={error.lastname}
-            value = {lastname}
-            variant='outlined'
-            size = 'medium'
-            onChange = {(event) => lastnameUpdater(event)}
-            style = {{marginLeft:'10%'}}
-        />
-        </div>
-            <br/>
-            <div className = {classes.signupSecondDiv}>
+        <div 
+            className = {classes.signupMainDiv}
+        >
+            <div 
+                className = {classes.signupMainText}>
+                Sign Up Now!
+            </div>
+            <div 
+                className = {classes.signupSecondDiv}>
             <TextField 
-            id="outlined-basic" 
-            label='Username'
-            error = {!!error.username}
-            helperText={error.username}
-            value = {username}
-            variant='outlined'
-            className = 'loginSecondDiv'
-            size = 'medium'
-            onChange = {(event) => usernameUpdater(event)}
-        />
+                id="outlined-basic" 
+                label='First Name'
+                error = {!!error.firstname}
+                helperText={error.firstname}
+                value = {firstname}
+                variant='outlined'
+                size = 'medium'
+                InputProps={{
+                classes: {
+                  notchedOutline: classes.notchedOutline,
+                  input: classes['input']
+                },
+              }}
+                onChange = {(event) => firstnameUpdater(event)}
+                inputProps={{ style: { fontFamily: 'sans-serif', color: 'white'}}}
+            />
+            <TextField 
+                id="outlined-basic" 
+                label='Last Name'
+                error = {!!error.lastname}
+                helperText={error.lastname}
+                value = {lastname}
+                variant='outlined'
+                size = 'medium'
+                onChange = {(event) => lastnameUpdater(event)}
+                style = {{marginLeft:'10%'}}
+            />
+            </div>
+                <br/>
+                <div className = {classes.signupSecondDiv}>
+                <TextField 
+                id="outlined-basic" 
+                label='Username'
+                error = {!!error.username}
+                helperText={error.username}
+                value = {username}
+                variant='outlined'
+                className = 'loginSecondDiv'
+                size = 'medium'
+                onChange = {(event) => usernameUpdater(event)}
+            />
             <FormControl
                 style = {{marginLeft:'10%'}}
             >
             <Select
-          labelId="demo-simple-select-outlined-label"
-          id="demo-simple-select-outlined"
-          value={person}
-          variant='outlined'
-          onChange={(event) => personUpdater(event)}
+        labelId="demo-simple-select-outlined-label"
+        id="demo-simple-select-outlined"
+        value={person}
+        variant='outlined'
+        onChange={(event) => personUpdater(event)}
         >
-          <MenuItem value={'None'}>None</MenuItem>
-          <MenuItem value={'User'}>User</MenuItem>
-          <MenuItem value={'Admin'}>Admin</MenuItem>
+        <MenuItem value={'None'}>None</MenuItem>
+        <MenuItem value={'User'}>User</MenuItem>
+        <MenuItem value={'Admin'}>Admin</MenuItem>
         </Select>
             </FormControl>
             <FormControl
                 style = {{marginLeft:'1.5%'}}
             >
             <Select
-          labelId="demo-simple-select-outlined-label"
-          id="demo-simple-select-outlined"
-          value={gender}
-          variant='outlined'
-          onChange={(event) => genderUpdater(event)}
+        labelId="demo-simple-select-outlined-label"
+        id="demo-simple-select-outlined"
+        value={gender}
+        variant='outlined'
+        onChange={(event) => genderUpdater(event)}
         >
-          <MenuItem value={'None'}>None</MenuItem>
-          <MenuItem value={'Male'}>Male</MenuItem>
-          <MenuItem value={'Female'}>Female</MenuItem>
+        <MenuItem value={'None'}>None</MenuItem>
+        <MenuItem value={'Male'}>Male</MenuItem>
+        <MenuItem value={'Female'}>Female</MenuItem>
         </Select>
             </FormControl>
-             </div>
-             <div>
-             <TextField 
+            </div>
+            <div>
+            <TextField 
             id="outlined-basic" 
+            type='password'
             label='Security code'
-            error = {!!error.email}
-            helperText={error.email}
-            value = {email}
+            error = {!!error.admin}
+            helperText={error.admin}
+            value = {adminPassword}
             variant='outlined'
             size = 'medium'
-            onChange = {(event) => emailUpdater(event)}
-            //style = {{marginLeft:'10%'}}
+            onChange = {(event) => adminPasswordUpdater(event)}
             style = {person !== 'Admin' ? {display:'none'} : {marginLeft:'33.5%', marginTop:'1.5%', width:'33.7%'}}
 
         />
-             </div>
+            </div>
             <div className = {classes.signupThirdDiv}>
             <MuiPhoneNumber 
                 value = {phone}
@@ -224,7 +265,7 @@ function SignUp(props){
                 variant = 'outlined'
                 label = 'Phone'
             /> 
-             <TextField 
+            <TextField 
             id="outlined-basic" 
             label='Email'
             error = {!!error.email}
@@ -235,10 +276,10 @@ function SignUp(props){
             onChange = {(event) => emailUpdater(event)}
             style = {{marginLeft:'10%'}}
         />
-             
-             </div>
-             <div className = {classes.signupThirdDiv}>
-             <TextField 
+            
+            </div>
+            <div className = {classes.signupThirdDiv}>
+            <TextField 
             id="outlined-basic" 
             label='Password'
             error = {!!error.password}
@@ -249,7 +290,7 @@ function SignUp(props){
             size = 'medium'
             onChange = {(event) => passwordUpdater(event)}
         />
-           <TextField 
+        <TextField 
             id="outlined-basic" 
             label='Confirm Password'
             error = {!!error.confirmpassword}
@@ -264,7 +305,7 @@ function SignUp(props){
             </div>
             <div className = {classes.signupSignUpDiv}>
                 <Button 
-                    disabled = {!firstname || !lastname || !email || !phone || !password || gender === 'None' || person === 'None' || !confirmPassword}
+                    disabled = {!firstname || !lastname || !email || !username || !phone || !password || gender === 'None' || person === 'None' || !confirmPassword}
                     variant="contained" 
                     color="primary"
                     size='large'

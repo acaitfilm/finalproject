@@ -17,18 +17,41 @@ function App(){
   //   let response = await axios.post(address, data);
   //   console.log(response);
   // }
-  // function requestToPHP(){
-  //   // this.getDataFromBackend();
-  //   axios.get(`http://127.0.0.1/index.php`)
-  //     .then(res => {
-  //       console.log(res);
-  //       this.setState({data: res.data});
-  //     },
-  //     () => {
-  //       alert('Not working');
-  //     })
+  function requestToPHP(){
+    // this.getDataFromBackend();
+    axios.get(`http://127.0.0.1/index.php`)
+      .then(res => {
+        console.log(res);
+        this.setState({data: res.data});
+      },
+      () => {
+        alert('Not working');
+      })
       
-  // }    
+  }    
+  function postToPHP(){
+    var param = {
+      name: 'Vahan',
+      text: 'text text',
+      email: 'zakaryan.v@gmail.com',
+      tema: 'tema'
+
+};
+const str = JSON.stringify(param);
+axios.post('/js/mail.php',str)
+
+  .then(function(response) {
+
+      console.log(response.data);
+
+  })
+
+
+  .catch(function (error) {
+      console.log(error);
+  });
+  }
+  postToPHP();
   return (
     <>
     <Router>

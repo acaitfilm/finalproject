@@ -22,7 +22,14 @@ const styles = makeStyles(theme => ({
     signupSignUpDiv:{
         marginLeft:'46.6%',
         marginTop:'2%',
-    }
+    },
+    hiddenInput:{
+
+    },
+    notchedOutline:{
+        borderWidth: "1px",
+        borderColor: "red !important"
+    },
 }));
 
 export {styles};
