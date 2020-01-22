@@ -1,7 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import './App.css';
-import SignUp from './signup.js'
+import SignUp from './signup.js';
+import LogIn from './login.js'
 import {
   Redirect,
   withRouter,
@@ -33,11 +34,13 @@ function App(){
     <>
     <Router>
     {
-        localStorage.username ? <Redirect to = "/users" /> : <Redirect to = "/signup" />
+        localStorage.username ? <Redirect to = "/users" /> : <Redirect to = "/login" />
       }
         <Switch>
           <Route exact path = "/" component = {SignUp} />
           <Route path = "/signup" component = {SignUp} />
+          <Route path = "/login" component = {LogIn} />
+          
         </Switch>
     </Router>
        {/* <Router>

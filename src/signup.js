@@ -102,7 +102,7 @@ function SignUp(props){
             error.phone = '';
         }
         if(!validatePassword(password)){
-            error.password = 'Too week password.';
+            error.password = 'Too weak password.';
             errorCheck = true;
         }else if(password.length < 8){
             error.password = 'Your password is too short.';
@@ -122,7 +122,7 @@ function SignUp(props){
         }
         setError({...error});
     }
-    const classes = () => styles();
+    const classes =  styles();
     return (
         <>
         <div className = {classes.signupMainDiv}>
