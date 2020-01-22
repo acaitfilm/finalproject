@@ -206,7 +206,6 @@ function SignUp(props){
             variant='outlined'
             size = 'medium'
             onChange = {(event) => emailUpdater(event)}
-            //style = {{marginLeft:'10%'}}
             style = {person !== 'Admin' ? {display:'none'} : {marginLeft:'33.5%', marginTop:'1.5%', width:'33.7%'}}
 
         />
