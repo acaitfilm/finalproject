@@ -17,18 +17,18 @@ function App(){
   //   let response = await axios.post(address, data);
   //   console.log(response);
   // }
-  function requestToPHP(){
-    // this.getDataFromBackend();
-    axios.get(`http://127.0.0.1/index.php`)
-      .then(res => {
-        console.log(res);
-        this.setState({data: res.data});
-      },
-      () => {
-        alert('Not working');
-      })
+  // function requestToPHP(){
+  //   // this.getDataFromBackend();
+  //   axios.get(`http://127.0.0.1/index.php`)
+  //     .then(res => {
+  //       console.log(res);
+  //       this.setState({data: res.data});
+  //     },
+  //     () => {
+  //       alert('Not working');
+  //     })
       
-  }    
+  // }    
   return (
     <>
     <Router>
