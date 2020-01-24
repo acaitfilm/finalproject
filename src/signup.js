@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import './App.css';
 import {styles} from './styles.js';
 import MuiPhoneNumber from "material-ui-phone-number";
 import MenuItem from '@material-ui/core/MenuItem';
@@ -21,15 +20,36 @@ function SignUp(props){
     const [gender, setGender] = useState('None');
     const [person, setPerson] = useState('None');
     const [adminPassword, setAdminPassword] = useState('');
+    const [users, setUsers] = useState([]);
     
     const firstnameUpdater = (event) => {
-        setFirstname(event.target.value);
+        //firstname u lastname dashterum toxnuma menak tarer grel
+        if(!(/^[a-zA-Z]+$/.test(event.target.value)) && event.target.value !== ''){
+            return;
+        }
+        //arachin tar@ sarquma mecatar u jnjuma avelord bacatner@
+        let str = '';
+        if(event.target.value.length){
+            str = (event.target.value[0].toUpperCase() + event.target.value.slice(1)).trim();
+        }
+        setFirstname(str);
     }
     const lastnameUpdater = (event) => {
-        setLastname(event.target.value);
+        if(!(/^[a-zA-Z]+$/.test(event.target.value)) && event.target.value !== ''){
+            return;
+        }
+        let str = '';
+        if(event.target.value.length){
+            str = (event.target.value[0].toUpperCase() + event.target.value.slice(1)).trim();
+        }
+        setLastname(str);
     }
     const usernameUpdater = (event) => {
-        setUsername(event.target.value);
+        let str = '';
+        if(event.target.value.length){
+            str = (event.target.value.toLowerCase()).trim();
+        }
+        setUsername(str);
     }
     const emailUpdater = (event) => {
         setEmail(event.target.value);
@@ -56,10 +76,22 @@ function SignUp(props){
         let symbols = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return symbols.test(email);
     }
+    //username@ kara lini A-Z, a-z, 0-9, u ._ simvolneric baxkacac
     const checkUsername = () => {
-        let symbols = /^[A-Za-z0-9\._]+$/g;
+        let symbols = /^[a-z0-9\._]+$/g;
         return symbols.test(username);
-
+    }
+    //stuguma firstname, lastname linen anpayman tarer
+    const checkName = (name) => {
+        let symbols = /^[A-Za-z]+$/g;
+        return symbols.test(name);
+    }
+    const idGenerator = () => {
+        if(localStorage.getItem('currentID') === undefined){
+            localStorage.setItem('currentID',-1);
+        }
+        localStorage.setItem('currentID',+localStorage.getItem('currentID') + 1);
+        return localStorage.getItem('currentID');
     }
     const validatePassword = password => {
         if(password.match(/[a-z]/g) && password.match( 
@@ -70,30 +102,60 @@ function SignUp(props){
             }
             return false;
     }
-    function request(){
-        axios.get(`http://127.0.0.1/index.php`)
-        .then(res => {
-          //console.log(res);
-          //this.setState({data: res.data});
-        },
-        () => {
-          alert('Not working');
-        });
+    //databaseic stanum es userneri list
+    const updateUsers = () => {
+        let formData = new FormData();
+        formData.append("userGet", 1);
+            const url = `http://127.0.0.1/index.php`;
+            axios.post(url,formData)
+                .then(
+                function(res){
+                    let arrOfUsers = [];
+                    while(res.data.length){
+                        arrOfUsers.push([res.data.splice(0,8)]);
+                    }
+                    setUsers(arrOfUsers);
+                }
+                )
+                .catch(err => console.log(err));
     }
-  
-    request();
+    const handleKeyPress = (event) =>{
+        const {keyCode} = event;
+        //stex senc em grel ,vor datarki depkum chkatarvi,heto kpoxenq
+        if(keyCode === 13 && !!firstname && !!lastname && !!username && !!password && !!confirmPassword && !!email && !!gender && !!person && !!phone && (person === 'Admin' ? !!adminPassword : true)){ 
+            btnPushed();
+        }
+    } 
+    useEffect(() => {
+        window.addEventListener('keydown', handleKeyPress);
+    
+        return () => {
+          window.removeEventListener('keydown', handleKeyPress);
+        };
+      });
+    useEffect(() => {
+        updateUsers();
+        document.title = 'Sign Up now!';
+    },[]);
+
+    //submiti pahna, stuguma formi validacian
 
     const btnPushed = () => {
         let errorCheck = false;
         if(firstname.length < 2 || firstname.length > 15){
-            error.firstname = 'Must contain from 2 to 15 symbols.';
+            error.firstname = 'From 2 to 15 symbols.';
+            errorCheck = true;
+        }else if(!checkName(firstname)){
+            error.firstname = 'Enter valid First Name.'
             errorCheck = true;
         }else{
             error.firstname = '';
         }
         if(lastname.length < 2 || lastname.length > 15){
-            error.lastname = 'Must contain from 2 to 15 symbols.';
-            console.log('lastname error');
+            error.lastname = 'From 2 to 15 symbols.';
+            errorCheck = true;
+        }else if(!checkName(lastname)){
+            error.lastname = 'Enter valid Last Name.'
             errorCheck = true;
         }else{
             error.lastname = '';
@@ -102,13 +164,40 @@ function SignUp(props){
             error.email = 'Please, enter valid email.';
             errorCheck = true;
         }else{
-            error.email = '';
+            //stuguma ka tenc mail databaseum te che... hakarak depqum chi toxnelu sign up lini :)
+            let hasEmail = false;
+            users.map((arr) => {
+                if(arr[0][4] === email){
+                    hasEmail = true;
+                }
+                return true;
+            });
+            if(hasEmail){
+                errorCheck = true;
+                error.email = 'Email address already exists.';
+            }else{
+                error.email = '';
+            }
         }
         if(phone.length !== 12){
             error.phone = 'Please, enter valid local phone number.';
             errorCheck = true;
         }else{
-            error.phone = '';
+            //stuguma ka tenc phone number databaseum te che
+            let hasPhone = false;
+            users.map((arr) => {
+                console.log(arr);
+                if(arr[0][5] === phone){
+                    hasPhone = true;
+                }
+                return true;
+            });
+            if(hasPhone){
+                errorCheck = true;
+                error.phone = 'Phone number already exists.';
+            }else{
+                error.phone = '';
+            }
         }
         if(!validatePassword(password)){
             error.password = 'Too weak password.';
@@ -125,18 +214,32 @@ function SignUp(props){
         }else{
             error.confirmpassword = '';
         }
-        if(username.length < 3 || username.length > 12){
-            error.username = 'Must contain from 3 to 12 symbols.';
+        if(username.length < 3 || username.length > 15){
+            error.username = 'From 3 to 15 symbols.';
             errorCheck = true;
         }
         else if(!checkUsername()){
             error.username = 'Username is not valid.';
             errorCheck = true;
         }else if(username[0] === '_' || username[0] === '.' || !isNaN(username[0])){
-            error.username = "First char must be symbol.";
+            error.username = "Can't start with symbol.";
             errorCheck = true;
         }else{
-            error.username = '';
+            let hasUsername = false;
+            users.map((arr) => {
+                console.log(username);
+                console.log(arr);
+                if(arr[0][3] === username){
+                    hasUsername = true;
+                }
+                return true;
+            });
+            if(hasUsername){
+                errorCheck = true;
+                error.username = 'Username already exists.';
+            }else{
+                error.username = '';
+            }
         }
         if(person === 'Admin' && adminPassword !== 'adminpass123'){
             error.admin = "Wrong admin password";
@@ -144,7 +247,33 @@ function SignUp(props){
         }else{
             error.admin = '';
         }
+        //ete validationi het xndir chka sarquma array
+        console.log(errorCheck);
         if(!errorCheck){
+            let user = [
+                idGenerator(),
+                firstname,
+                lastname,
+                username,
+                email,
+                phone,
+                gender,
+                person,
+                password,
+            ];
+            //uxarkuma PHP, vorn el grancuma ir hertin tvyalner@ SQLum, shat grakan stacvec :D
+            user = JSON.stringify(user);
+            let formData = new FormData();
+            formData.append("userSet", user);
+            const url = `http://127.0.0.1/index.php`;
+            axios.post(url,formData)
+                .then(
+                function(res){
+                    console.log('Success!');
+                }
+                )
+                .catch(err => console.log(err));
+            localStorage.setItem('username',username);
             props.history.replace("/users");
         }
         setError({...error});
@@ -169,14 +298,7 @@ function SignUp(props){
                 value = {firstname}
                 variant='outlined'
                 size = 'medium'
-                InputProps={{
-                classes: {
-                  notchedOutline: classes.notchedOutline,
-                  input: classes['input']
-                },
-              }}
                 onChange = {(event) => firstnameUpdater(event)}
-                inputProps={{ style: { fontFamily: 'sans-serif', color: 'white'}}}
             />
             <TextField 
                 id="outlined-basic" 
