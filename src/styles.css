@@ -1,0 +1,96 @@
+@keyframes firstPic{
+    0%   {width:0%}
+    3%  {width:100%}
+    17%  {width: 100%}
+    20% {width: 0%}
+    100% {width: 0%}
+}
+
+.firstPic{
+    display: inline-block; 
+    animation: firstPic 45s infinite;
+    background-position-x: -90px;
+    background-position-y: -340px;
+    background-image: url('https://s1.1zoom.me/big7/867/Fast_Furious_8_Vin_Diesel_Michelle_Rodriguez_519494_2560x1440.jpg'); 
+    height: 500px;
+}
+
+@keyframes secondPic{
+    0%   {width:0%}
+    20%  {width:0%}
+    23%  {width: 100%}
+    37%  {width: 100%}
+    40%  {width: 0%}
+    100% {width: 0%}
+}
+
+.secondPic{
+    display: inline-block; 
+    animation: secondPic 45s infinite;
+    background-position-x: -330px;
+    background-position-y: -90px;
+    background-image: url('http://www.bhmpics.com/download/the_divergent_series_allegiant_movie_2-2560x1440.jpg'); 
+    height: 500px;
+}
+
+@keyframes thirdPic{
+    0%   {width:0%}
+    40%  {width:0%}
+    43%  {width: 100%}
+    57%  {width: 100%}
+    60%  {width: 0%}
+    100% {width: 0%}
+}
+
+.thirdPic{
+    display: inline-block; 
+    animation: thirdPic 45s infinite;
+    background-position-x: -370px;
+    background-position-y: -140px;
+    background-image: url('https://cdn.shazoo.ru/250644_28Pbl9WXeT_0rampage002.jpg'); 
+    height: 500px;
+}
+
+@keyframes fourthPic{
+    0%   {width:0%}
+    60%  {width:0%}
+    63%  {width: 100%}
+    77%  {width: 100%}
+    80%  {width: 0%}
+    100% {width: 0%}
+}
+
+.fourthPic{
+    display: inline-block; 
+    animation: fourthPic 45s infinite;
+    background-position-x: -90px;
+    background-position-y: -340px;
+    background-image: url('https://images.wallpaperscraft.ru/image/kino_kreativ_film_minimalizm_smki_proby_kadry_74358_2560x1080.jpg'); 
+    height: 500px;
+}
+
+@keyframes fifthPic{
+    0%   {width:0%}
+    80%  {width:0%}
+    83%  {width: 100%}
+    97%  {width: 100%}
+    100% {width: 0%}
+}
+
+.fifthPic{
+    display: inline-block; 
+    animation: fifthPic 45s infinite;
+    background-position-x: -90px;
+    background-position-y: -340px;
+    background-image: url('https://images.wallpaperscraft.ru/image/kino_kreativ_film_minimalizm_smki_proby_kadry_74358_2560x1080.jpg'); 
+    height: 500px;
+}
+
+.mainusernametext:hover{
+    border-bottom: 3px solid;
+}
+
+.headerlogoutbutton{
+    font-weight: bold;
+    color:orange;
+}
