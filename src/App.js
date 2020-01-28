@@ -1,6 +1,7 @@
 import React from 'react';
-import SignUp from './signup.js';
-import LogIn from './login.js'
+import SignUp from './signup';
+import LogIn from './login';
+import Main from './main';
 import {
   Redirect,
   BrowserRouter as Router,
@@ -12,14 +13,12 @@ function App(){
   return (
     <>
     <Router>
-    {
-        localStorage.username ? <Redirect to = "/users" /> : <Redirect to = "/signup" />
-      }
+        <Redirect to = "/main" />
         <Switch>
           <Route exact path = "/" component = {SignUp} />
           <Route path = "/signup" component = {SignUp} />
           <Route path = "/login" component = {LogIn} />
-          
+          <Route path = "/main" component = {Main} />
         </Switch>
     </Router>
     </>

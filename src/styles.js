@@ -23,10 +23,12 @@ const styles = makeStyles(theme => ({
         marginLeft:'46.6%',
         marginTop:'2%',
     },
+    signUphaveAnAccount:{
+        marginTop:'2%',
+        marginLeft:'42.75%'
+    },
     loginMainDiv:{
-        marginTop: '9%',
-        
-        
+        marginTop: '9%',  
     },
     loginMainText:{
         textAlign:'center',
@@ -51,11 +53,28 @@ const styles = makeStyles(theme => ({
         borderColor: "#8B4513 !important",
         
     },
-    
-    
     hiddenInput:{
         display:'none'
     },
+    headerContainer:{
+        display: 'flex',
+        flexDirection:'column',
+        position: 'relative',
+    },
+    input: {
+        marginLeft: theme.spacing(1),
+        backgroundColor:'rgba(246, 246, 246)',
+        padding: '10px 10px 10px 10px',
+        flex: '1',
+      },
+      iconButton: {
+        padding: '10',
+      },
+      hover:{
+        '&:hover': {
+            backgroundColor: 'fade(theme.palette.common.white, 0.25)',
+          }
+      }
 }));
 
 export {styles};

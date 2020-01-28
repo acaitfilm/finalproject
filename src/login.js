@@ -1,9 +1,11 @@
 import React, {useState,useEffect} from 'react';
 import axios from 'axios';
-import {styles} from './styles.js';
+import {styles} from './styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-
+import {
+    Link
+} from 'react-router-dom';
 
 function LogIn(props){
     const [error, setError] = useState({});
@@ -22,8 +24,8 @@ function LogIn(props){
         //stugum enq ete ka nshvac anunov username, vercnum enq ira password@
         let passwordIfExists = '', errorCheck = false;
         users.map(arr => {
-            if(arr[0][3] === username){
-                passwordIfExists = arr[0][8];
+            if(arr[3] === username){
+                passwordIfExists = arr[8];
             }
             return true;
         });
@@ -42,7 +44,7 @@ function LogIn(props){
         setError({...error});
         if(!errorCheck){
             localStorage.setItem('username',username);
-            props.history.replace('/users');
+            props.history.replace('/main');
         }       
     }
     const handleKeyPress = (event) =>{
@@ -69,7 +71,7 @@ function LogIn(props){
                     function(res){
                         let arrOfUsers = [];
                         while(res.data.length){
-                            arrOfUsers.push([res.data.splice(0,9)]);
+                            arrOfUsers.push(res.data.splice(0,9))
                         }
                         setUsers(arrOfUsers);
                     }
@@ -121,6 +123,11 @@ function LogIn(props){
                 
                 />
              </div>
+             <div className = {classes.signUphaveAnAccount}>
+                <Link to="/signup">
+                    Don't have an account? Sign Up
+                </Link>
+            </div>
             <div className = {classes.loginBtnDiv}>
                 <Button 
                     disabled = {!username || !password}
