@@ -1,7 +1,7 @@
 import React, {Fragment, useState, useEffect} from 'react';
 import axios from 'axios';
 import './styles.css';
-import {styles} from './styles.js';
+import {styles} from './styles';
 import PersonIcon from '@material-ui/icons/Person';
 import Button from '@material-ui/core/Button';
 import InputBase from '@material-ui/core/InputBase';
@@ -13,43 +13,66 @@ function Header(props){
     const visualChange = (id, color, backGroundColor) => {
         document.getElementById(id).style.color = color;
         document.getElementById(id).style.backgroundColor = backGroundColor;
-        document.getElementById(id).style.boxShadow = '0px 0px';
+        //document.getElementById(id).style.boxShadow = '0px 0px';
     }
+    //console.log(props.currentUser);
     return (
         <div 
             className = {classes.headerContainer}
         >
-            <div style = {{padding:'2% 3% 2.5% 3%', backgroundColor:'rgba(246, 246, 246)'}}>
-                <div onClick = {() => props.replaceHistory('/main')} style = {{width:'27%',height:'100px', marginLeft:'2%',cursor:'pointer',display:'inline-block'}}>
-                    <img alt = 'header' src = "logo.png" width = "26%" style = {{display: 'inline-block'}}/>
-                    <span style = {{position:'absolute', marginTop:'1.7%', marginLeft:'1%', fontSize:'240%', color:'rgba(238, 133, 99)'}}>Cinema's name</span>
+            <div 
+                className = {classes.headerMainDiv}
+            >
+                <div 
+                    onClick = {() => props.replaceHistory('/main')} 
+                    className = {classes.headerIcon}
+                >
+                    <img 
+                        alt = 'header' 
+                        src = "logo.png" 
+                        width = "26%" 
+                        className = {classes.logoImage}
+                    />
+                    <span 
+                        className = {classes.headerIconText}
+                    >
+                        Cinema's name
+                    </span>
                 </div>
-                <div style = {{position:'absolute', marginTop:'-5.3%', marginLeft:'37%'}}>
-                <InputBase
-                    className={classes.input}
-                    placeholder="Search For Movies"
-                    style = {{color:'rgba(234, 65, 101)', fontSize:'115%'}}
-                    inputProps={{ }}
-                />
-                    <IconButton type="submit" className={classes.iconButton} aria-label="search" style = {{color:'rgba(234, 65, 101)'}}>
-                        <SearchIcon style = {{color:'rgba(234, 65, 101)'}} fontSize = 'large' />
+                <div 
+                    className = {classes.headerSearch}
+                >
+                    <InputBase
+                        className={classes.headerInput}
+                        placeholder="Search For Movies"
+                        style = {{color:'rgba(234, 65, 101)', fontSize:'115%'}}
+                    />
+                    <IconButton 
+                        type="submit" 
+                        className={classes.iconButton} 
+                        aria-label="search" 
+                        style = {{color:'rgba(234, 65, 101)'}}>
+                        <SearchIcon 
+                            style = {{color:'rgba(234, 65, 101)'}} 
+                            fontSize = 'large' />
                     </IconButton>
                 </div>
                 {
                     localStorage.getItem('username') ? <Fragment>
-                        <div style = {{position:'absolute', right:'0', top:'39%', marginRight:'19%', width:'14%', cursor:'pointer'}}>
+                        <div 
+                            className = {classes.headerUsernameHolder}
+                        >
                             <PersonIcon
                                 fontSize = 'large'
                                 style = {{color:'rgba(234, 65, 101)'}}
                             />
-                                <span 
-                                    style = {{marginTop:'3%', paddingBottom:'1%', position:'absolute', marginLeft:'3%', color:'rgba(234, 65, 101)', fontWeight:'bold',fontSize:'110%'}}
-                                    className = 'mainusernametext'
+                                <span    
+                                    className = {classes.headerUsernameText}
                                 >
-                                    vahanzakaryan
+                                    {props.currentUser[3]}
                                 </span>
                         </div>
-                        <div className = 'headerlogoutbutton' style = {{position:'absolute', right:'0', top:'39%', marginRight:'7%'}}>
+                        <div className = {classes.headerLogOut}>
                             <Button 
                                 id = 'logout'
                                 variant="contained"
@@ -64,7 +87,9 @@ function Header(props){
                             </Button>
                         </div>
                     </Fragment> : <Fragment>
-                    <div className = 'headerlogoutbutton' style = {{position:'absolute', right:'0', top:'39%', marginRight:'26.5%'}}>
+                    <div 
+                        className = {classes.headerWelcome} 
+                    >
                             <Button 
                                 id = 'welcome'
                                 variant="contained"
@@ -74,7 +99,9 @@ function Header(props){
                                 Welcome
                             </Button>
                         </div>
-                    <div className = 'headerlogoutbutton' style = {{position:'absolute', right:'0', top:'39%', marginRight:'17.25%'}}>
+                    <div 
+                        className = {classes.headerLogInBtn}
+                    >
                             <Button 
                                 id = 'login'
                                 variant="contained"
@@ -87,7 +114,9 @@ function Header(props){
                                 Log In
                             </Button>
                         </div>
-                        <div className = 'headerlogoutbutton' style = {{position:'absolute', right:'0', top:'39%', marginRight:'8%'}}>
+                        <div 
+                            className = {classes.headerSignUpBtn}
+                        >
                             <Button 
                                 id = 'signup'
                                 variant="contained"
