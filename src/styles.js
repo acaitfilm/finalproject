@@ -29,10 +29,18 @@ const styles = makeStyles(theme => ({
         marginLeft:'72%',
         marginTop:'2%',
     },
+    signUphaveAnAccount:{
+        marginTop:'2%',
+        marginLeft:'42.75%'
+    },
     loginMainDiv:{
+<<<<<<< HEAD
         marginTop: '9%',
     
         
+=======
+        marginTop: '9%',  
+>>>>>>> ed0a2b537ce33bcdb80dc0186fe8f657cddbde6b
     },
     loginMainText:{
         textAlign:'center',
@@ -57,12 +65,106 @@ const styles = makeStyles(theme => ({
         borderColor: "#8B4513 !important",
         
     },
+<<<<<<< HEAD
     
     
     
+=======
+>>>>>>> ed0a2b537ce33bcdb80dc0186fe8f657cddbde6b
     hiddenInput:{
         display:'none'
     },
+    headerContainer:{
+        display: 'flex',
+        flexDirection:'column',
+        position: 'relative',
+    },
+    headerInput: {
+        marginLeft: theme.spacing(1),
+        backgroundColor:'rgba(246, 246, 246)',
+        padding: '10px 10px 10px 10px',
+        flex: '1',
+      },
+    iconButton: {
+        padding: '10',
+    },
+    hover:{
+        '&:hover': {
+            backgroundColor: 'fade(theme.palette.common.white, 0.25)',
+            }
+    },
+    headerMainDiv:{
+        padding:'2% 3% 2.5% 3%', 
+        backgroundColor:'rgba(246, 246, 246)',
+    },
+    logoImage:{
+        display:'inline-block'
+    },
+    headerIcon:{
+        width:'27%',
+        height:'100px', 
+        marginLeft:'2%',
+        cursor:'pointer',
+        display:'inline-block',
+    },
+    headerIconText:{
+        position:'absolute', 
+        marginTop:'1.7%', 
+        marginLeft:'1%', 
+        fontSize:'240%', 
+        color:'rgba(238, 133, 99)'
+    },
+    headerSearch:{
+        position:'absolute', 
+        marginTop:'-5.3%', 
+        marginLeft:'37%',
+    },
+    headerUsernameHolder:{
+        position:'absolute', 
+        right:'0', 
+        top:'39%', 
+        marginRight:'19%', 
+        width:'14%', 
+        cursor:'pointer'
+    },
+    headerUsernameText:{
+        marginTop:'3%', 
+        paddingBottom:'1%', 
+        position:'absolute', 
+        marginLeft:'3%', 
+        color:'rgba(234, 65, 101)', 
+        fontWeight:'bold',
+        fontSize:'110%',
+        '&:hover': {
+            borderBottom: '3px solid',
+            }
+    },
+    headerLogOut:{
+        fontWeight: 'bold',
+        color: 'orange',
+        position:'absolute', 
+        right:'0', 
+        top:'39%', 
+        marginRight:'8%'
+    },
+    headerWelcome:{
+        position:'absolute', 
+        right:'0', 
+        top:'39%', 
+        marginRight:'26.5%'
+    },
+    headerLogInBtn:{
+        position:'absolute', 
+        right:'0', 
+        top:'39%', 
+        marginRight:'17.25%'
+    },
+    headerSignUpBtn:{
+        position:'absolute', 
+        right:'0', 
+        top:'39%', 
+        marginRight:'8%'
+    }
 }));
 
 export {styles};

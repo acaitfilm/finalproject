@@ -1,12 +1,15 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import {styles} from './styles.js';
+import {styles} from './styles';
 import MuiPhoneNumber from "material-ui-phone-number";
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import {
+    Link
+} from 'react-router-dom';
 
 function SignUp(props){
     const [error, setError] = useState({});
@@ -87,9 +90,6 @@ function SignUp(props){
         return symbols.test(name);
     }
     const idGenerator = () => {
-        if(localStorage.getItem('currentID') === undefined){
-            localStorage.setItem('currentID',-1);
-        }
         localStorage.setItem('currentID',+localStorage.getItem('currentID') + 1);
         return localStorage.getItem('currentID');
     }
@@ -112,7 +112,7 @@ function SignUp(props){
                 function(res){
                     let arrOfUsers = [];
                     while(res.data.length){
-                        arrOfUsers.push([res.data.splice(0,8)]);
+                        arrOfUsers.push(res.data.splice(0,9));
                     }
                     setUsers(arrOfUsers);
                 }
@@ -128,12 +128,15 @@ function SignUp(props){
     } 
     useEffect(() => {
         window.addEventListener('keydown', handleKeyPress);
-    
+
         return () => {
           window.removeEventListener('keydown', handleKeyPress);
         };
       });
     useEffect(() => {
+        if(!localStorage.getItem('currentID')){
+            idGenerator();
+        }
         updateUsers();
         document.title = 'Sign Up now!';
     },[]);
@@ -141,6 +144,9 @@ function SignUp(props){
     //submiti pahna, stuguma formi validacian
 
     const btnPushed = () => {
+        if(localStorage.getItem('currentID') === undefined){
+            localStorage.setItem('currentID', -1);
+        }
         let errorCheck = false;
         if(firstname.length < 2 || firstname.length > 15){
             error.firstname = 'From 2 to 15 symbols.';
@@ -167,7 +173,7 @@ function SignUp(props){
             //stuguma ka tenc mail databaseum te che... hakarak depqum chi toxnelu sign up lini :)
             let hasEmail = false;
             users.map((arr) => {
-                if(arr[0][4] === email){
+                if(arr[4] === email){
                     hasEmail = true;
                 }
                 return true;
@@ -186,8 +192,7 @@ function SignUp(props){
             //stuguma ka tenc phone number databaseum te che
             let hasPhone = false;
             users.map((arr) => {
-                console.log(arr);
-                if(arr[0][5] === phone){
+                if(arr[5] === phone){
                     hasPhone = true;
                 }
                 return true;
@@ -230,9 +235,7 @@ function SignUp(props){
         }else{
             let hasUsername = false;
             users.map((arr) => {
-                console.log(username);
-                console.log(arr);
-                if(arr[0][3] === username){
+                if(arr[3] === username){
                     hasUsername = true;
                 }
                 return true;
@@ -251,10 +254,10 @@ function SignUp(props){
             error.admin = '';
         }
         //ete validationi het xndir chka sarquma array
-        console.log(errorCheck);
         if(!errorCheck){
+            let id = localStorage.getItem('currentID');
             let user = [
-                idGenerator(),
+                id,
                 firstname,
                 lastname,
                 username,
@@ -264,6 +267,7 @@ function SignUp(props){
                 person,
                 password,
             ];
+            idGenerator();
             //uxarkuma PHP, vorn el grancuma ir hertin tvyalner@ SQLum, shat grakan stacvec :D
             user = JSON.stringify(user);
             let formData = new FormData();
@@ -278,7 +282,7 @@ function SignUp(props){
                 )
                 .catch(err => console.log(err));
             localStorage.setItem('username',username);
-            props.history.replace("/users");
+            props.history.replace("/main");
         }
         setError({...error});
     }
@@ -478,6 +482,11 @@ function SignUp(props){
                         }
                     }}
         />
+            </div>
+            <div className = {classes.signUphaveAnAccount}>
+                <Link to="/login">
+                    Already have an account? Log In
+                </Link>
             </div>
             <div className = {classes.signupSignUpDiv}>
                 <Button 
