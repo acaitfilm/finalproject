@@ -34,13 +34,9 @@ const styles = makeStyles(theme => ({
         marginLeft:'42.75%'
     },
     loginMainDiv:{
-<<<<<<< HEAD
         marginTop: '9%',
     
         
-=======
-        marginTop: '9%',  
->>>>>>> ed0a2b537ce33bcdb80dc0186fe8f657cddbde6b
     },
     loginMainText:{
         textAlign:'center',
@@ -65,12 +61,9 @@ const styles = makeStyles(theme => ({
         borderColor: "#8B4513 !important",
         
     },
-<<<<<<< HEAD
     
     
     
-=======
->>>>>>> ed0a2b537ce33bcdb80dc0186fe8f657cddbde6b
     hiddenInput:{
         display:'none'
     },
