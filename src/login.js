@@ -63,7 +63,7 @@ function LogIn(props){
       useEffect(() => {
         let formData = new FormData();
             formData.append("userGet", 1);
-                const url = `http://127.0.0.1/index.php`;
+                const url = `http://localhost/index.php`;
                 axios.post(url,formData)
                     .then(
                     function(res){
@@ -78,6 +78,7 @@ function LogIn(props){
       },[]);
     document.body.style.backgroundImage='url(https://i.pinimg.com/originals/e1/6e/96/e16e968daac9752ca91e49761e68fce7.jpg)';
     document.body.style.backgroundSize='100%';
+    
     const classes = styles();
     return(
         <div className={classes.loginMainDiv}>

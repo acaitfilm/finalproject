@@ -13,7 +13,7 @@ function App(){
     <>
     <Router>
     {
-        localStorage.username ? <Redirect to = "/users" /> : <Redirect to = "/signup" />
+    //    localStorage.username ? <Redirect to = "/users" /> : <Redirect to = "/signup" />
       }
         <Switch>
           <Route exact path = "/" component = {SignUp} />

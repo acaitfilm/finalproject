@@ -5,7 +5,9 @@ const styles = makeStyles(theme => ({
         textAlign:'center',
         fontSize:'190%',
         fontWeight:'bold',
-        paddingBottom:'4%'
+        paddingBottom:'4%',
+        paddingLeft:'50%',
+        color:'#8B4513'
     },
     signupMainDiv:{
         marginTop:'7.8%'
@@ -13,19 +15,23 @@ const styles = makeStyles(theme => ({
     signupFullnameDiv:{
     },
     signupSecondDiv:{
-        marginLeft:'33.5%'
+        marginLeft:'60%'
     },
     signupThirdDiv:{
-        marginLeft:'33.5%',
+        marginLeft:'60%',
         marginTop:'1.5%',
     },
+    signupForthDiv:{
+        marginLeft:'74.5%',
+        marginTop:'-56px',
+    },
     signupSignUpDiv:{
-        marginLeft:'46.6%',
+        marginLeft:'72%',
         marginTop:'2%',
     },
     loginMainDiv:{
         marginTop: '9%',
-        
+    
         
     },
     loginMainText:{
@@ -51,6 +57,7 @@ const styles = makeStyles(theme => ({
         borderColor: "#8B4513 !important",
         
     },
+    
     
     
     hiddenInput:{
