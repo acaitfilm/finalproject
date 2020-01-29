@@ -128,7 +128,7 @@ function SignUp(props){
     } 
     useEffect(() => {
         window.addEventListener('keydown', handleKeyPress);
-    
+
         return () => {
           window.removeEventListener('keydown', handleKeyPress);
         };
