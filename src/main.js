@@ -3,9 +3,11 @@ import './styles.css';
 import axios from 'axios';
 import Header from './header';
 import Footer from './footer';
+import User from './users';
 
 function Main(props){
     const [currentUser, setCurrentUser] = useState([]);
+    const [users,setUsers] =useState([]);
     useEffect(() => {
         if(localStorage.getItem('username')){
             updateUsers();
@@ -15,7 +17,7 @@ function Main(props){
     const updateUsers = () => {
         let formData = new FormData();
         formData.append("userGet", 1);
-            const url = `http://127.0.0.1/index.php`;
+            const url = `http://localhost/index.php`;
             axios.post(url,formData)
                 .then(
                 function(res){
@@ -23,9 +25,11 @@ function Main(props){
                     while(res.data.length){
                         arrOfUsers.push(res.data.splice(0,9));
                     }
+                    setUsers(arrOfUsers);
                     arrOfUsers.map(array => {
                         if(array[3] === localStorage.getItem('username')){
                             setCurrentUser(array);
+                            
                         }
                         return true;
                     });
@@ -33,6 +37,7 @@ function Main(props){
                 )
                 .catch(err => console.log(err));
     }
+    
     const logOut = () => {
         localStorage.removeItem('username');
         props.history.replace('/main');
@@ -49,16 +54,26 @@ function Main(props){
                 replaceHistory = {replaceHistory} 
                 currentUser = {currentUser}
             />
-            {/* <div style = {{backgroundColor:'rgba(234, 65, 101)'}}>
+            {localStorage.getItem('username')?
+             <User
+             currentUser={currentUser}
+             users={users}
+            />:
+            
+            <p>filpics here</p>
+            /* <div style = {{backgroundColor:'rgba(234, 65, 101)'}}>
                 <div className = 'firstPic'></div>
                 <div className = 'secondPic'></div>
                 <div className = 'thirdPic'></div>
                 <div className = 'fourthPic'></div>
                 <div className = 'fifthPic'></div>
             </div> */}
+            {/*
             <Footer
                 
             />
+            */
+            }
         </>
     );
 }

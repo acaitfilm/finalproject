@@ -157,7 +157,75 @@ const styles = makeStyles(theme => ({
         right:'0', 
         top:'39%', 
         marginRight:'8%'
+    },
+    userInfoDiv:{
+        position:'absolute',
+        display: 'flex',
+        flexDirection:'column',
+        marginLeft: '45px',
+        marginTop:'30px',
+    },
+    personalInfo:{
+        color:'rgba(234, 65, 101)',
+        position:'absolute',
+        top:'100%'
+    },
+    personalInfoEdit:{
+       
+        color:'rgba(234, 65, 101)',
+        position:'absolute',
+        top:'115%',
+        border:'1px solid rgba(234, 65, 101)',
+        width:'110%',
+        borderRadius:'7px'
+    },
+    cancel:{
+        color:'rgba(234, 65, 101)',
+        position:'absolute',
+        top:'105%',
+        
+        
+    },
+    seenFilmsDiv:{
+        float:'left',
+        position:'absolute',
+        marginTop:'20%',
+        left:'160%',
+        border: '2px solid rgba(234, 65, 101)',
+        height:'385%',
+        backgroundColor:'#FAF0E6',
+        width:'500%'
+    },
+    seenPics:{
+        margin:'20px',
+        border: '2px solid rgba(234, 65, 101)',
+        height: '300px',
+        color:'rgba(234, 65, 101)',
+        display:'inline-block',
+        width:'200px'
+        
+        
+    },
+    watchedText:{
+        color:'rgba(234, 65, 101)',
+        position:'absolute',
+        marginTop:'-5%',
+        marginLeft:'160%',
+        fontSize:"100%",
+        width:'100%'
+    },
+    languageDivFirst:{
+        position:'absolute',
+        left:'71%',
+        top:'4%'
+    },
+    languageDivSecond:{
+        position:'absolute',
+        left:'70.4%',
+        top:'4%'
     }
+
+   
 }));
 
 export {styles};
