@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
-import Language from './language';
+
 
 function Header(props){
     const classes = styles();
@@ -69,13 +69,10 @@ function Header(props){
                             />
                                 <span    
                                     className = {classes.headerUsernameText}
-                                    onClick = {() => props.replaceHistory('/main')}
+                                    onClick = {() => props.replaceHistory('/user')}
                                 >
                                     {localStorage.getItem('username')}
                                 </span>
-                        </div>
-                        <div className={classes.languageDivFirst}>
-                            <Language/>
                         </div>
                         <div className = {classes.headerLogOut}>
                             <Button 
@@ -103,9 +100,6 @@ function Header(props){
                             >
                                 Welcome
                             </Button>
-                        </div>
-                        <div className={classes.languageDivSecond}>
-                            <Language/>
                         </div>
                     <div 
                         className = {classes.headerLogInBtn}

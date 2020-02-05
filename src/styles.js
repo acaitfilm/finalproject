@@ -200,9 +200,12 @@ const styles = makeStyles(theme => ({
         margin:'20px',
         border: '2px solid rgba(234, 65, 101)',
         height: '300px',
-        color:'rgba(234, 65, 101)',
+        color:'black',
         display:'inline-block',
-        width:'200px'
+        width:'200px',
+        //backgroundColor:'#00FF7F'
+        //backgroundColor:'#87CEEB'
+        backgroundColor:'#FFB6C1'
         
         
     },
@@ -214,15 +217,13 @@ const styles = makeStyles(theme => ({
         fontSize:"100%",
         width:'100%'
     },
-    languageDivFirst:{
-        position:'absolute',
-        left:'71%',
-        top:'4%'
-    },
-    languageDivSecond:{
-        position:'absolute',
-        left:'70.4%',
-        top:'4%'
+    descriptionTextDiv:{
+        position: 'absolute',
+        left: '86.5%',
+        bottom:'49%',
+        width:'7%'
+        
+       
     }
 
    

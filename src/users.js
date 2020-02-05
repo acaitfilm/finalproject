@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import './styles.css';
+import Header from './header';
 import {styles} from './styles';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
@@ -23,18 +24,19 @@ import pic9 from './filmpics/9.jpg';
 import pic10 from './filmpics/10.jpeg';
 
 function User(props){
-    const [currentUser,setCurrentUser] = useState(props.currentUser);
+    const [currentUser,setCurrentUser] = useState([]);
     const [userPic, setUserPic] = useState(null);
     const [showEdit,setShowEdit] = useState(false);
     const [showDelete,setShowDelete] = useState(false);
+    const [showDesc,setShowDesc] = useState(false);
     const [error, setError] = useState({});
-    const [firstname, setFirstname] = useState(props.currentUser[1]);
-    const [lastname, setLastname] = useState(props.currentUser[2]);
-    const [username, setUsername] = useState(props.currentUser[3]);
-    const [email, setEmail] = useState(props.currentUser[4]);
-    const [phone, setPhone] = useState(props.currentUser[5]);
-    const [password, setPassword] = useState(props.currentUser[8]);
-    const [gender, setGender] = useState(props.currentUser[6]);
+    const [firstname, setFirstname] = useState(currentUser[1]);
+    const [lastname, setLastname] = useState(currentUser[2]);
+    const [username, setUsername] = useState(currentUser[3]);
+    const [email, setEmail] = useState(currentUser[4]);
+    const [phone, setPhone] = useState(currentUser[5]);
+    const [password, setPassword] = useState(currentUser[8]);
+    const [gender, setGender] = useState(currentUser[6]);
     const [value1,setValue1] = useState(0);
     const [value2,setValue2] = useState(0);
     const [value3,setValue3] = useState(0);
@@ -45,6 +47,7 @@ function User(props){
     const [value8,setValue8] = useState(0);
     const [value9,setValue9] = useState(0);
     const [value10,setValue10] = useState(0);
+    const [users,setUsers] = useState([]);
     
     
     useEffect(() => {
@@ -55,8 +58,12 @@ function User(props){
         localStorage.removeItem('username');
         props.history.replace('/main');
     }
+    const replaceHistory = (newAddress) => {
+        props.history.replace(newAddress);
+    }
     
-  console.log(props.users);
+    
+  
     const updateUsers = () => {
         let formData = new FormData();
         formData.append("userGet", 1);
@@ -69,10 +76,13 @@ function User(props){
                         arrOfUsers.push(res.data.splice(0,9));
                     }
                     
-                    
-                    arrOfUsers.map(array => {
+                   
+                    setUsers(arrOfUsers);
+                    arrOfUsers.map((array,index) => {
                         if(array[3] === localStorage.getItem('username')){
                             setCurrentUser(array);
+                            arrOfUsers.splice(index,1);
+
                             
                         }
                         return true;
@@ -167,14 +177,12 @@ const handleSave = () =>  {
     }else{
         //stuguma ka tenc mail databaseum te che... hakarak depqum chi toxnelu sign up lini :)
         let hasEmail = false;
-        props.users.map((arr) => {
-            if(arr[4] === email && localStorage.getItem('currentID')!==arr[0]){
+        users.map((arr) => {
+            if(arr[4] === email){
                 hasEmail = true;
             }
-            else{
-                hasEmail = false;
-            }
-            //return true;
+           
+            return true;
         });
         if(hasEmail){
             errorCheck = true;
@@ -189,13 +197,11 @@ const handleSave = () =>  {
     }else{
         //stuguma ka tenc phone number databaseum te che
         let hasPhone = false;
-        props.users.map((arr) => {
-            if(arr[5] === phone && localStorage.getItem('currentID')!==arr[0]){
+        users.map((arr) => {
+            if(arr[5] === phone){
                 hasPhone = true;
             }
-            else{
-                hasPhone = false;
-            }
+            return true;
         
         });
         if(hasPhone){
@@ -230,13 +236,11 @@ const handleSave = () =>  {
         errorCheck = true;
     }else{
         let hasUsername = false;
-        props.users.map((arr) => {
-            if(arr[3] === username && localStorage.getItem('currentID')!==arr[0]){
+        users.map((arr) => {
+            if(arr[3] === username){
                 hasUsername = true;
             }
-            else{
-                hasUsername = false;
-            }
+            return true;
             
         });
         if(hasUsername){
@@ -286,6 +290,21 @@ const handleSave = () =>  {
         
         
   };
+
+  const handleKeyPress = (event) =>{
+    const {keyCode} = event;
+    //stex senc em grel ,vor datarki depkum chkatarvi,heto kpoxenq
+    if(keyCode === 13 && !!firstname && !!lastname && !!username && !!password && !!email && !!gender && !!phone){ 
+        handleSave();
+    }
+} 
+useEffect(() => {
+    window.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  });
     const picSelectedHandler = (e) => {
         setUserPic(URL.createObjectURL(e.target.files[0]));
        
@@ -310,6 +329,7 @@ const handleSave = () =>  {
     const onDeleteClose = () =>{
         setShowDelete(false);
     }
+    
     
 /*
     const picUploadHandler = () => {
@@ -336,7 +356,12 @@ const handleSave = () =>  {
     document.title = currentUser[1]+' '+currentUser[2];
     return (
         <>
-           
+            
+            <Header 
+                logout = {logOut} 
+                replaceHistory = {replaceHistory} 
+                currentUser = {currentUser}
+            />
             <div className={classes.userInfoDiv}>
                 
                { userPic === null ?
@@ -509,7 +534,11 @@ const handleSave = () =>  {
                 <div className={classes.watchedText}><h2 >You watched</h2></div>
                 <br></br>
                 <div className={classes.seenFilmsDiv}>
-                        <div className={classes.seenPics}><img src={pic1} style={{width: '200px',height: '270px'}} alt =''></img>Your rating
+                        <div className={classes.seenPics}>
+                            <img id='pic1' src={pic1} style={{width: '200px',height: '270px',cursor:'pointer'}} alt ='' 
+                            onMouseOver={()=>{document.getElementById('pic1').style.opacity='0.6'}}
+                                onMouseOut={()=>{document.getElementById('pic1').style.opacity='1'}}>
+                                    </img>Your rating
                         <Box 
                         component="fieldset" 
                         mb={3} 
@@ -527,7 +556,18 @@ const handleSave = () =>  {
                                 />
                             </Box>
                         </div>
-                        <div className={classes.seenPics}><img src={pic2} style={{width: '200px',height: '270px'}}alt =''></img>Your rating
+                        <div className={classes.seenPics}>
+                            <img 
+                                id='pic2'
+                                src={pic2} 
+
+                                onMouseOver={()=>{document.getElementById('pic2').style.opacity='0.6'}}
+                                onMouseOut={()=>{document.getElementById('pic2').style.opacity='1'}}
+                                style={{width: '200px',height: '270px',cursor:'pointer'}}
+                                alt =''>
+                                    
+                            </img>
+                            Your rating
                             <Box 
                             component="fieldset" 
                             mb={3} 
@@ -544,7 +584,11 @@ const handleSave = () =>  {
                                 />
                             </Box>
                         </div>
-                        <div className={classes.seenPics}><img src={pic3} style={{width: '200px',height: '270px'}}alt =''></img>Your rating
+                        <div className={classes.seenPics}>
+                            <img id='pic3' src={pic3} style={{width: '200px',height: '270px',cursor:'pointer'}}alt =''
+                            onMouseOver={()=>{document.getElementById('pic3').style.opacity='0.6'}}
+                            onMouseOut={()=>{document.getElementById('pic3').style.opacity='1'}}>
+                            </img>Your rating
                         <Box 
                         component="fieldset" 
                         mb={3} 
@@ -562,7 +606,11 @@ const handleSave = () =>  {
                                 />
                             </Box>
                         </div>
-                        <div className={classes.seenPics}><img src={pic4} style={{width: '200px',height: '270px'}} alt =''></img>Your rating
+                        <div className={classes.seenPics}>
+                            <img id='pic4'src={pic4} style={{width: '200px',height: '270px',cursor:'pointer'}} alt =''
+                            onMouseOver={()=>{document.getElementById('pic4').style.opacity='0.6'}}
+                            onMouseOut={()=>{document.getElementById('pic4').style.opacity='1'}}
+                            ></img>Your rating
                         <Box 
                         component="fieldset" 
                         mb={3} 
@@ -580,7 +628,11 @@ const handleSave = () =>  {
                                 />
                             </Box>
                         </div>
-                        <div className={classes.seenPics}><img src={pic5} style={{width: '200px',height: '270px'}} alt =''></img>Your rating
+                        <div className={classes.seenPics}>
+                            <img id='pic5'src={pic5} style={{width: '200px',height: '270px',cursor:'pointer'}} alt =''
+                                onMouseOver={()=>{document.getElementById('pic5').style.opacity='0.6'}}
+                                onMouseOut={()=>{document.getElementById('pic5').style.opacity='1'}}
+                            ></img>Your rating
                             <Box 
                             component="fieldset" 
                             mb={3} 
@@ -598,7 +650,11 @@ const handleSave = () =>  {
                                     />
                                 </Box>
                         </div>
-                        <div className={classes.seenPics}><img src={pic6} style={{width: '200px',height: '270px'}} alt =''></img>Your rating
+                        <div className={classes.seenPics}>
+                            <img id='pic6' src={pic6} style={{width: '200px',height: '270px',cursor:'pointer'}} alt =''
+                                onMouseOver={()=>{document.getElementById('pic6').style.opacity='0.6'}}
+                                onMouseOut={()=>{document.getElementById('pic6').style.opacity='1'}}
+                        ></img>Your rating
                         <Box 
                         component="fieldset" 
                         mb={3} 
@@ -616,7 +672,11 @@ const handleSave = () =>  {
                                 />
                             </Box>
                         </div>
-                        <div className={classes.seenPics}><img src={pic15} style={{width: '200px',height: '270px'}}alt =''></img>Your rating
+                        <div className={classes.seenPics}>
+                            <img id='pic7'src={pic15} style={{width: '200px',height: '270px',cursor:'pointer'}}alt =''
+                                onMouseOver={()=>{document.getElementById('pic7').style.opacity='0.6'}}
+                                onMouseOut={()=>{document.getElementById('pic7').style.opacity='1'}}
+                            ></img>Your rating
                         <Box 
                         component="fieldset" 
                         mb={3} 
@@ -634,7 +694,11 @@ const handleSave = () =>  {
                                 />
                             </Box>
                         </div>
-                        <div className={classes.seenPics}><img src={pic8} style={{width: '200px',height: '270px'}} alt =''></img>Your rating
+                        <div className={classes.seenPics}>
+                            <img id='pic8'src={pic8} style={{width: '200px',height: '270px',cursor:'pointer'}} alt =''
+                                onMouseOver={()=>{document.getElementById('pic8').style.opacity='0.6'}}
+                                onMouseOut={()=>{document.getElementById('pic8').style.opacity='1'}}
+                            ></img>Your rating
                         <Box 
                         component="fieldset" 
                         mb={3} 
@@ -652,7 +716,11 @@ const handleSave = () =>  {
                                 />
                             </Box>
                         </div>
-                        <div className={classes.seenPics}><img src={pic9} style={{width: '200px',height: '270px'}} alt =''></img>Your rating
+                        <div className={classes.seenPics}>
+                            <img id='pic9'src={pic9} style={{width: '200px',height: '270px',cursor:'pointer'}} alt =''
+                                onMouseOver={()=>{document.getElementById('pic9').style.opacity='0.6'}}
+                                onMouseOut={()=>{document.getElementById('pic9').style.opacity='1'}}
+                            ></img>Your rating
                         <Box 
                         component="fieldset" 
                         mb={3} 
@@ -670,7 +738,24 @@ const handleSave = () =>  {
                                 />
                             </Box>
                         </div>
-                        <div className={classes.seenPics}><img src={pic10} style={{width: '200px',height: '270px'}} alt =''></img>Your rating
+                        <div className={classes.seenPics}>
+                            {!showDesc ? 
+                            
+                                <img id ='pic10'src={pic10} style={{width: '200px',height: '270px',cursor:'pointer'}} alt =''
+                                onMouseOver={()=>setShowDesc(true)}
+                               // onMouseOut={()=>{document.getElementById('pic10').style.opacity='1'}}
+                            />
+                            
+                            :<>
+                                    <img id ='pic10'src={pic10} style={{width: '200px',height: '270px',opacity:'0.6'}} alt =''
+                                        onMouseOut={()=>setShowDesc(false)}
+                                    />
+                                    <div className={classes.descriptionTextDiv}>
+                                        <p style={{cursor:'pointer',border:'1px solid rgba(234, 65, 101)',backgroundColor:'white',color:'rgba(234, 65, 101)'}}>Description</p>
+                                     
+                                    </div>
+                               </>
+                            }Your rating
                         <Box 
                         component="fieldset" 
                         mb={3} 
@@ -697,6 +782,7 @@ const handleSave = () =>  {
                         currentUser = {currentUser}
                         onClose = {onDeleteClose}
                         logOut = {logOut}
+                        replaceHistory={replaceHistory}
                        
                         
                      />

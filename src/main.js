@@ -3,8 +3,6 @@ import './styles.css';
 import axios from 'axios';
 import Header from './header';
 import Footer from './footer';
-import User from './users';
-
 function Main(props){
     const [currentUser, setCurrentUser] = useState([]);
     const [users,setUsers] =useState([]);
@@ -53,27 +51,21 @@ function Main(props){
                 logout = {logOut} 
                 replaceHistory = {replaceHistory} 
                 currentUser = {currentUser}
-            />
-            {localStorage.getItem('username')?
-             <User
-             currentUser={currentUser}
-             users={users}
-            />:
-            
-            <p>filpics here</p>
-            /* <div style = {{backgroundColor:'rgba(234, 65, 101)'}}>
+            />                        
+           
+            {/* <div style = {{backgroundColor:'rgba(234, 65, 101)'}}>
                 <div className = 'firstPic'></div>
                 <div className = 'secondPic'></div>
                 <div className = 'thirdPic'></div>
                 <div className = 'fourthPic'></div>
                 <div className = 'fifthPic'></div>
             </div> */}
-            {/*
+            
             <Footer
                 
             />
-            */
-            }
+            
+            
         </>
     );
 }

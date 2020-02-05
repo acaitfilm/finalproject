@@ -2,6 +2,7 @@ import React from 'react';
 import SignUp from './signup';
 import LogIn from './login';
 import Main from './main';
+import User from './users';
 import {
   Redirect,
   BrowserRouter as Router,
@@ -19,6 +20,8 @@ function App(){
           <Route path = "/signup" component = {SignUp} />
           <Route path = "/login" component = {LogIn} />
           <Route path = "/main" component = {Main} />
+          <Route path = "/user" component = {User}/>
+         
         </Switch>
     </Router>
     </>

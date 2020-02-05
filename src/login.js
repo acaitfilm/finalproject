@@ -49,7 +49,6 @@ function LogIn(props){
     }
     const handleKeyPress = (event) =>{
         const {keyCode} = event;
-        //stex senc em grel ,vor datarki depkum chkatarvi,heto kpoxenq
         if(keyCode === 13 && !!username && !!password){ 
             btnClick();
         }

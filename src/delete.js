@@ -61,6 +61,8 @@ console.log(props.users);
                // logOut();
                //props.history replace y error er talis dra hamar gone removeItem em arel local.Storage ic
                localStorage.removeItem('username');
+               props.logOut();
+               props.replaceHistory('/main');
                 
                
                 
@@ -142,7 +144,7 @@ Delete.propTypes = {
     
   onClose: PropTypes.func.isRequired,
   logOut: PropTypes.func.isRequired,
- 
+  replaceHistory: PropTypes.func.isRequired
 
   
 };
