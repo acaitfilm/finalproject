@@ -109,8 +109,8 @@ const styles = makeStyles(theme => ({
     },
     headerSearch:{
         position:'absolute', 
-        marginTop:'-5.3%', 
-        marginLeft:'37%',
+        marginTop:'-5.15%', 
+        marginLeft:'39%',
     },
     headerUsernameHolder:{
         position:'absolute', 
@@ -118,7 +118,7 @@ const styles = makeStyles(theme => ({
         top:'39%', 
         marginRight:'19%', 
         width:'14%', 
-        cursor:'pointer'
+        cursor:'pointer',
     },
     headerUsernameText:{
         marginTop:'3%', 
@@ -224,9 +224,122 @@ const styles = makeStyles(theme => ({
         width:'7%'
         
        
-    }
+    },
 
    
+    footerMainDiv:{
+        padding:'4% 3% 4% 0%', 
+        backgroundColor:'rgba(246, 246, 246)',
+        bottom: '0'
+    },
+    footerRights:{
+        marginLeft:'42.3%',
+        cursor:'default',
+        fontSize:'160%',
+        color:'rgb(150,150,150)',
+        fontWeight:'bold',
+        marginTop:'19%'
+    },
+    footerLanguages:{
+        cursor:'pointer',
+        '&:hover':{
+            paddingBottom:'8%',
+            borderBottom:'3px solid rgb(150,150,150)',
+            transition: '0.2s'
+        }
+    },
+    footerBackToTopText:{
+        color:'rgb(150,150,150)',
+        cursor:'pointer',
+        fontSize:'150%',
+        transition:'0.1s',
+        '&:hover':{
+            fontWeight:'bold',
+            transition: '0.1s'
+        }
+    },
+    footerSocialMedia:{
+        zoom:'3.3', 
+        cursor:'pointer',
+        transition: '1.4s',
+        color:'rgb(150,150,150)',
+        '&:hover':{
+            scale:('1.5'),
+            color:'rgba(234, 65, 101)',
+            transition: '0.4s'
+        }
+    },
+    mainBookBuyBtns:{
+        position:'absolute', 
+        marginLeft:'43%', 
+        marginTop:'40.6%', 
+        padding:'0.7%',
+        fontSize:'145%',
+        cursor:'pointer',
+        color:'rgb(234, 65, 101)',
+        fontWeight:'bold',
+        '&:hover':{
+            borderBottom: '4px solid rgba(234, 65, 101)'
+        }
+    },
+    filmBlockMainDiv:{
+        padding:'0% 4% 4% 4%'
+    },
+    filmBlockBlockHolder:{
+        borderTop:'11px solid rgba(234, 65, 101)', 
+        borderBottom:'11px solid rgba(234, 65, 101)', 
+        marginTop:'5%', 
+        borderRadius:'8px', 
+        padding:'3.7% 3% 3% 3%', 
+        background:'linear-gradient(rgb(240,240,240), rgb(252,252,252))', 
+        paddingBottom:'50.6%',
+        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+    },
+    filmBlockClockHolder:{
+        textAlign:'center',
+        fontSize:'140%',
+        fontWeight:'bold'
+    },
+    filmBlockTitleHolder:{
+        width:'100%',
+        marginTop:'2%', 
+        textAlign:'center', 
+        fontSize:'205%', 
+        fontWeight:'bold', 
+        color:'rgba(234, 65, 101)'
+    },
+    filmBlockImageHolder:{
+        position:'absolute', 
+        marginLeft:'5%', 
+        marginTop:'9.8%'
+    },
+    filmBlockImage:{
+        width:'280px'
+    },
+    filmBlockMainTextHolder:{
+        position:'absolute', 
+        width:'51%', 
+        textAlign:'justify', 
+        marginTop:'4%', 
+        marginLeft:'31%'
+    },
+    filmBlockDescriptionHolder:{
+        textAlign:'center', 
+        paddingBottom:'5%'
+    },
+    filmBlockDescriptionTextHolder:{
+        lineHeight:'150%'
+    },
+    filmBlockGenreHolder:{
+        position:'absolute', 
+        marginTop:'4.8%', 
+        marginLeft:'5%', 
+        fontSize:'170%', 
+        fontWeight:'bold', 
+        textAlign:'center', 
+        color:'rgba(234, 65, 101', 
+        width:'19.2%'
+    },
 }));
 
 export {styles};

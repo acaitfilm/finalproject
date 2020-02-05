@@ -114,6 +114,7 @@ function SignUp(props){
                     while(res.data.length){
                         arrOfUsers.push(res.data.splice(0,9));
                     }
+                    console.log(arrOfUsers);
                     setUsers(arrOfUsers);
                 }
                 )
@@ -140,7 +141,6 @@ function SignUp(props){
         updateUsers();
         document.title = 'Sign Up now!';
     },[]);
-
     //submiti pahna, stuguma formi validacian
 
     const btnPushed = () => {
@@ -255,7 +255,9 @@ function SignUp(props){
         }
         //ete validationi het xndir chka sarquma array
         if(!errorCheck){
+            console.log(users);
             let id = localStorage.getItem('currentID');
+            id = parseInt(id);
             let user = [
                 id,
                 firstname,
@@ -267,6 +269,7 @@ function SignUp(props){
                 person,
                 password,
             ];
+            console.log(user);
             idGenerator();
             //uxarkuma PHP, vorn el grancuma ir hertin tvyalner@ SQLum, shat grakan stacvec :D
             user = JSON.stringify(user);
@@ -306,7 +309,7 @@ function SignUp(props){
             <div 
                 className = {classes.signupSecondDiv}>
             <TextField 
-                id="outlined-basic" 
+                id="outlined-basic1" 
                 label='First Name'
                 error = {!!error.firstname}
                 helperText={error.firstname}
@@ -321,7 +324,7 @@ function SignUp(props){
                         }}
             />
             <TextField 
-                id="outlined-basic" 
+                id="outlined-basic2" 
                 label='Last Name'
                 error = {!!error.lastname}
                 helperText={error.lastname}
@@ -340,7 +343,7 @@ function SignUp(props){
                 <br/>
                 <div className = {classes.signupSecondDiv}>
                 <TextField 
-                id="outlined-basic" 
+                id="outlined-basic3" 
                 label='Username'
                 error = {!!error.username}
                 helperText={error.username}
@@ -391,7 +394,7 @@ function SignUp(props){
             </div>
             <div>
             <TextField 
-            id="outlined-basic" 
+            id="outlined-basic4" 
             type='password'
             label='Security code'
             error = {!!error.admin}
@@ -430,7 +433,7 @@ function SignUp(props){
             </div>
             <div className={classes.signupForthDiv}>
             <TextField 
-            id="outlined-basic" 
+            id="outlined-basic5" 
             label='Email'
             error = {!!error.email}
             helperText={error.email}
@@ -449,7 +452,7 @@ function SignUp(props){
             </div>
             <div className = {classes.signupThirdDiv}>
             <TextField 
-            id="outlined-basic" 
+            id="outlined-basic6" 
             label='Password'
             error = {!!error.password}
             helperText={error.password}
@@ -466,7 +469,7 @@ function SignUp(props){
         />
         
         <TextField 
-            id="outlined-basic" 
+            id="outlined-basic7" 
             label='Confirm Password'
             error = {!!error.confirmpassword}
             helperText={error.confirmpassword}
