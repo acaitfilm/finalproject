@@ -73,6 +73,7 @@ function LogIn(props){
                         while(res.data.length){
                             arrOfUsers.push(res.data.splice(0,9))
                         }
+                        console.log(arrOfUsers);
                         setUsers(arrOfUsers);
                     }
                     )

@@ -65,7 +65,7 @@
     animation: fourthPic 45s infinite;
     background-position-x: -90px;
     background-position-y: -340px;
-    background-image: url('https://images.wallpaperscraft.ru/image/kino_kreativ_film_minimalizm_smki_proby_kadry_74358_2560x1080.jpg'); 
+    background-image: url('https://i.artfile.ru/2560x1600_913517_[www.ArtFile.ru].jpg'); 
     height: 500px;
 }
 
@@ -80,9 +80,9 @@
 .fifthPic{
     display: inline-block; 
     animation: fifthPic 45s infinite;
-    background-position-x: -90px;
-    background-position-y: -340px;
-    background-image: url('https://images.wallpaperscraft.ru/image/kino_kreativ_film_minimalizm_smki_proby_kadry_74358_2560x1080.jpg'); 
+    background-position-x: -0px;
+    background-position-y: -100px;
+    background-image: url('https://plus.lesoir.be/sites/default/files/dpistyles_v2/ena_16_9_extra_big/2018/04/23/node_152852/19724893/public/2018/04/23/B9715487326Z.1_20180423155233_000+GBJB5G48D.1-0.jpg?itok=fx6oUBA41545551240'); 
     height: 500px;
 }
 
