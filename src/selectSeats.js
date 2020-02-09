@@ -3,6 +3,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import axios from 'axios';
 import Footer from './footer';
+import './styles.css';
 import Header from './header';
 import Button from '@material-ui/core/Button';
 
@@ -27,6 +28,7 @@ function Seats(props){
     ]);
     const [currentRadio, setCurrentRadio] = useState(-1);
     useEffect(() => {
+        setCurrentRadio(-1);
         let seatsArr = [];
         for(let index = 50; index > 0; index--){
             seatsArr.push(index);
@@ -100,6 +102,9 @@ function Seats(props){
     if(currentRadio === -1){
         window.scrollTo( 500, 0 );
     }
+    const checkoutCompleted = () => {
+        props.history.replace('/checkoutcompleted')
+    }
     return (
         <>
         <Header 
@@ -108,6 +113,9 @@ function Seats(props){
             currentUser = {currentUser}
         />
         <div style = {{marginTop:'3%'}}>
+            <div style = {{textAlign:'center', marginLeft:'2%', fontWeight:'bold', fontSize:'190%', paddingBottom:'2.4%'}}>
+                Get your seats now
+            </div>
             <div style = {{marginLeft:'24.8%'}}>
             <FormControlLabel
                     disabled = {true}
@@ -151,20 +159,29 @@ function Seats(props){
                 ))
             }
         </div>
-        <div style = {{textAlign:'center', fontSize:'190%', marginTop:'4.5%',backgroundColor:'rgb(234, 65, 101)', color:'white', display:'inline-block',width:'47.5%',marginLeft:'25%',borderRadius:'10px', padding:'1.4% 0% 1.4% 0%', fontWeight:'bold'}}>
+        <div style = {{textAlign:'center', fontSize:'190%', marginTop:'4.5%',backgroundColor:'rgb(190, 65, 101)', color:'white', display:'inline-block',width:'47.5%',marginLeft:'25%',borderRadius:'10px', padding:'1.4% 0% 1.4% 0%', fontWeight:'bold'}}>
             Screen
         </div>
-        <div style = {{marginLeft:'42.5%',marginTop:'5.8%'}}>
+        {
+            currentRadio !== -1 ? 
+            <>
+            <div style = {{marginLeft:'30.2%',marginTop:'8%'}}>
             <Button 
                 id = 'checkout'
                 variant="contained" 
                 style = {currentRadio !== -1 ? {width:'200px',height:'67px', boxShadow:'0 0 0 0', backgroundColor:'rgb(234, 65, 101)', color:'white',borderRadius:'4px', fontSize:'140%', fontWeight:'bold'} : {width:'200px',height:'67px', boxShadow:'0 0 0 0', opacity:'0.67', backgroundColor:'rgb(189,189,189)', color:'white',borderRadius:'4px', fontSize:'140%', fontWeight:'bold'}}
-                onMouseOver = {() => changeCheckoutStyles(26)}
+                onMouseOver = {currentRadio !== -1 ? () => changeCheckoutStyles(26) : false}
                 onMouseOut = {() => changeCheckoutStyles(4)}
+                onClick = {() => checkoutCompleted()}
             >
                 Checkout
             </Button>
         </div>
+        <div style = {{display:'inline-block', fontSize:'250%', marginTop:'-3.8%',position:'absolute', marginLeft:'50%',fontWeight:'bold'}}>
+            {"Total:   " + userRequest[0][1]}
+        </div>
+            </> : false
+        }
       <Footer/>
         </>
     );

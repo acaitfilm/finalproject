@@ -48,6 +48,9 @@ function Header(props){
                 .catch(err => console.log(err));
     }
     const changeBlockStyle = (id, bgColor, color) => {
+        if(id === 'More Films' && color !== 'white'){
+            color = 'rgba(234, 65, 101)';
+        }
         document.getElementById(id).style.backgroundColor = bgColor;
         document.getElementById(id).style.color = color;
     }
@@ -57,14 +60,24 @@ function Header(props){
         document.getElementById(id).style.color = color;
         document.getElementById(id).style.backgroundColor = backGroundColor;
     }
+    const openFilmPage = (id, filmName) => {
+        localStorage.setItem('film',filmName);
+        props.replaceHistory('/filmpage');
+    }
+    const searchFilms = () => {
+        localStorage.setItem('searchValue',searchValue);
+        props.replaceHistory('/filmsearch');
+    }
     let filmsCount = 0;
-    const createFilmBlock = (filmName, filmGenre, filmDate, count) => {
+    const createFilmBlock = (filmName, filmGenre, filmDate, count, id) => {
         return <>
             <div 
+                key = {filmName}
                 id = {filmName}
                 onMouseOver = {() => changeBlockStyle(filmName, 'rgb(234, 65, 101)', 'white')}
                 onMouseOut = {() => changeBlockStyle(filmName, count % 2 === 0 ? 'rgb(241, 241, 241)' : 'rgb(246, 246, 246)', 'black')}
-                style = {filmsCount % 2 === 0 ? {backgroundColor:'rgba(241, 241, 241)', padding:'1% 4% 4% 4%', cursor:'pointer'} : {backgroundColor:'rgba(246, 246, 246)', padding:'1% 4% 4% 4%', cursor:'pointer'}}
+                style = {filmName === 'More Films' ? {backgroundColor:'rgba(241, 241, 241)', padding:'1% 4% 4% 4%', cursor:'pointer', color:'rgb(234, 65, 101)'} : filmsCount % 2 === 0 ? {backgroundColor:'rgba(241, 241, 241)', padding:'1% 4% 4% 4%', cursor:'pointer'} : {backgroundColor:'rgba(246, 246, 246)', padding:'1% 4% 4% 4%', cursor:'pointer'}}
+                onClick = {filmName !== 'More Films' ? () => openFilmPage(id, filmName) : () => searchFilms()}
             >
                 <ul style = {{listStyleType:'none', fontSize:'130%', marginLeft:'14%', fontWeight:'bold'}}
                 >
@@ -78,7 +91,7 @@ function Header(props){
                         {filmDate}
                     </li>
                     <li style = {{float:'left', width:'20%'}}>
-                        See more
+                        {filmGenre ? 'See more' : false}
                     </li>
                 </ul>
             </div>
@@ -121,13 +134,16 @@ function Header(props){
                 >
                     <InputBase
                         id = 'searchfield'
-                        type = 'search'
+                        type = 'text'
                         className={classes.headerInput}
                         placeholder="Search For Movies"
                         style = {{color:'rgba(234, 65, 101)', fontSize:'115%'}}
                         onChange = {(event) => searchValueUpdater(event)}
                         value = {searchValue}
                     />
+                    <IconButton type="submit" onClick = {searchFilms} className={classes.iconButton} aria-label="search">
+                        <SearchIcon fontSize = 'large' style = {{color:'rgba(234, 65, 101)'}}/>
+                    </IconButton>
                 </div>
                 {
                     localStorage.getItem('username') ? <Fragment>
@@ -213,10 +229,13 @@ function Header(props){
                 >
                     {
                         currentFilms.map(function(film, index){
-                            if((film[1].match(searchValue) || film[2].match(searchValue) || film[3].match(searchValue)) && checkFilms < 6){
+                            if((film[1].match(searchValue) || film[2].match(searchValue) || film[3].match(searchValue)) && checkFilms <= 5){
                                 checkFilms++;
                                 filmsCount++;
-                                return createFilmBlock(film[1],film[2],film[3],filmsCount);
+                                if(checkFilms === 6){
+                                    return createFilmBlock('More Films','','',filmsCount);
+                                }
+                                return createFilmBlock(film[1],film[2],film[3],filmsCount,film[0]);
                             }else if(index === currentFilms.length - 1 && !checkFilms){
                                 return nothingFound();
                             }

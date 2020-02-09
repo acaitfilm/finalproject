@@ -12,18 +12,21 @@ function Film(props){
             className = {classes.filmBlockMainDiv}
         >
             <div
+                className = {classes.filmBlockClockHolder} 
+                style = {{marginTop:'9%'}}
+            >
+                <span className = {classes.filmBlockTitleHolder} 
+                    style = {{marginLeft:'-36.6%',position:'absolute', marginTop:'-5%',textAlign:'left',fontSize:'160%'}}
+                >
+                    {props.name + ' (' + props.type + ')'}
+                </span>
+                <span style = {{marginLeft:'30%', position:'absolute', marginTop:'-4.2%',fontWeight:'bold'}}>
+                    {props.hours}
+                </span>
+            </div>
+            <div
                 className = {classes.filmBlockBlockHolder} 
             >
-                <div
-                    className = {classes.filmBlockClockHolder} 
-                >
-                    {props.hours}
-                </div>
-                <div
-                    className = {classes.filmBlockTitleHolder} 
-                >
-                    {props.name}
-                </div>
                 <div 
                     className = {classes.filmBlockImageHolder}
                 >
@@ -48,7 +51,7 @@ function Film(props){
                         {props.description}
                     </div>
                 </div>
-                <div style = {{position:'absolute', marginTop:'4.8%', marginLeft:'5%', fontSize:'170%', fontWeight:'bold', textAlign:'center', color:'rgba(234, 65, 101', width:'19.2%'}}>
+                <div style = {{position:'absolute', marginTop:'4.8%', marginLeft:'5%', fontSize:'190%', fontWeight:'bold', textAlign:'center', color:'rgba(234, 65, 101', width:'19.2%'}}>
                         {props.genre}
                 </div>
                 <div onClick = {() => getSeats()} className = {classes.mainBookBuyBtns}>

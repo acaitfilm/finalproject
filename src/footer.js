@@ -27,7 +27,7 @@ function Footer(props){
         >
             <div
                 className = {classes.footerMainDiv}
-                style = {{marginTop:'7%'}}
+                style = {props.paddingBottomNoNeed ? {marginTop:'0%'} : {marginTop:'7%'}}
             >
                 <div 
                     onClick = {backToTop}
@@ -64,7 +64,7 @@ function Footer(props){
                         </li>
                     </ul>
                 </div>
-                <div style = {{position:'absolute',width:'50%', marginLeft:'23.7%', color:'rgb(150,150,150)', marginTop:'11%'}}>
+                <div style = {{position:'absolute',width:'70%', marginLeft:'17.7%', color:'rgb(150,150,150)', marginTop:'11%'}}>
                     <ul style = {{listStyleType:'none', width: '100%', margin: 'auto', fontSize:'110%'}}>
                         <li style = {{float:'left', paddingLeft:'16%'}}>
                             <span className = {classes.footerLanguages}>
