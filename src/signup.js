@@ -403,7 +403,7 @@ function SignUp(props){
             variant='outlined'
             size = 'medium'
             onChange = {(event) => adminPasswordUpdater(event)}
-            style = {person !== 'Admin' ? {display:'none'} : {marginLeft:'33.5%', marginTop:'1.5%', width:'33.7%'}}
+            style = {person !== 'Admin' ? {display:'none'} : {marginLeft:'60%', marginTop:'1.5%', width:'30%'}}
             InputProps={{
                 classes: {
                     notchedOutline: classes.notchedOutline

@@ -35,7 +35,7 @@ function Header(props){
     const updateFilms = () => {
         let formData = new FormData();
         formData.append("filmsGet", 1);
-            const url = `http://127.0.0.1/index.php`;
+            const url = `http://localhost/index.php`;
             axios.post(url,formData)
                 .then(
                 function(res){
@@ -141,7 +141,7 @@ function Header(props){
                             />
                                 <span    
                                     className = {classes.headerUsernameText}
-                                    onClick = {() => props.replaceHistory('/user')}
+                                    onClick = {() => {props.currentUser[7]==='User'?props.replaceHistory('/user'):props.replaceHistory('/admin')}}
                                 >
                                     {localStorage.getItem('username')}
                                 </span>
