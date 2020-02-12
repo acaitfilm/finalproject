@@ -203,7 +203,7 @@ const styles = makeStyles(theme => ({
     mainBookBuyBtns:{
         position:'absolute', 
         marginLeft:'43%', 
-        marginTop:'40.6%', 
+        marginTop:'38.6%', 
         padding:'0.7%',
         fontSize:'145%',
         cursor:'pointer',
@@ -214,16 +214,16 @@ const styles = makeStyles(theme => ({
         }
     },
     filmBlockMainDiv:{
-        padding:'0% 4% 4% 4%'
+        padding:'2% 0% 5% 0%',
     },
     filmBlockBlockHolder:{
-        borderTop:'11px solid rgba(234, 65, 101)', 
-        borderBottom:'11px solid rgba(234, 65, 101)', 
-        marginTop:'5%', 
+        borderTop:'6px solid rgba(234, 65, 101)', 
+        //borderBottom:'11px solid rgba(234, 65, 101)',
+        marginTop:'1.7%', 
         borderRadius:'8px', 
-        padding:'3.7% 3% 3% 3%', 
+        padding:'0% 2% 2% 2%', 
         background:'linear-gradient(rgb(240,240,240), rgb(252,252,252))', 
-        paddingBottom:'50.6%',
+        paddingBottom:'44.6%',
         boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
     },
     filmBlockClockHolder:{
@@ -256,10 +256,12 @@ const styles = makeStyles(theme => ({
     },
     filmBlockDescriptionHolder:{
         textAlign:'center', 
-        paddingBottom:'5%'
+        paddingBottom:'5%',
     },
     filmBlockDescriptionTextHolder:{
-        lineHeight:'150%'
+        lineHeight:'150%',
+        fontSize:'135%',
+        width:'116%'
     },
     filmBlockGenreHolder:{
         position:'absolute', 

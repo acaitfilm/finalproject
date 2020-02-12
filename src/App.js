@@ -3,6 +3,10 @@ import SignUp from './signup';
 import LogIn from './login';
 import Main from './main';
 import Seats from './selectSeats';
+import CheckoutCompleted from './checkoutCompleted';
+import FilmPage from './filmPage';
+import NotFound from './notFound';
+import FilmSearch from './filmSearch';
 import {
   Redirect,
   BrowserRouter as Router,
@@ -20,6 +24,10 @@ function App(){
           <Route path = "/getseats" component = {Seats} />
           <Route path = "/login" component = {LogIn} />
           <Route path = "/main" component = {Main} />
+          <Route path = "/checkoutcompleted" component = {CheckoutCompleted} />
+          <Route path = "/filmpage" component = {FilmPage} />
+          <Route path = '/filmsearch' component = {FilmSearch}/>
+          <Route component={NotFound}/>
         </Switch>
     </Router>
     </>
