@@ -4,8 +4,23 @@ import Button from '@material-ui/core/Button';
 
 function Film(props){
     const classes = styles();
-    const getSeats = () => {
+    const getSeats = (action) => {
+        if(!localStorage.getItem("username")){
+            props.props.history.replace('/login');
+        }
+        let jsonReq = JSON.stringify(createRequest(action));
+        localStorage.setItem('currentRequest',jsonReq);
         props.props.history.replace('/getseats');
+    }
+    const createRequest = (action) => {
+        let reqObj = {
+            filmname: props.name,
+            filmdate: props.date,
+            filmtime: props.hours,
+            action: action,
+            filmcost: props.cost
+        }
+        return reqObj;
     }
     return(
         <div 
@@ -16,7 +31,7 @@ function Film(props){
                 style = {{marginTop:'9%'}}
             >
                 <span className = {classes.filmBlockTitleHolder} 
-                    style = {{marginLeft:'-36.6%',position:'absolute', marginTop:'-5%',textAlign:'left',fontSize:'160%'}}
+                    style = {{marginLeft:'-37.2%',position:'absolute', marginTop:'-5%',textAlign:'left',fontSize:'160%'}}
                 >
                     {props.name + ' (' + props.type + ')'}
                 </span>
@@ -54,10 +69,10 @@ function Film(props){
                 <div style = {{position:'absolute', marginTop:'4.8%', marginLeft:'5%', fontSize:'190%', fontWeight:'bold', textAlign:'center', color:'rgba(234, 65, 101', width:'19.2%'}}>
                         {props.genre}
                 </div>
-                <div onClick = {() => getSeats()} className = {classes.mainBookBuyBtns}>
+                <div onClick = {() => getSeats("Sold")} className = {classes.mainBookBuyBtns}>
                         Buy ticket
                 </div>
-                <div onClick = {() => getSeats()} className = {classes.mainBookBuyBtns} style = {{marginLeft:' 63%'}}>
+                <div onClick = {() => getSeats("Booked")} className = {classes.mainBookBuyBtns} style = {{marginLeft:' 63%'}}>
                         Book ticket
                 </div>
             </div>

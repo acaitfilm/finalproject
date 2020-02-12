@@ -9,23 +9,9 @@ import Button from '@material-ui/core/Button';
 
 function Seats(props){
     const [currentUser, setCurrentUser] = useState([]);
+    const [changeStateSpeed, setChangeStateSpeed] = useState(10);
     const [seats, setSeats] = useState([]);
-    const [userRequest, setUserRequest] = useState([
-        ['Fast and Furious', '5.99$', 'Sold', '12/12/2020', 20],
-        ['Fast and Furious', '5.99$',  'Booked', '12/12/2020', 1],
-        ['Fast and Furious', '5.99$',  'Sold', '12/12/2020', 3],
-        ['Fast and Furious', '5.99$',  'Sold', '12/12/2020', 16],
-        ['Fast and Furious', '5.99$',  'Booked', '12/12/2020', 23],
-        ['Fast and Furious', '5.99$',  'Sold', '12/12/2020', 8],
-        ['Fast and Furious', '5.99$',  'Sold', '12/12/2020', 19],
-        ['Fast and Furious', '5.99$',  'Booked', '12/12/2020', 24],
-        ['Fast and Furious', '5.99$',  'Sold', '12/12/2020', 22],
-        ['Fast and Furious', '5.99$',  'Sold', '12/12/2020', 12],
-        ['Fast and Furious', '5.99$',  'Sold', '12/12/2020', 7],
-        ['Fast and Furious', '5.99$',  'Sold', '12/12/2020', 5],
-        ['Fast and Furious', '5.99$',  'Booked', '12/12/2020', 14],
-        ['Fast and Furious', '5.99$',  'Booked', '12/12/2020', 33],
-    ]);
+    const [userRequest, setUserRequest] = useState([]);
     const [currentRadio, setCurrentRadio] = useState(-1);
     useEffect(() => {
         setCurrentRadio(-1);
@@ -37,13 +23,12 @@ function Seats(props){
         if(localStorage.getItem('username')){
             updateUsers();
         }
-        document.title = 'Sign Up now!';
+        document.title = 'Get your seats now!';
     },[]);
     const updateCurrentRadio = (item) => {
-        console.log(currentRadio);
         let radioValue = -1, isFree = true;
         for(let index = 0; index < userRequest.length; index++){
-            if(userRequest[index][4] === item){
+            if(parseInt(userRequest[index][5]) === item){
                 isFree = false;
                 break;
             }
@@ -55,21 +40,30 @@ function Seats(props){
             setCurrentRadio(radioValue);
         }
     }
+    const renderManually = () => {
+        setChangeStateSpeed(changeStateSpeed + 10 * changeStateSpeed);
+    }
+    setTimeout(renderManually,changeStateSpeed);
     const updateUsers = () => {
         let formData = new FormData();
-        formData.append("userGet", 1);
+        formData.append("userRequestInfo", 1);
             const url = `http://127.0.0.1/index.php`;
             axios.post(url,formData)
                 .then(
                 function(res){
-                    let arrOfUsers = [];
+                    let arrOfRequests = [];
                     while(res.data.length){
-                        arrOfUsers.push(res.data.splice(0,9));
+                        arrOfRequests.push(res.data.splice(0,7));
                     }
-                    arrOfUsers.map(array => {
-                        if(array[3] === localStorage.getItem('username')){
-                            setCurrentUser(array);
+                    let currFilm = localStorage.getItem('currentRequest');
+                    currFilm = JSON.parse(currFilm);
+                    let currentFilmRequests = [];
+                    arrOfRequests.map(array => {
+                        if(array[1] === currFilm.filmname){
+                            currentFilmRequests.push(array);
                         }
+                        console.log(currentFilmRequests);
+                        setUserRequest(currentFilmRequests);
                         return true;
                     });
                 }
@@ -79,9 +73,9 @@ function Seats(props){
     const checkIsSold = (checkItem) => {
         let requestStatus = 'Free';
         for(let index = 0; index < userRequest.length; index++){
-            if(userRequest[index][2] === 'Sold' && checkItem === userRequest[index][4]){
+            if(userRequest[index][6] === 'Sold' && checkItem === parseInt(userRequest[index][5])){
                 requestStatus = 'Sold';
-            }else if(userRequest[index][2] === 'Booked' && checkItem === userRequest[index][4]){
+            }else if(userRequest[index][6] === 'Booked' && checkItem === parseInt(userRequest[index][5])){
                 requestStatus = 'Booked';
             }
         }
@@ -103,8 +97,32 @@ function Seats(props){
         window.scrollTo( 500, 0 );
     }
     const checkoutCompleted = () => {
+        let reqVal = localStorage.getItem('currentRequest');
+        reqVal = JSON.parse(reqVal);
+        let currentRequest = [
+            userRequest.length,
+            reqVal.filmname,
+            reqVal.filmdate,
+            reqVal.filmtime,
+            reqVal.filmcost,
+            parseInt(currentRadio),
+            reqVal.action,
+            localStorage.getItem('username'),
+        ];
+        currentRequest = JSON.stringify(currentRequest);
+            let formData = new FormData();
+            formData.append("userRequest", currentRequest);
+            const url = `http://127.0.0.1/index.php`;
+            axios.post(url,formData)
+                .then(
+                function(res){
+                    console.log(res);
+                }
+                )
+                .catch(err => console.log(err));
         props.history.replace('/checkoutcompleted')
     }
+    console.log(userRequest);
     return (
         <>
         <Header 
@@ -165,7 +183,7 @@ function Seats(props){
         {
             currentRadio !== -1 ? 
             <>
-            <div style = {{marginLeft:'30.2%',marginTop:'8%'}}>
+            <div style = {{marginLeft:'32%',marginTop:'8%'}}>
             <Button 
                 id = 'checkout'
                 variant="contained" 
@@ -177,8 +195,8 @@ function Seats(props){
                 Checkout
             </Button>
         </div>
-        <div style = {{display:'inline-block', fontSize:'250%', marginTop:'-3.8%',position:'absolute', marginLeft:'50%',fontWeight:'bold'}}>
-            {"Total:   " + userRequest[0][1]}
+        <div style = {{display:'inline-block', fontSize:'250%', marginTop:'-3.8%',position:'absolute', marginLeft:'52%',fontWeight:'bold'}}>
+            {"Total:   " + userRequest[0][4]}
         </div>
             </> : false
         }

@@ -86,7 +86,7 @@ function FilmPage(props){
             />
             <div style = {{marginTop:'4%', paddingBottom:'50%'}}>
                 <div style = {{marginLeft:'12.6%', fontSize:'220%', fontWeight:'bold', color:'rgb(234, 65, 101)', fontFamily:'Arial'}}>
-                    {'Fast and Furious ' + '(Action)'}
+                    {'Fast and Furious' + ' (Action)'}
                 </div>
                 <div style = {{position:'absolute', marginLeft:'12.8%', marginTop:'4%'}}>
                     <img 
