@@ -5,6 +5,10 @@ import Main from './main';
 import User from './users';
 import Seats from './selectSeats';
 import Admin from './admin';
+import CheckoutCompleted from './checkoutCompleted';
+import FilmPage from './filmPage';
+import NotFound from './notFound';
+import FilmSearch from './filmSearch';
 import {
   Redirect,
   BrowserRouter as Router,
@@ -22,9 +26,16 @@ function App(){
           <Route path = "/getseats" component = {Seats} />
           <Route path = "/login" component = {LogIn} />
           <Route path = "/main" component = {Main} />
+<<<<<<< HEAD
           <Route path = "/user" component = {User}/>
           <Route path = "/admin" component = {Admin}/>
          
+=======
+          <Route path = "/checkoutcompleted" component = {CheckoutCompleted} />
+          <Route path = "/filmpage" component = {FilmPage} />
+          <Route path = '/filmsearch' component = {FilmSearch}/>
+          <Route component={NotFound}/>
+>>>>>>> master
         </Switch>
     </Router>
     </>
