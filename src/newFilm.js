@@ -6,22 +6,13 @@ import Button from '@material-ui/core/Button';
 import TextField from "@material-ui/core/TextField";
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import MuiPhoneNumber from "material-ui-phone-number";
-import FormGroup from '@material-ui/core/FormGroup';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
-import IconButton from '@material-ui/core/IconButton';
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
-import DateFnsUtils from '@date-io/date-fns';
-import {
-    MuiPickersUtilsProvider,
-    KeyboardDatePicker,
-  } from '@material-ui/pickers';
-import Input from '@material-ui/core/Input';
-import InputAdornment from '@material-ui/core/InputAdornment';
+
+
 
 export default function NewFilm(props){
-  
+ 
     const [nameEng,setNameEng] = useState('');
     const [nameArm,setNameArm] = useState('');
     const [nameRus,setNameRus] = useState('');
@@ -45,33 +36,48 @@ export default function NewFilm(props){
     const [producerRus,setProducerRus] = useState('');
     const [language,setLanguage] = useState('English');
     const [error, setError] = useState({});
-    const [newFilms,setNewFilms] = useState([]);
+    const [filmsEng,setFilmsEng] = useState([]);
+    const [filmsArm,setFilmsArm] = useState([]);
+    const [filmsRus,setFilmsRus] = useState([]);
 
     const y = (new Date()).getFullYear();
     const years = Array.from(new Array(20),(val, index) => y-index);
-    console.log(typeof years[0]);
+
     
-    /*useEffect(()=>{
+    useEffect(()=>{
         getNewFilms();
-    },[])
+    },[]);
+
      const getNewFilms= () =>{
         let formData = new FormData();
-        formData.append("newFilmsGet", 1);
+        formData.append("filmsGet", 1);
             const url = `http://localhost/index.php`;
             axios.post(url,formData)
                 .then(
                 function(res){
-                    let arrFilms = [];
-                    while(res.data.length){
-                        arrFilms.push(res.data.splice(0,9));
+                    let arrEng = [];
+                    let arrArm = [];
+                    let arrRus = [];
+                    while(res.data[0].length){
+                        arrEng.push(res.data[0].splice(0,9));
                     }
-                    setNewFilms(arrFilms);   
+                    while(res.data[1].length){
+                        arrArm.push(res.data[1].splice(0,9));
+                    }
+                    while(res.data[2].length){
+                        arrRus.push(res.data[2].splice(0,9));
+                    }
+                    setFilmsEng(arrEng);   
+                    setFilmsArm(arrArm);   
+                    setFilmsRus(arrRus);  
                 }
                 )
                 .catch(err => console.log(err));
         
     }
-    */
+    //console.log(filmsEng); 
+    //console.log(filmsArm); 
+    //console.log(filmsRus); 
     const nameEngValidation=(event)=>{
         let value = event.target.value;
         if( (!/^[A-Za-z0-9 ]+$/.test(value) && value!=='') ||value.length>30){
@@ -110,7 +116,7 @@ export default function NewFilm(props){
       }
       const descEngValidation =(event)=>{
           let value=event.target.value;
-          if((!/^[A-Za-z0-9\._,\- ]+$/.test(value) && value!=='') ||value.length>300){
+          if((!/^[A-Za-z0-9\._,\- ]+$/.test(value) && value!=='') ||value.length>400){
               return;
           }
           let str = '';
@@ -122,7 +128,7 @@ export default function NewFilm(props){
       }
       const descArmValidation =(event)=>{
         let value=event.target.value;
-        if(value.length>300){
+        if(value.length>400){
             return;
         }
         let str = '';
@@ -134,7 +140,7 @@ export default function NewFilm(props){
     }
     const descRusValidation =(event)=>{
         let value=event.target.value;
-        if((!/^[а-яА-ЯЁё0-9,\—\.\«\»\- ]+$/.test(value) && value !== '') ||value.length>300){
+        if((!/^[а-яА-ЯЁё0-9,\—\.\«\»\- ]+$/.test(value) && value !== '') ||value.length>400){
             return;
         }
         let str = '';
@@ -145,40 +151,13 @@ export default function NewFilm(props){
 
     }
     const genreEngValidation=(event)=>{
-        let value = event.target.value;
-        if( (!/^[A-Za-z, ]+$/.test(value) && value!=='') ||value.length>40){
-            return;
-        }
-        
-        let str = '';
-        if(value.length){
-            str = (value[0].toUpperCase() + value.slice(1))
-        }
-        setGenreEng(str);
+        setGenreEng(event.target.value);
     }
     const genreArmValidation=(event)=>{
-        let value = event.target.value;
-        if( value.length>40){
-            return;
-        }
-        
-        let str = '';
-        if(value.length){
-            str = (value[0].toUpperCase() + value.slice(1))
-        }
-        setGenreArm(str);
+        setGenreArm(event.target.value);
     }
     const genreRusValidation=(event)=>{
-        let value = event.target.value;
-        if( (!/^[а-яА-ЯЁё0-9,. ]+$/.test(value) && value!=='') ||value.length>40){
-            return;
-        }
-        
-        let str = '';
-        if(value.length){
-            str = (value[0].toUpperCase() + value.slice(1))
-        }
-        setGenreRus(str);
+        setGenreRus(event.target.value);
     }
     const countryEngValidation=(event)=>{
         let value = event.target.value;
@@ -269,7 +248,7 @@ export default function NewFilm(props){
         if(value.length>50){
             return;
         }
-        
+
         let str = '';
         if(value.length){
             str = (value[0].toUpperCase() + value.slice(1))
@@ -303,39 +282,79 @@ export default function NewFilm(props){
         return localStorage.getItem('currentfilmId');
     }
       const handleLoadEnglish = ()=>{
-
-        let id = localStorage.getItem('currentfilmId');
+            let errorCheck = false;
+            //stuguma ka tenc anunov film arden bazayum, te che
+            let hasFilm1 = false;
+            let hasFilm2 = false;
+            let hasFilm3 = false;
+            filmsEng.map((arr) => {
+                if(arr[1] === nameEng){
+                    hasFilm1 = true;
+                   
+                }
+                return true;
+            
+            });
+            filmsArm.map((arr) => {
+                if(arr[1] === nameArm){
+                    hasFilm2 = true;
+                    
+               }
+                return true;
+            
+            });
+            filmsRus.map((arr) => {
+                if(arr[1] === nameRus){
+                    hasFilm3 = true;
+                
+                }
+                return true;
+            
+            });
+            if(hasFilm1 || hasFilm2 || hasFilm3){
+                errorCheck = true;
+                error.nameEng = 'Film  already exists.';
+                error.nameArm = 'Ֆիլմն արդեն գոյություն ունի:';
+                error.nameRus = 'Фильм уже существует.';
+            }else{
+                error.nameEng = '';
+                error.nameArm = '';
+                error.nameRus = '';
+            }
+    
+            if(!errorCheck){
+            let id = localStorage.getItem('currentfilmId');
         
-        let films = [
-                [id,
-                nameEng,
-                link,
-                descEng,
-                genreEng,
-                year,
-                countryEng,
-                actorsEng,
-                producerEng],
-                [   id,
-                    nameArm,
+            let films = [
+                    [id,
+                    nameEng,
                     link,
-                    descArm,
-                    genreArm,
+                    descEng,
+                    genreEng,
                     year,
-                    countryArm,
-                    actorsArm,
-                    producerArm],
-                    [
-                        id,
-                        nameRus,
+                    countryEng,
+                    actorsEng,
+                    producerEng],
+                    [   id,
+                        nameArm,
                         link,
-                        descRus,
-                        genreRus,
+                        descArm,
+                        genreArm,
                         year,
-                        countryRus,
-                        actorsRus,
-                        producerRus 
-                    ]
+                        countryArm,
+                        actorsArm,
+                        producerArm],
+                        [
+                            id,
+                            nameRus,
+                            link,
+                            descRus,
+                            genreRus,
+                            year,
+                            countryRus,
+                            actorsRus,
+                            producerRus 
+                        ]
         ];
         idGenerator();
         films = JSON.stringify(films);
@@ -350,33 +369,12 @@ export default function NewFilm(props){
                 }
                 )
                 .catch(err => console.log(err));
-           
-           
-          /*
-            let errorCheck =false;
-            //validation...
-            if(date.getMonth() <= new Date().getMonth()){
-                error.date = 'You need to enter a movie date only a month later!';
-                errorCheck = true;
+                
+                //mtacum em load ic heto kareliya inch vor success i het kapvac ban cuyc tal animaciayov mi erku vayrkyan gri kam image
+
+                setNameEng(''); setNameArm(''); setNameRus(''); setLink('');setDescEng('');setDescArm('');setDescRus('');setGenreEng('');setGenreArm('');setGenreRus('');setYear('');setCountryEng('');setCountryArm('');setCountryRus('');setActorsEng('');setActorsArm('');setActorsRus('');setProducerEng('');setProducerArm('');setProducerRus('');
             }
-            else{
-                error.date = '';
-            }
-            
-            if(end[0] === 0 && start[0] === 0){
-                if(end[1]-start[1]<=0){
-                    error.start = 'Film start time must be earlier than end time!';
-                    error.end = 'Film end time must be later than start time!'
-                    errorCheck = true;
-                }
-                else{
-                    error.start = '';
-                    error.end = '';
-                }
-            }
-            else
-            if()
-            */
+         
 
       }
       const classes=styles();
@@ -430,7 +428,6 @@ export default function NewFilm(props){
                         style={{marginTop:'15px',marginLeft:'15px',width:'200px'}}
                         />
                     }
-                    
                     <TextField
                         id="outlined-multiline"
                         label={language === 'English'? 'Description': language === 'Armenian' ?'Նկարագրություն':'Oписание'}
@@ -444,16 +441,36 @@ export default function NewFilm(props){
                         onChange={language ==='English'?descEngValidation:language ==='Armenian'? descArmValidation: descRusValidation}
                         style={{marginTop:'15px',marginLeft:'15px',width:'400px'}}
                         />
-                            <TextField
-                            margin="dense"
-                            id="genre"
-                            label={language === 'English'? 'Genre': language === 'Armenian' ? 'Ժանր':'Жанр'}
-                            error = {language==='English'?!!error.genreEng:language==='Armenian'?!!error.genreArm:!!error.genreRus}
-                            helperText={language==='English'?error.genreEng:language==='Armenian'?error.genreArm:error.genreRus}
+                        <InputLabel id="demo-controlled-open-select-label"
+                            style={{marginLeft:'15px',marginTop:'15px'}}
+                        >
+                            {language==='English'?'Genre':language==='Armenian'?'Ժանր':'Жанр'}
+                        </InputLabel>
+                        <Select
+                            style={{marginTop:'15px',marginLeft:'15px',width:'200px'}}
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
                             value={language ==='English'?genreEng:language ==='Armenian'? genreArm : genreRus}
                             onChange={language ==='English'?genreEngValidation:language ==='Armenian'? genreArmValidation : genreRusValidation}
-                            style={{marginTop:'15px',marginLeft:'15px',width:'200px'}}
-                    />
+                            color='secondary'
+                        >
+                            <MenuItem value={language === 'English'?'Action':language ==='Armenian'?'Էքշն':'Боевик'}>{language ==='English'?'Action':language === 'Armenian'?'Էքշն':'Боевик'}</MenuItem>
+                            <MenuItem value={language === 'English'?'Adventure':language ==='Armenian'?'Արկածային':'Приключение'}>{language ==='English'?'Adventure':language === 'Armenian'?'Արկածային':'Приключение'}</MenuItem>
+                            <MenuItem value={language === 'English'?'Biography':language ==='Armenian'?'Կենսագրական':'Биография'}>{language ==='English'?'Biography':language === 'Armenian'?'Կենսագրական':'Биография'}</MenuItem>
+                            <MenuItem value={language === 'English'?'Comedy':language ==='Armenian'?'Կատակերգություն':'Комедия'}>{language ==='English'?'Comedy':language === 'Armenian'?'Կատակերգություն':'Комедия'}</MenuItem>
+                            <MenuItem value={language === 'English'?'Criminal':language ==='Armenian'?'Կրիմինալ':'Криминальный'}>{language ==='English'?'Criminal':language === 'Armenian'?'Կրիմինալ':'Криминальный'}</MenuItem>
+                            <MenuItem value={language === 'English'?'Drama':language ==='Armenian'?'Դրամա':'Драма'}>{language==='English'?'Drama':language === 'Armenian'?'Դրամա':'Драма'}</MenuItem>
+                            <MenuItem value={language === 'English'?'Family':language ==='Armenian'?'Ընտանեկան':'Семейный'}>{language ==='English'?'Family':language === 'Armenian'?'Ընտանեկան':'Семейный'}</MenuItem>
+                            <MenuItem value={language === 'English'?'Fantasy':language ==='Armenian'?'Ֆանտաստիկա':'Фантастика'}>{language ==='English'?'Fantasy':language === 'Armenian'?'Ֆանտաստիկա':'Фантастика'}</MenuItem>
+                            <MenuItem value={language === 'English'?'History':language ==='Armenian'?'Պատմական':'Исторический'}>{language ==='English'?'History':language === 'Armenian'?'Պատմական':'Исторический'}</MenuItem>
+                            <MenuItem value={language === 'English'?'Horror':language ==='Armenian'?'Սարսափ':'Фильм ужасов'}>{language ==='English'?'Horror':language === 'Armenian'?'Սարսափ':'Фильм ужасов'}</MenuItem>
+                            <MenuItem value={language === 'English'?'Musical':language ==='Armenian'?'Երաժշտական':'Mузыкальный'}>{language ==='English'?'Musical':language === 'Armenian'?'Երաժշտական':'Mузыкальный'}</MenuItem>
+                            <MenuItem value={language === 'English'?'Mystery':language ==='Armenian'?'Առեղծվածային':'Mистический'}>{language ==='English'?'Mystery':language === 'Armenian'?'Առեղծվածային':'Mистический'}</MenuItem>
+                            <MenuItem value={language === 'English'?'Sport':language ==='Armenian'?'Սպորտային':'Спортивный'}>{language ==='English'?'Sport':language === 'Armenian'?'Սպորտային':'Спортивный'}</MenuItem>
+                            <MenuItem value={language === 'English'?'Thriller':language ==='Armenian'?'Թրիլլեր':'Триллер'}>{language ==='English'?'Thriller':language === 'Armenian'?'Թրիլլեր':'Триллер'}</MenuItem>
+                            <MenuItem value={language === 'English'?'Sci-Fi':language ==='Armenian'?'Գիտաֆանտաստիկա':'Научная фантастика'}>{language ==='English'?'Sci-Fi':language === 'Armenian'?'Գիտաֆանտաստիկա':'Научная фантастика'}</MenuItem>
+                            <MenuItem value={language === 'English'?'Western':language ==='Armenian'?'Վեստերն':'Вестерн'}>{language ==='English'?'Western':language==='Armenian'?'Վեստերն':'Вестерн'}</MenuItem>
+                        </Select>
                 {language==='English' &&
                     <>
                     <InputLabel id="demo-controlled-open-select-label"
@@ -522,7 +539,7 @@ export default function NewFilm(props){
         <Button 
             id='cancel'
             
-            onClick={()=>{ setNameEng(''); setNameArm(''); setNameRus(''); setLink('');setDescEng('');setDescArm('');setDescRus('');setGenreEng('');setGenreArm('');setGenreRus('');setYear('');setCountryEng('');setCountryArm('');setCountryRus('');setActorsEng('');setActorsArm('');setActorsRus('');setProducerEng('');setProducerArm('');setProducerRus('')}} 
+            onClick={()=>{ setNameEng(''); setNameArm(''); setNameRus(''); setLink('');setDescEng('');setDescArm('');setDescRus('');setGenreEng('');setGenreArm('');setGenreRus('');setYear('');setCountryEng('');setCountryArm('');setCountryRus('');setActorsEng('');setActorsArm('');setActorsRus('');setProducerEng('');setProducerArm('');setProducerRus('');error.nameEng='';error.nameArm='';error.nameRus='';}} 
             color="primary"
             onMouseOver = {() => props.visualChange('cancel','rgba(234, 65, 101)', 'rgba(246, 246, 246)')}
             onMouseOut = {() => props.visualChange('cancel','white','rgba(234, 65, 101)')}

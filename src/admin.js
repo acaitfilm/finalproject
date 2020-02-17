@@ -11,20 +11,11 @@ import TextField from "@material-ui/core/TextField";
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import MuiPhoneNumber from "material-ui-phone-number";
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
 import IconButton from '@material-ui/core/IconButton';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
-import DateFnsUtils from '@date-io/date-fns';
-import {
-    MuiPickersUtilsProvider,
-    KeyboardDatePicker,
-  } from '@material-ui/pickers';
-import Input from '@material-ui/core/Input';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import Delete from './delete';
-//import { setYear } from 'date-fns';
+import ChangePW from './changePass';
+import AddFilm from './addFilm';
 
 export default function Admin(props){
     const [currentAdmin,setCurrentAdmin] = useState([]);
@@ -32,6 +23,7 @@ export default function Admin(props){
     const [adminPic,setAdminPic] = useState(null);
     const [showEdit,setShowEdit] = useState(false);
     const [showDelete,setShowDelete] = useState(false);
+    const [showChange,setShowChange] = useState(false);
     const [showImportData,setShowImportData] = useState(true);
     const [showAddFields,setShowAddFields] = useState(false);
     const [error, setError] = useState({});
@@ -40,22 +32,11 @@ export default function Admin(props){
     const [username, setUsername] = useState(currentAdmin[3]);
     const [email, setEmail] = useState(currentAdmin[4]);
     const [phone, setPhone] = useState(currentAdmin[5]);
-    const [password, setPassword] = useState(currentAdmin[8]);
+    //const [password, setPassword] = useState(currentAdmin[8]);
     const [gender, setGender] = useState(currentAdmin[6]);
     
-    const [newFilms,setNewFilms] = useState([]);
     
-    const [addName,setAddName] = useState('');
-    const [date, setDate] = useState(null);
-    const [start,setStart] = useState('');
-    const [end,setEnd] = useState('');
-    const [bookPriceEng,setBookPriceEng] = useState('');
-    const [buyPriceEng,setBuyPriceEng] = useState('');
-    const [bookPriceArm,setBookPriceArm] = useState('');
-    const [buyPriceArm,setBuyPriceArm] = useState('');
-    const [bookPriceRus,setBookPriceRus] = useState('');
-    const [buyPriceRus,setBuyPriceRus] = useState('');
-    const [type,setType] = useState('');
+ 
     
     useEffect(() => {
         updateUsers(); 
@@ -108,6 +89,9 @@ export default function Admin(props){
     const onDeleteClose = () =>{
         setShowDelete(false);
     }
+    const onChangeClose = () =>{
+        setShowChange(false);
+    }
     const firstnameUpdater = (event) => {
         //firstname u lastname dashterum toxnuma menak tarer grel
         if(!(/^[a-zA-Z]+$/.test(event.target.value)) && event.target.value !== ''){
@@ -153,15 +137,7 @@ export default function Admin(props){
         return symbols.test(name);
     }
     
-    const validatePassword = password => {
-        if(password.match(/[a-z]/g) && password.match( 
-            /[A-Z]/g) && password.match( 
-            /[0-9]/g) && password.match( 
-            /[^a-zA-Z\d]/g)){
-                return true;
-            }
-            return false;
-    }
+   
     const handleSave = () =>  {
       
         let errorCheck = false;
@@ -187,13 +163,11 @@ export default function Admin(props){
             error.email = 'Please, enter valid email.';
             errorCheck = true;
         }else{
-            //stuguma ka tenc mail databaseum te che... hakarak depqum chi toxnelu sign up lini :)
             let hasEmail = false;
             admins.map((arr) => {
                 if(arr[4] === email){
                     hasEmail = true;
                 }
-               
                 return true;
             });
             if(hasEmail){
@@ -223,19 +197,6 @@ export default function Admin(props){
                 error.phone = '';
             }
         }
-        
-        if(!validatePassword(password)){
-            error.password = 'Too weak password.';
-            errorCheck = true;
-        }else if(password.length < 8){
-            error.password = 'Your password is too short.';
-            errorCheck = true;
-        }else
-        
-       {
-            error.password = '';
-        }
-        
         if(username.length < 3 || username.length > 15){
             error.username = 'From 3 to 15 symbols.';
             errorCheck = true;
@@ -273,8 +234,8 @@ export default function Admin(props){
                 email,
                 phone,
                 gender,
-                currentAdmin[7],
-                password,
+                currentAdmin[7]
+                //password,
                 //userPic
     
                 
@@ -304,7 +265,7 @@ export default function Admin(props){
       };
     const handleKeyPress = (event) =>{
         const {keyCode} = event;
-        if(keyCode === 13 && !!firstname && !!lastname && !!username && !!password && !!email && !!gender && !!phone){ 
+        if(keyCode === 13 && !!firstname && !!lastname && !!username && !!email && !!gender && !!phone){ 
             handleSave();
         }
     } 
@@ -321,7 +282,7 @@ export default function Admin(props){
    
   }
 
-  document.body.style.backgroundColor='#FFF5EE';
+  //document.body.style.backgroundColor='#FFF5EE';
   const classes = styles();
   document.title = currentAdmin[1]+' '+currentAdmin[2];
   return(
@@ -354,10 +315,12 @@ export default function Admin(props){
                   {showEdit === false ? <div 
                     className={classes.personalInfoAdmin}>
                      <h2 style={{textAlign:'center'}}> {currentAdmin[1]+' '+currentAdmin[2]}</h2>
-                     <p><b>Username: </b>{currentAdmin[3]} </p>
-                     <p><b>Email: </b>{currentAdmin[4]} </p>
-                     <p><b>Phone: </b>{currentAdmin[5]} </p>
-                     <p><b>Gender: </b>{currentAdmin[6]} </p>
+                     <div style={{position:'relative',marginLeft:'-18px'}}>
+                        <p><b>Username: </b>{currentAdmin[3]} </p>
+                        <p><b>Email: </b>{currentAdmin[4]} </p>
+                        <p><b>Phone: </b>{currentAdmin[5]} </p>
+                        <p><b>Gender: </b>{currentAdmin[6]} </p>
+                     </div>
                      <Button
                         id='editBtn'
                         variant="contained"
@@ -366,7 +329,7 @@ export default function Admin(props){
                         onMouseOver = {() => visualChange('editBtn','rgba(234, 65, 101)', 'rgba(246, 246, 246)')}
                         onMouseOut = {() => visualChange('editBtn','white','rgba(234, 65, 101)')}
                         style = {{cursor:'pointer', fontWeight:'bold', backgroundColor:'rgba(234, 65, 101)', borderRadius:'8px', boxShadow:'0px 0px',position:'relative',
-                        left:'70px',}}
+                        left:'55px',}}
                      >Edit</Button>
                     </div>
                      :<div className={classes.personalInfoEditAdmin}>
@@ -446,53 +409,43 @@ export default function Admin(props){
                     <MenuItem value={'none'}>None</MenuItem>
                     </Select>
                     
-                    <TextField 
-                        
-                        id="outlined-basic" 
-                        label='Password'
-                        error = {!!error.password}
-                        helperText={error.password}
-                        value = {password}
-                        type = 'password'
-                        margin="dense"
-                        onChange = {(event) => setPassword(event.target.value)}
-                        style={{marginLeft:'15px',marginBottom:'20px'}}
-                     />
-                
                         <p 
-                        style={{marginLeft:'15px',  textDecoration: 'underline',cursor:'pointer'}}
-                        onClick={() =>{setShowDelete(true);setShowEdit(false)}}
-                        > 
-                        Want to delete your account?
+                            style={{marginLeft:'15px',  textDecoration: 'underline',cursor:'pointer'}}
+                            onClick={() =>{setShowChange(true);setShowEdit(false)}}
+                            > 
+                            Change your password?
+                        </p>
+                        <p 
+                            style={{marginLeft:'15px',  textDecoration: 'underline',cursor:'pointer'}}
+                            onClick={() =>{setShowDelete(true);setShowEdit(false)}}
+                            > 
+                            Want to delete your account?
                         </p>
 
-                    
-                     <div className={classes.cancelBtn}>
                       <Button 
                         id ='cancel'
                         onClick={onEditClose} 
                         color="primary"
                         onMouseOver = {() => visualChange('cancel','rgba(234, 65, 101)', 'rgba(246, 246, 246)')}
                         onMouseOut = {() => visualChange('cancel','white','rgba(234, 65, 101)')}
-                        style = {{cursor:'pointer', fontWeight:'bold', backgroundColor:'rgba(234, 65, 101)',color:'white', borderRadius:'8px', boxShadow:'0px 0px',position:'relative',
-                        left:'70px',}}
-                     >
+                        style = {{cursor:'pointer', fontWeight:'bold', backgroundColor:'rgba(234, 65, 101)',color:'white', borderRadius:'8px', boxShadow:'0px 0px',position:'absolute',
+                        left:'68px',top:'102%'}}
+                        >
                             Cancel
                         </Button>
                         <Button 
                         id='save'
+                        disabled = {!firstname || !lastname || !username || !email || !phone || !gender}
                         onClick={handleSave} 
                         color="primary"
                         onMouseOver = {() => visualChange('save','rgba(234, 65, 101)', 'rgba(246, 246, 246)')}
                         onMouseOut = {() => visualChange('save','white','rgba(234, 65, 101)')}
-                        style = {{cursor:'pointer', fontWeight:'bold', backgroundColor:'rgba(234, 65, 101)',color:'white', borderRadius:'8px', boxShadow:'0px 0px',position:'relative',
-                        left:'70px',}}
+                        style = {{cursor:'pointer', fontWeight:'bold', backgroundColor:'rgba(234, 65, 101)',color:'white', borderRadius:'8px', boxShadow:'0px 0px',position:'absolute',
+                        left:'70px',top:'102%',marginLeft:'30%'}}
                        
                         >
                             save
                         </Button>
-                        </div>
-                        
             
                 </div>
 
@@ -508,6 +461,14 @@ export default function Admin(props){
                        
                         
                      />
+                     }
+                     {showChange &&
+                     <ChangePW 
+                        currentUser = {currentAdmin}
+                        onClose = {onChangeClose}
+                     
+                     />
+                        
                      }
                </div>
                <div id='impFilmData' className={classes.importDataDiv}>
@@ -544,199 +505,12 @@ export default function Admin(props){
                 </div>
                 <br></br>
                 {showImportData && <NewFilm visualChange={visualChange}/>}
-                 {showAddFields && <>
-                    <div className={classes.addFilms}>
-                        
-                        <TextField
-                               margin="dense"
-                               id="name"
-                               label="Name"
-                               //error = {!!error.nameEng}
-                               //helperText={error.nameEng}
-                               value={addName}
-                               onChange={(event)=>setAddName(event.target.value)}
-                               style={{marginLeft:'32%',marginTop:'5%',width:'300px'}}
-                           />
-                           <MuiPickersUtilsProvider utils={DateFnsUtils} >
-                            <KeyboardDatePicker
-                                disableToolbar
-                                error={!!error.date}
-                                helperText={error.date}
-                                variant="inline"
-                                format="yyyy-M-dd"
-                                margin="normal"
-                                id="date"
-                                label="Date"
-                                value={date}
-                                //onError={(error,value)=>{value = error.date;}}
-                                onChange={(date)=>setDate(date)}
-                                KeyboardButtonProps={{
-                                    'aria-label': 'change date',
-                                }}
-                                style={{marginLeft:'32%',marginTop:'3%',width:'300px'}}
-
-                            />
-                            </MuiPickersUtilsProvider>
-                            <TextField
-                                    id="start"
-                                    label="Start time"
-                                    type="time"
-                                    value={start}
-                                    onChange={(event)=>setStart(event.target.value)}
-                                    style={{marginLeft:'32%',marginTop:'4%',width:'300px'}}
-                                    InputLabelProps={{
-                                    shrink: true,
-                                    }}
-                                    inputProps={{
-                                    step: 300, // 5 min
-                                    }}
-                                />
-                                <TextField
-                                    id="end"
-                                    label="End time"
-                                    type="time"
-                                    value={end}
-                                    onChange={(event)=>setEnd(event.target.value)}
-                                    style={{marginLeft:'32%',marginTop:'4%',width:'300px'}}
-                                    InputLabelProps={{
-                                    shrink: true,
-                                    }}
-                                    inputProps={{
-                                    step: 300, // 5 min
-                                    }}
-                                />
-                                <div className={classes.bookPrices}>
-                                    <FormControl  >
-                                    <InputLabel htmlFor="standard-adornment-amount" style={{marginTop:'5px',marginLeft:'23px'}}>
-                                        Price to book
-                                    </InputLabel>
-                                    <Input
-                                        id="book"
-                                        value={bookPriceEng}
-                                        onChange={(event)=>setBookPriceEng(event.target.value)}
-                                        startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                                        style={{marginTop:'15px',marginLeft:'23px',width:'155px'}}
-                                            />
-                                    </FormControl>
-                                    <FormControl>
-                                    <InputLabel htmlFor="standard-adornment-amount" style={{marginTop:'2px',marginLeft:'23px'}}>
-                                        Ամրագրման գումար
-                                    </InputLabel>
-                                    <Input
-                                        id="book"
-                                        value={bookPriceArm}
-                                        onChange={(event)=>setBookPriceArm(event.target.value)}
-                                        startAdornment={<InputAdornment position="start">֏</InputAdornment>}
-                                        style={{marginTop:'15px',marginLeft:'25px',width:'155px'}}
-                                            />
-                                    </FormControl>
-                                
-                                <FormControl >
-                                    <InputLabel htmlFor="standard-adornment-amount" style={{marginTop:'2px',marginLeft:'23px'}}>
-                                    Цена бронирования
-                                    </InputLabel>
-                                    <Input
-                                        id="book"
-                                        value={bookPriceRus}
-                                        onChange={(event)=>setBookPriceRus(event.target.value)}
-                                        startAdornment={<InputAdornment position="start">₽</InputAdornment>}
-                                        style={{marginTop:'15px',marginLeft:'25px',width:'155px'}}
-                                            />
-                                    </FormControl>
-                                    </div>
-                                    <div className={classes.buyPrices}>
-                                        <FormControl >
-                                        <InputLabel htmlFor="standard-adornment-amount" style={{marginTop:'5px',marginLeft:'25px'}}>
-                                            Price to buy
-                                        </InputLabel>
-                                        <Input
-                                            id="buy"
-                                            value={buyPriceEng}
-                                            onChange={(event)=>setBuyPriceEng(event.target.value)}
-                                            startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                                            style={{marginTop:'15px',marginLeft:'25px',width:'155px'}}
-                                                />
-                                        </FormControl>
-                                        <FormControl >
-                                            <InputLabel htmlFor="standard-adornment-amount" style={{marginTop:'5px',marginLeft:'25px'}}>
-                                                Արժեք
-                                            </InputLabel>
-                                            <Input
-                                                id="buy"
-                                                value={buyPriceArm}
-                                                onChange={(event)=>setBuyPriceArm(event.target.value)}
-                                                startAdornment={<InputAdornment position="start">֏</InputAdornment>}
-                                                style={{marginTop:'15px',marginLeft:'25px',width:'155px'}}
-                                                    />
-                                        </FormControl>
-                                        <FormControl >
-                                            <InputLabel htmlFor="standard-adornment-amount" style={{marginTop:'5px',marginLeft:'25px'}}>
-                                                    Цена
-                                            </InputLabel>
-                                            <Input
-                                                id="buy"
-                                                value={buyPriceRus}
-                                                onChange={(event)=>setBuyPriceRus(event.target.value)}
-                                                startAdornment={<InputAdornment position="start">₽</InputAdornment>}
-                                                style={{marginTop:'15px',marginLeft:'25px',width:'155px'}}
-                                                    />
-                                    </FormControl>
-                                    </div>
-                                    <FormControl
-                                            style={{marginLeft:'38%',marginTop:'23%',width:'140px'}}
-                                        
-                                            
-                                        >
-                                        <Select
-                                        labelId="demo-simple-select-outlined-label"
-                                        id="demo-simple-select-outlined"
-                                        value={type}
-                                        variant='outlined'
-                                        onChange={(event) =>setType(event.target.value)}
-                            
-                                        >
-                                    
-                                        <MenuItem value={'2D'}>2D</MenuItem>
-                                        <MenuItem value={'3D'}>3D</MenuItem>
-                                        <MenuItem value={'4K'}>4K</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                    </div>
-                    <Button 
-                        id='closeAdd'
-                        onClick={()=>{ document.getElementById('addData').style.color='rgba(234, 65, 101)';
-                            document.getElementById('addfilm').style.backgroundColor='white';
-                            setShowAddFields(false);}} 
-                        color="primary"
-                        onMouseOver = {() => visualChange('closeAdd','rgba(234, 65, 101)', 'rgba(246, 246, 246)')}
-                        onMouseOut = {() => visualChange('closeAdd','white','rgba(234, 65, 101)')}
-                        style = {{cursor:'pointer', fontWeight:'bold', backgroundColor:'rgba(234, 65, 101)',color:'white', borderRadius:'8px', boxShadow:'0px 0px',position:'absolute',
-                        left:'54.5%',top:'105%'}}
-                       
-                        >
-                            Close
-                        </Button>
-                        <Button 
-                            id='add'
-                            disabled = {!addName || !date || !start || !end || !bookPriceEng || !bookPriceArm || !bookPriceRus || !buyPriceEng || !buyPriceArm || !buyPriceRus || !type}
-                            //onClick={handleAddFilm} 
-                            color="primary"
-                            onMouseOver = {() => visualChange('add','rgba(234, 65, 101)', 'rgba(246, 246, 246)')}
-                            onMouseOut = {() => visualChange('add','white','rgba(234, 65, 101)')}
-                            style = {{cursor:'pointer', fontWeight:'bold', backgroundColor:'rgba(234, 65, 101)',color:'white', borderRadius:'8px', boxShadow:'0px 0px',
-                            position:'absolute',
-                            left:'59.5%',top:'105%'}}
-                         >
-                            Add
-                        </Button>
-                    </>
-                    }
-               <div style={{position:'relative',marginTop:'60%'}}>
+                 {showAddFields && <AddFilm visualChange={visualChange}/>}
+                    
+               <div style={{position:'relative',marginTop:'55%'}}>
                 <Footer/>
             </div>
             </>
   );
-
-
 
 }

@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {styles} from './styles';
-//import axios from 'axios';
+import axios from 'axios';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 //import Rating from '@material-ui/lab/Rating';
@@ -27,7 +27,7 @@ import pic19 from './filmpics/19.jpg'
 import pic20 from './filmpics/20.jpg'
 
 
-//irakanum petqa stacvi zaprosi ardyunqum url-nerov
+//petqa stacvi zaprosi ardyunqum url-nerov
 const seenPics = [ 
                     0,pic1,pic2,pic3,pic4,pic5,pic6,pic7,pic8,pic9,pic10,
                     pic11,pic12,pic13,pic14,pic15,pic16,pic17,pic18,pic19,pic20
@@ -49,15 +49,61 @@ export default function SeenPics(props){
     
     
     const [value,setValue] = useState(10);
-    
+    //const [filmsEng,setFilmsEng] = useState([]);
+    //const [pics,setPics] = useState([]);
+
+
+
+    //stex es pordzeci zaprosov linkery vercnem nkarem, exav, bayc senc pah ka es unei 2 link,
+    //u ete hishum es zangvacy sarqel ei skzbi 10 hati hamar, es depkum petka 
+    //value-in tanq mer exac linkeri qanaky (array.length), karch asac vor
+    //arden useri nayac filmeri axyusaky lini petka stex popoxutyunner arven, henc kpcnenk kanem es
+    //
+    /*
+    useEffect(()=>{
+        getNewFilms();
+    },[]);
+
+     const getNewFilms= () =>{
+        let formData = new FormData();
+        formData.append("filmsGet", 1);
+            const url = `http://localhost/index.php`;
+            axios.post(url,formData)
+                .then(
+                function(res){
+                    let arrEng = [];
+                    let arrArm = [];
+                    let arrRus = [];
+                    while(res.data[0].length){
+                        arrEng.push(res.data[0].splice(0,9));
+                    }
+                    while(res.data[1].length){
+                        arrArm.push(res.data[1].splice(0,9));
+                    }
+                    while(res.data[2].length){
+                        arrRus.push(res.data[2].splice(0,9));
+                    }
+                    setFilmsEng(arrEng); 
+                   
+                    setFilmsArm(arrArm);   
+                    setFilmsRus(arrRus);  
+                }
+                )
+                .catch(err => console.log(err));
+        
+    }
+
+    filmsEng.map((arr) => {
+        pics.push(arr[2]);
+        return true
+    }); 
+    */
     const handleCheckedRight = () => {
        setValue(value+10);
-      
-      
-      };
+    };
     const handleCheckedLeft = () => {
           setValue(value-10);
-      }
+    }
       const createArr = () =>{
           let arr = [];
           for(let i=value-9;i<=value;i++){
@@ -92,7 +138,7 @@ export default function SeenPics(props){
                     </div>
                </>
             }
-            }
+            
 
                           {/*  <div style={{
                                     backgroundColor:'white',

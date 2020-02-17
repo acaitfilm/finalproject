@@ -6,7 +6,6 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-
 import {styles} from './styles';
 import axios from 'axios';
 
@@ -17,8 +16,8 @@ export default function Delete(props) {
     const [reasonText,setReasonText] =useState('');
     const [password, setPassword] = useState('');
  
-
-console.log(props.users);
+//console.log(props.currentUser);
+//console.log(props.users);
 /*
   const logOut = () => {
     localStorage.removeItem('username');
@@ -40,7 +39,6 @@ console.log(props.users);
         error.password = '';
     }
     
-    
     if(!errorCheck){
             let user = currentUser[0];
       
@@ -57,23 +55,11 @@ console.log(props.users);
                 )
                 .catch(err => console.log(err));
          
-                localStorage.removeItem('username',currentUser[3]);
                 props.onClose();
-               // logOut();
-               //props.history replace y error er talis dra hamar gone removeItem em arel local.Storage ic
-               localStorage.removeItem('username');
-               props.logOut();
-               props.replaceHistory('/main');
-                
-               
-                
-          
-            
+                props.logOut();
+
         }
-        
-        setError({...error});
-        
-        
+        setError({...error}); 
   };
      
        
@@ -132,7 +118,9 @@ console.log(props.users);
           </Button>
           <Button 
           onClick={handleDelete} 
-          color="primary">
+          color="primary"
+          disabled={!reasonText || !password}
+          >
             Delete
           </Button>
         </DialogActions>

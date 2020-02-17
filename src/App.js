@@ -26,16 +26,12 @@ function App(){
           <Route path = "/getseats" component = {Seats} />
           <Route path = "/login" component = {LogIn} />
           <Route path = "/main" component = {Main} />
-<<<<<<< HEAD
           <Route path = "/user" component = {User}/>
           <Route path = "/admin" component = {Admin}/>
-         
-=======
           <Route path = "/checkoutcompleted" component = {CheckoutCompleted} />
           <Route path = "/filmpage" component = {FilmPage} />
           <Route path = '/filmsearch' component = {FilmSearch}/>
           <Route component={NotFound}/>
->>>>>>> master
         </Switch>
     </Router>
     </>

@@ -6,8 +6,6 @@ import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import userIcon from './userIcon.png';
 import MuiPhoneNumber from "material-ui-phone-number";
-//import Rating from '@material-ui/lab/Rating';
-//import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import Footer from './footer';
@@ -15,43 +13,39 @@ import TextField from "@material-ui/core/TextField";
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Delete from './delete';
-//import pic1 from './filmpics/1.jpg';
-//import pic2 from './filmpics/2.jpg';
-//import pic3 from './filmpics/3.jpg';
-//import pic4 from './filmpics/4.jpg';
-//import pic5 from './filmpics/5.jpg';
-//import pic6 from './filmpics/6.jpeg';
-//import pic15 from './filmpics/15.jpg';
-//import pic8 from './filmpics/8.jpg';
-//import pic9 from './filmpics/9.jpg';
-//import pic10 from './filmpics/10.jpeg';
+import ChangePW from './changePass';
 import SeenPics from './seenpics';
+import BookedFilms from './bookList';
+
+
+const list = [['1','Underwater','2D','2020-2-20','16:05','17:25','0.7','7','4th row 5th place','Booked','lian_98'],
+              ['1','Underwater','2D','2020-2-20','16:05','17:25','0.7','7','4th row 6th place','Booked','lian_98'],
+              ['1','Underwater','2D','2020-2-20','16:05','17:25','0.7','7','4th row 7th place','Sold','lian_98'],
+              ['2','Joker','2D','2020-2-20','18:25','19:45','0.8','8','3th row 1th place','Booked','tik_9'],
+              ['2','Joker','2D','2020-2-20','18:25','19:45','0.8','8','3th row 2th place','Booked','tik_9'],
+              ['3','Bad Boys for Life','2D','2020-2-21','13:00','14:55','0.6','6','6th row 3th place','Booked','lian_98'],
+              ['3','Bad Boys for Life','2D','2020-2-21','13:00','14:55','0.6','6','6th row 4th place','Booked','lian_98'],
+              ['3','Bad Boys for Life','2D','2020-2-21','13:00','14:55','0.6','6','6th row 5th place','Booked','lian_98'],
+              ['3','Bad Boys for Life','2D','2020-2-21','13:00','14:55','0.6','6','2th row 8th place','Booked','tik_9']
+
+    ];
 
 function User(props){
     const [currentUser,setCurrentUser] = useState([]);
     const [userPic, setUserPic] = useState(null);
     const [showEdit,setShowEdit] = useState(false);
     const [showDelete,setShowDelete] = useState(false);
-    //const [showDesc,setShowDesc] = useState(false);
-    const [showWatched,setShowWatched] = useState(false);
+    const [showChange,setShowChange] = useState(false);
+    const [showWatched,setShowWatched] = useState(true);
+    const [showBooked, setShowBooked] = useState(false);
     const [error, setError] = useState({});
     const [firstname, setFirstname] = useState(currentUser[1]);
     const [lastname, setLastname] = useState(currentUser[2]);
     const [username, setUsername] = useState(currentUser[3]);
     const [email, setEmail] = useState(currentUser[4]);
     const [phone, setPhone] = useState(currentUser[5]);
-    const [password, setPassword] = useState(currentUser[8]);
+    //const [password, setPassword] = useState(currentUser[8]);
     const [gender, setGender] = useState(currentUser[6]);
-    //const [value1,setValue1] = useState(0);
-    //const [value2,setValue2] = useState(0);
-    //const [value3,setValue3] = useState(0);
-    //const [value4,setValue4] = useState(0);
-    //const [value5,setValue5] = useState(0);
-    //const [value6,setValue6] = useState(0);
-    //const [value7,setValue7] = useState(0);
-    //const [value8,setValue8] = useState(0);
-    //const [value9,setValue9] = useState(0);
-    //const [value10,setValue10] = useState(0);
     const [users,setUsers] = useState([]);
     
    
@@ -67,7 +61,10 @@ function User(props){
         props.history.replace(newAddress);
     }
     
-    
+    const filterList = (list)=>{
+        return list.filter((arr)=>arr[10]===currentUser[3] && arr[9]==='Booked');
+        
+    }
   
     const updateUsers = () => {
         let formData = new FormData();
@@ -146,15 +143,7 @@ const checkName = (name) => {
     return symbols.test(name);
 }
 
-const validatePassword = password => {
-    if(password.match(/[a-z]/g) && password.match( 
-        /[A-Z]/g) && password.match( 
-        /[0-9]/g) && password.match( 
-        /[^a-zA-Z\d]/g)){
-            return true;
-        }
-        return false;
-}
+
 const handleSave = () =>  {
       
     let errorCheck = false;
@@ -216,19 +205,8 @@ const handleSave = () =>  {
             error.phone = '';
         }
     }
-    
-    if(!validatePassword(password)){
-        error.password = 'Too weak password.';
-        errorCheck = true;
-    }else if(password.length < 8){
-        error.password = 'Your password is too short.';
-        errorCheck = true;
-    }else
-    
-   {
-        error.password = '';
-    }
-    
+   
+
     if(username.length < 3 || username.length > 15){
         error.username = 'From 3 to 15 symbols.';
         errorCheck = true;
@@ -266,11 +244,7 @@ const handleSave = () =>  {
             email,
             phone,
             gender,
-            currentUser[7],
-            password,
-            //userPic
-
-            
+            currentUser[7]
         ];
        
       setCurrentUser(user);
@@ -298,8 +272,7 @@ const handleSave = () =>  {
 
   const handleKeyPress = (event) =>{
     const {keyCode} = event;
-    //stex senc em grel ,vor datarki depkum chkatarvi,heto kpoxenq
-    if(keyCode === 13 && !!firstname && !!lastname && !!username && !!password && !!email && !!gender && !!phone){ 
+    if(keyCode === 13 && !!firstname && !!lastname && !!username && !!email && !!gender && !!phone){ 
         handleSave();
     }
 } 
@@ -312,14 +285,7 @@ useEffect(() => {
   });
     const picSelectedHandler = (e) => {
         setUserPic(URL.createObjectURL(e.target.files[0]));
-       
-       
-        //stex uzum ei null y poxarinei cher linum veragrelov
-        //currentUser.length = 9;
-        //currentUser.push(userPic);
-        //console.log(currentUser);
          
-       
     }
     const visualChange = (id, color, backGroundColor) => {
         document.getElementById(id).style.color = color;
@@ -328,34 +294,18 @@ useEffect(() => {
     }
   
 
-    const onEditClose = ()=>{
+    const onEditClose = () =>{
         setShowEdit(false);
     }
     const onDeleteClose = () =>{
         setShowDelete(false);
     }
     
-    
-/*
-    const picUploadHandler = () => {
-        console.log(currentUser);
-        let user = JSON.stringify(currentUser);
-        let formData = new FormData();
-        formData.append("userUpdate", user);
-        const url = `http://localhost/index.php`;
-            axios.post(url,formData)
-            .then(
-                function(res){
-                    console.log(res);
-                console.log('Success of update image!');
-                
-            }
-            )
-            .catch(err => console.log(err));
-        
-
+    const onChangeClose = () =>{
+        setShowChange(false);
     }
-    */
+
+   
    document.body.style.backgroundColor='#FFF5EE';
     const classes = styles();
     document.title = currentUser[1]+' '+currentUser[2];
@@ -383,9 +333,9 @@ useEffect(() => {
                     <input accept="image/*" style={{display: 'none'}} id="icon-button-file" type="file"onChange={picSelectedHandler} />
                      <label htmlFor="icon-button-file"
                         style = {{position:'absolute',left:'40%',top:'92%'}}
-                    >
+                     >
                         <IconButton color="secondary" aria-label="upload picture" component="span">
-                        <PhotoCamera />
+                            <PhotoCamera />
                         </IconButton>
                     </label>
                </div>
@@ -470,67 +420,58 @@ useEffect(() => {
                         /> 
                             
             
-                    <p style={{marginLeft:'15px'}}>Gender</p>
-                    <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
-                    value={gender}
-                    variant='outlined'
-                    onChange={(event) => setGender(event.target.value)}
-                    style={{height:'40px',width:'100px',marginLeft:'15px'}}
-                    
-                    >
-                    <MenuItem value={currentUser[6]}>{currentUser[6]}</MenuItem>
-                    <MenuItem value={currentUser[6] === 'Male'?'Female':'Male'}>{currentUser[6] === 'Male'?'Female':'Male'}</MenuItem>
-                    <MenuItem value={'none'}>None</MenuItem>
-                    </Select>
-                    
-                    <TextField 
-                        
-                        id="outlined-basic" 
-                        label='Password'
-                        error = {!!error.password}
-                        helperText={error.password}
-                        value = {password}
-                        type = 'password'
-                        margin="dense"
-                        onChange = {(event) => setPassword(event.target.value)}
-                        style={{marginLeft:'15px',marginBottom:'20px'}}
-                     />
-                
+                        <p style={{marginLeft:'15px'}}>Gender</p>
+                        <Select
+                            labelId="demo-simple-select-outlined-label"
+                            id="demo-simple-select-outlined"
+                            value={gender}
+                            variant='outlined'
+                            onChange={(event) => setGender(event.target.value)}
+                            style={{height:'40px',width:'100px',marginLeft:'15px'}}
+                        >
+                            <MenuItem value={currentUser[6]}>{currentUser[6]}</MenuItem>
+                            <MenuItem value={currentUser[6] === 'Male'?'Female':'Male'}>{currentUser[6] === 'Male'?'Female':'Male'}</MenuItem>
+                            <MenuItem value={'none'}>None</MenuItem>
+                        </Select>
+
                         <p 
-                        style={{marginLeft:'15px',  textDecoration: 'underline',cursor:'pointer'}}
-                        onClick={() =>{setShowDelete(true);setShowEdit(false)}}
+                            style={{marginLeft:'15px',  textDecoration: 'underline',cursor:'pointer'}}
+                            onClick={() =>{setShowChange(true);setShowEdit(false)}}
                         > 
-                        Want to delete your account?
+                            Change password?
+                        </p>
+                        <p 
+                            style={{marginLeft:'15px',  textDecoration: 'underline',cursor:'pointer'}}
+                            onClick={() =>{setShowDelete(true);setShowEdit(false)}}
+                        > 
+                            Want to delete your account?
                         </p>
 
-                    
-                     <div className={classes.cancelBtn}>
                       <Button 
                         id ='cancel'
                         onClick={onEditClose} 
                         color="primary"
                         onMouseOver = {() => visualChange('cancel','rgba(234, 65, 101)', 'rgba(246, 246, 246)')}
                         onMouseOut = {() => visualChange('cancel','white','rgba(234, 65, 101)')}
-                        style = {{cursor:'pointer', fontWeight:'bold', backgroundColor:'rgba(234, 65, 101)',color:'white', borderRadius:'8px', boxShadow:'0px 0px',position:'relative',
-                        left:'70px',}}
-                     >
+                        style = {{cursor:'pointer', fontWeight:'bold', backgroundColor:'rgba(234, 65, 101)',color:'white', borderRadius:'8px', boxShadow:'0px 0px',position:'absolute',
+                        left:'64px',top:'102%'}}
+                      >
                             Cancel
-                        </Button>
+                      </Button>
                         <Button 
-                        id='save'
-                        onClick={handleSave} 
-                        color="primary"
-                        onMouseOver = {() => visualChange('save','rgba(234, 65, 101)', 'rgba(246, 246, 246)')}
-                        onMouseOut = {() => visualChange('save','white','rgba(234, 65, 101)')}
-                        style = {{cursor:'pointer', fontWeight:'bold', backgroundColor:'rgba(234, 65, 101)',color:'white', borderRadius:'8px', boxShadow:'0px 0px',position:'relative',
-                        left:'70px',}}
+                            id='save'
+                            disabled={!firstname || !lastname || !username || !email || !phone || !gender}
+                            onClick={handleSave} 
+                            color="primary"
+                            onMouseOver = {() => visualChange('save','rgba(234, 65, 101)', 'rgba(246, 246, 246)')}
+                            onMouseOut = {() => visualChange('save','white','rgba(234, 65, 101)')}
+                            style = {{cursor:'pointer', fontWeight:'bold', backgroundColor:'rgba(234, 65, 101)',color:'white', borderRadius:'8px', boxShadow:'0px 0px',position:'absolute',
+                            top:'102%',marginLeft:'55%'}}
                        
                         >
-                            save
+                            Save
                         </Button>
-                        </div>
+                        
                         
             
                 </div>
@@ -541,12 +482,13 @@ useEffect(() => {
                     <h2 
                         id='seen'
                         onClick={()=>{setShowWatched(true);
+                                setShowBooked(false);
                                         document.getElementById('seen').style.color='white';
                                         document.getElementById('seenDiv').style.backgroundColor='rgba(234, 65, 101)';
                                         document.getElementById('book').style.color='rgba(234, 65, 101)';
                                         document.getElementById('bookDiv').style.backgroundColor='white';
                                 }}
-                        style={{color:'rgba(234, 65, 101)'}}
+                        style={{color:'white'}}
                      >
                          Already watched
                      </h2>
@@ -555,34 +497,43 @@ useEffect(() => {
                     <h2 
                         id='book'
                         onClick={()=>{setShowWatched(false);
+                                        setShowBooked(true);
                                     document.getElementById('book').style.color='white';
                                     document.getElementById('bookDiv').style.backgroundColor='rgba(234, 65, 101)';
                                     document.getElementById('seen').style.color='rgba(234, 65, 101)';
                                     document.getElementById('seenDiv').style.backgroundColor='white';
-
                             }}
                     style={{color:'rgba(234, 65, 101)'}}
-                    >
-                        You booked(5)
-                        </h2>
+                    > 
+                        {'You booked('+filterList(list).length+')'}
+                    </h2>
+                        
+                        
                 </div>
                 <br></br>
                 {showWatched&& <SeenPics/>}
-
+                
+                {showBooked && <BookedFilms currentUser={currentUser} list={filterList(list)} visualChange={visualChange}/>}
+                        
                 {showDelete && 
                     
                     <Delete
-                        
                         currentUser = {currentUser}
                         onClose = {onDeleteClose}
                         logOut = {logOut}
                         replaceHistory={replaceHistory}
-                       
-                        
                      />
-                     }
+                }
+                {showChange &&
+                    <ChangePW 
+                        currentUser = {currentUser}
+                        onClose = {onChangeClose}
+                        
+                    />
+
+                }
             </div>
-            <div style={{position:'relative',marginTop:'60%'}}>
+            <div style={{position:'relative',marginTop:'55%'}}>
                 <Footer/>
             </div>
         </>

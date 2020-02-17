@@ -162,13 +162,14 @@ const styles = makeStyles(theme => ({
         position:'absolute',
         display: 'flex',
         flexDirection:'column',
-        marginLeft: '45px',
+        marginLeft: '70px',
         marginTop:'30px',
     },
     personalInfo:{
         color:'rgba(234, 65, 101)',
         position:'absolute',
-        top:'100%'
+        top:'100%',
+        
     },
     personalInfoEdit:{
        
@@ -182,7 +183,8 @@ const styles = makeStyles(theme => ({
     personalInfoAdmin:{
         color:'rgba(234, 65, 101)',
         position:'absolute',
-        top:'110%'
+        top:'110%',
+        left:'31px'
     },
     personalInfoEditAdmin:{
         color:'rgba(234, 65, 101)',
@@ -198,11 +200,7 @@ const styles = makeStyles(theme => ({
         top:'105%',
         left:'-5%',
         float:'left',
-        //display: 'flex',
-        //justifyContent: 'space-between',
-        //maxWidth: '300px',
-        //margin:'5px',
-        //padding: '15px',
+        
     
     },
     seenFilmsDiv:{
@@ -212,7 +210,7 @@ const styles = makeStyles(theme => ({
         left:'160%',
         border: '2px solid rgba(234, 65, 101)',
         height:'275%',
-        backgroundColor:'#FAF0E6',
+        backgroundColor:'mistyrose',
         width:'500%'
     },
     seenPics:{
@@ -236,7 +234,7 @@ const styles = makeStyles(theme => ({
         fontSize:"85%",
         width:'75%',
         float:'left',
-        backgroundColor:'white',
+        backgroundColor:'rgba(234, 65, 101)',
         textAlign:'center',
         cursor:'pointer'
     },
@@ -251,15 +249,12 @@ const styles = makeStyles(theme => ({
         backgroundColor:'white',
         textAlign:'center',
         cursor:'pointer'
-    
     },
     descriptionTextDiv:{
         position: 'absolute',
         left: '86.5%',
         bottom:'30%',
-        width:'7%'
-        
-       
+        width:'7%'  
     },
     buttonLR:{
         //padding: theme.spacing(2, 0)
@@ -292,8 +287,8 @@ const styles = makeStyles(theme => ({
         position:'absolute',
         marginTop:'3.5%',
         left:'30%',
-        border: '2px solid rgba(234, 65, 101)',
-        backgroundColor:'#FFE4E1',
+        //border: '2px solid rgba(234, 65, 101)',
+        backgroundColor:'mistyrose',
         height:'75%',
         width:'65%'
     },
@@ -301,8 +296,8 @@ const styles = makeStyles(theme => ({
         position:'absolute',
         marginTop:'3.5%',
         left:'30%',
-        border: '2px solid rgba(234, 65, 101)',
-        height:'67%',
+        //border: '2px solid rgba(234, 65, 101)',
+        height:'68.5%',
         backgroundColor:'#FFE4E1',
         width:'65%'
    },
@@ -313,9 +308,9 @@ const styles = makeStyles(theme => ({
         marginLeft:'340px',
         marginTop: '30px',
         marginRight:'20px',
-        border:'1px solid rgba(234, 65, 101)',
+        //border:'1px solid rgba(234, 65, 101)',
         width:'40%',
-        backgroundColor:'#FFFAFA',
+        backgroundColor:'#FFFAFA'
     },
    bookPrices:{
         display:'flex',
