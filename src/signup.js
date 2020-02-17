@@ -106,7 +106,7 @@ function SignUp(props){
     const updateUsers = () => {
         let formData = new FormData();
         formData.append("userGet", 1);
-            const url = `http://127.0.0.1/index.php`;
+            const url = `http://localhost/index.php`;
             axios.post(url,formData)
                 .then(
                 function(res){
@@ -204,13 +204,16 @@ function SignUp(props){
                 error.phone = '';
             }
         }
+        
         if(!validatePassword(password)){
             error.password = 'Too weak password.';
             errorCheck = true;
         }else if(password.length < 8){
             error.password = 'Your password is too short.';
             errorCheck = true;
-        }else{
+        }else
+        
+       {
             error.password = '';
         }
         if(confirmPassword !== password){
@@ -272,10 +275,11 @@ function SignUp(props){
             user = JSON.stringify(user);
             let formData = new FormData();
             formData.append("userSet", user);
-            const url = `http://127.0.0.1/index.php`;
+            const url = `http://localhost/index.php`;
             axios.post(url,formData)
                 .then(
                 function(res){
+                    console.log('Success!');
                     console.log(res);
                 }
                 )
@@ -285,6 +289,12 @@ function SignUp(props){
         }
         setError({...error});
     }
+    document.body.style.backgroundImage='url(https://images.unsplash.com/photo-1493616196200-7076f88eea7b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2550&q=80)';
+    //document.body.style.backgroundImage='url(https://c8.alamy.com/comp/TB32J4/cinema-movie-concept-popcorn-and-clapperboard-on-a-grunge-background-TB32J4.jpg)';
+    //document.body.style.backgroundImage='url(https://www.nmfilmnews.com/wp-content/uploads/2018/09/new-mexico-film-slate.jpg)'
+    //document.body.style.backgroundImage='url(https://us.123rf.com/450wm/maglara/maglara1702/maglara170200115/71748660-tablero-de-la-chapaleta-de-la-pel%C3%ADcula-y-palomitas-en-fondo-de-madera-vista-superior-desde-arriba.jpg?ver=6)';
+    //document.body.style.backgroundImage='url(https://image.freepik.com/free-photo/clapperboard-popcorns-cinema-tickets-yellow-background_23-2148188197.jpg)'
+    document.body.style.backgroundSize='100%';
     
     const classes =  styles();
     return (
@@ -307,6 +317,11 @@ function SignUp(props){
                 variant='outlined'
                 size = 'medium'
                 onChange = {(event) => firstnameUpdater(event)}
+                InputProps={{
+                    classes: {
+                        notchedOutline: classes.notchedOutline
+                            }
+                        }}
             />
             <TextField 
                 id="outlined-basic2" 
@@ -318,6 +333,11 @@ function SignUp(props){
                 size = 'medium'
                 onChange = {(event) => lastnameUpdater(event)}
                 style = {{marginLeft:'10%'}}
+                InputProps={{
+                    classes: {
+                        notchedOutline: classes.notchedOutline
+                            }
+                        }}
             />
             </div>
                 <br/>
@@ -332,9 +352,16 @@ function SignUp(props){
                 className = 'loginSecondDiv'
                 size = 'medium'
                 onChange = {(event) => usernameUpdater(event)}
+                InputProps={{
+                    classes: {
+                        notchedOutline: classes.notchedOutline
+                            }
+                        }}
             />
             <FormControl
                 style = {{marginLeft:'10%'}}
+               
+                
             >
             <Select
         labelId="demo-simple-select-outlined-label"
@@ -342,6 +369,7 @@ function SignUp(props){
         value={person}
         variant='outlined'
         onChange={(event) => personUpdater(event)}
+   
         >
         <MenuItem value={'None'}>None</MenuItem>
         <MenuItem value={'User'}>User</MenuItem>
@@ -375,8 +403,12 @@ function SignUp(props){
             variant='outlined'
             size = 'medium'
             onChange = {(event) => adminPasswordUpdater(event)}
-            style = {person !== 'Admin' ? {display:'none'} : {marginLeft:'33.5%', marginTop:'1.5%', width:'33.7%'}}
-
+            style = {person !== 'Admin' ? {display:'none'} : {marginLeft:'60%', marginTop:'1.5%', width:'30%'}}
+            InputProps={{
+                classes: {
+                    notchedOutline: classes.notchedOutline
+                        }
+                    }}
         />
             </div>
             <div className = {classes.signupThirdDiv}>
@@ -388,10 +420,18 @@ function SignUp(props){
                     phoneUpdater(value);
                 }}
                 defaultCountry={'am'}
-                style={{width:'20.3%'}}
+                style={{width:'32.5%'}}
                 variant = 'outlined'
                 label = 'Phone'
+                InputProps={{
+                    classes: {
+                        notchedOutline: classes.notchedOutline
+                            }
+                        }}
             /> 
+            
+            </div>
+            <div className={classes.signupForthDiv}>
             <TextField 
             id="outlined-basic5" 
             label='Email'
@@ -402,6 +442,11 @@ function SignUp(props){
             size = 'medium'
             onChange = {(event) => emailUpdater(event)}
             style = {{marginLeft:'10%'}}
+            InputProps={{
+                classes: {
+                    notchedOutline: classes.notchedOutline
+                        }
+                    }}
         />
             
             </div>
@@ -416,7 +461,13 @@ function SignUp(props){
             type = 'password'
             size = 'medium'
             onChange = {(event) => passwordUpdater(event)}
+            InputProps={{
+                classes: {
+                    notchedOutline: classes.notchedOutline
+                        }
+                    }}
         />
+        
         <TextField 
             id="outlined-basic7" 
             label='Confirm Password'
@@ -428,6 +479,11 @@ function SignUp(props){
             type = 'password'
             onChange = {(event) => confirmPasswordUpdater(event)}
             style = {{marginLeft:'10%'}}
+            InputProps={{
+                classes: {
+                    notchedOutline: classes.notchedOutline
+                        }
+                    }}
         />
             </div>
             <div className = {classes.signUphaveAnAccount}>
@@ -442,6 +498,8 @@ function SignUp(props){
                     color="primary"
                     size='large'
                     onClick={btnPushed}
+                    style={{backgroundColor:'#8B4513',color:'white'
+                    }}
                 >
                     Sign Up!
                 </Button>

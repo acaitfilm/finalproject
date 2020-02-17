@@ -24,6 +24,7 @@ function Main(props){
     const [date, setDate] = useState();
     const [genrePicked, setGenrePicked] = useState('Genre');
     const [datePicked, setDatePicked] = useState('Today');
+    const [users,setUsers] =useState([]);
     useEffect(() => {
         setDate(getDate(0));
         updateFilms();
@@ -38,7 +39,7 @@ function Main(props){
     const updateUsers = () => {
         let formData = new FormData();
         formData.append("userGet", 1);
-            const url = `http://127.0.0.1/index.php`;
+            const url = `http://localhost/index.php`;
             axios.post(url,formData)
                 .then(
                 function(res){
@@ -46,9 +47,11 @@ function Main(props){
                     while(res.data.length){
                         arrOfUsers.push(res.data.splice(0,9));
                     }
+                    setUsers(arrOfUsers);
                     arrOfUsers.map(array => {
                         if(array[3] === localStorage.getItem('username')){
                             setCurrentUser(array);
+                            
                         }
                         return true;
                     });
@@ -56,6 +59,7 @@ function Main(props){
                 )
                 .catch(err => console.log(err));
     }
+    
     const updateFilms = () => {
         let formData = new FormData();
         formData.append("filmsGet", 1);

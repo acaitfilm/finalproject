@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import { TableBody } from '@material-ui/core';
 
+
 function Header(props){
     const [searchValue, setSearchValue] = useState('');
     const [currentFilms, setCurrentFilms] = useState([
@@ -34,7 +35,7 @@ function Header(props){
     const updateFilms = () => {
         let formData = new FormData();
         formData.append("filmsGet", 1);
-            const url = `http://127.0.0.1/index.php`;
+            const url = `http://localhost/index.php`;
             axios.post(url,formData)
                 .then(
                 function(res){
@@ -156,6 +157,7 @@ function Header(props){
                             />
                                 <span    
                                     className = {classes.headerUsernameText}
+                                    onClick = {() => {props.currentUser[7]==='User'?props.replaceHistory('/user'):props.replaceHistory('/admin')}}
                                 >
                                     {localStorage.getItem('username')}
                                 </span>

@@ -5,7 +5,9 @@ const styles = makeStyles(theme => ({
         textAlign:'center',
         fontSize:'190%',
         fontWeight:'bold',
-        paddingBottom:'4%'
+        paddingBottom:'4%',
+        paddingLeft:'50%',
+        color:'#8B4513'
     },
     signupMainDiv:{
         marginTop:'7.8%'
@@ -13,14 +15,18 @@ const styles = makeStyles(theme => ({
     signupFullnameDiv:{
     },
     signupSecondDiv:{
-        marginLeft:'33.5%'
+        marginLeft:'60%'
     },
     signupThirdDiv:{
-        marginLeft:'33.5%',
+        marginLeft:'60%',
         marginTop:'1.5%',
     },
+    signupForthDiv:{
+        marginLeft:'74.5%',
+        marginTop:'-56px',
+    },
     signupSignUpDiv:{
-        marginLeft:'46.6%',
+        marginLeft:'72%',
         marginTop:'2%',
     },
     signUphaveAnAccount:{
@@ -28,7 +34,9 @@ const styles = makeStyles(theme => ({
         marginLeft:'42.75%'
     },
     loginMainDiv:{
-        marginTop: '9%',  
+        marginTop: '9%',
+    
+        
     },
     loginMainText:{
         textAlign:'center',
@@ -53,6 +61,9 @@ const styles = makeStyles(theme => ({
         borderColor: "#8B4513 !important",
         
     },
+    
+    
+    
     hiddenInput:{
         display:'none'
     },
@@ -147,6 +158,176 @@ const styles = makeStyles(theme => ({
         top:'39%', 
         marginRight:'8%'
     },
+    userInfoDiv:{
+        position:'absolute',
+        display: 'flex',
+        flexDirection:'column',
+        marginLeft: '70px',
+        marginTop:'30px',
+    },
+    personalInfo:{
+        color:'rgba(234, 65, 101)',
+        position:'absolute',
+        top:'100%',
+        
+    },
+    personalInfoEdit:{
+       
+        color:'rgba(234, 65, 101)',
+        position:'absolute',
+        top:'115%',
+        border:'1px solid rgba(234, 65, 101)',
+        width:'110%',
+        borderRadius:'7px'
+    },
+    personalInfoAdmin:{
+        color:'rgba(234, 65, 101)',
+        position:'absolute',
+        top:'110%',
+        left:'31px'
+    },
+    personalInfoEditAdmin:{
+        color:'rgba(234, 65, 101)',
+        position:'absolute',
+        top:'125%',
+        border:'1px solid rgba(234, 65, 101)',
+        width:'120%',
+        borderRadius:'7px'
+    },
+    cancelBtn:{
+        color:'rgba(234, 65, 101)',
+        position:'absolute',
+        top:'105%',
+        left:'-5%',
+        float:'left',
+        
+    
+    },
+    seenFilmsDiv:{
+        float:'left',
+        position:'absolute',
+        marginTop:'20%',
+        left:'160%',
+        border: '2px solid rgba(234, 65, 101)',
+        height:'275%',
+        backgroundColor:'mistyrose',
+        width:'500%'
+    },
+    seenPics:{
+        margin:'20px',
+        border: '2px solid rgba(234, 65, 101)',
+        height: '300px',
+        color:'black',
+        display:'inline-block',
+        width:'200px',
+        //backgroundColor:'#00FF7F'
+        //backgroundColor:'#87CEEB'
+        backgroundColor:'black'
+        
+        
+    },
+    watchedText:{
+       // color:'rgba(234, 65, 101)',
+        position:'absolute',
+        marginTop:'-9%',
+        marginLeft:'166%',
+        fontSize:"85%",
+        width:'75%',
+        float:'left',
+        backgroundColor:'rgba(234, 65, 101)',
+        textAlign:'center',
+        cursor:'pointer'
+    },
+    bookedText:{
+        color:'rgba(234, 65, 101)',
+        position:'absolute',
+        marginTop:'-9%',
+        marginLeft:'246%',
+        fontSize:"85%",
+        width:'70%',
+        float:'left',
+        backgroundColor:'white',
+        textAlign:'center',
+        cursor:'pointer'
+    },
+    descriptionTextDiv:{
+        position: 'absolute',
+        left: '86.5%',
+        bottom:'30%',
+        width:'7%'  
+    },
+    buttonLR:{
+        //padding: theme.spacing(2, 0)
+    },
+    importDataDiv:{
+        position:'absolute',
+        marginTop:'1%',
+        marginLeft:'32%',
+        fontSize:"80%",
+        width:'10%',
+        float:'left',
+        backgroundColor:'rgba(234, 65, 101)',
+        textAlign:'center',
+        cursor:'pointer',
+    },
+    addFilmDiv:{
+        position:'absolute',
+        marginTop:'1%',
+        marginLeft:'43%',
+        fontSize:"80%",
+        width:'10%',
+        float:'left',
+        backgroundColor:'white',
+        textAlign:'center',
+        cursor:'pointer',
+    },
+    addFilms:{
+        display:'flex',
+        flexDirection:'column',
+        position:'absolute',
+        marginTop:'3.5%',
+        left:'30%',
+        //border: '2px solid rgba(234, 65, 101)',
+        backgroundColor:'mistyrose',
+        height:'75%',
+        width:'65%'
+    },
+   importFilms:{
+        position:'absolute',
+        marginTop:'3.5%',
+        left:'30%',
+        //border: '2px solid rgba(234, 65, 101)',
+        height:'68.5%',
+        backgroundColor:'#FFE4E1',
+        width:'65%'
+   },
+   newFilmLanguagesDiv:{
+        position:'absolute',
+        display:'flex',
+        flexDirection:'column',
+        marginLeft:'340px',
+        marginTop: '30px',
+        marginRight:'20px',
+        //border:'1px solid rgba(234, 65, 101)',
+        width:'40%',
+        backgroundColor:'#FFFAFA'
+    },
+   bookPrices:{
+        display:'flex',
+        flexDirection:'row',
+        position:'absolute',
+        marginTop:'40%',
+        left:'20%',
+        width:'65%'
+   },
+   buyPrices:{
+        display:'flex',
+        flexDirection:'row',
+        position:'absolute',
+        marginTop:'49%',
+        left:'20%',
+        width:'65%'
+   },
     footerMainDiv:{
         padding:'4% 3% 4% 0%', 
         backgroundColor:'rgba(246, 246, 246)',
