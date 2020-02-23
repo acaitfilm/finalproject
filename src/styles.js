@@ -280,6 +280,28 @@ const styles = makeStyles(theme => ({
         backgroundColor:'white',
         textAlign:'center',
         cursor:'pointer',
+    },  
+    filmListDiv:{
+        position:'absolute',
+        marginTop:'1%',
+        marginLeft:'54%',
+        fontSize:"80%",
+        width:'10%',
+        float:'left',
+        backgroundColor:'white',
+        textAlign:'center',
+        cursor:'pointer',
+    },
+    userListDiv:{
+        position:'absolute',
+        marginTop:'1%',
+        marginLeft:'65%',
+        fontSize:"80%",
+        width:'10%',
+        float:'left',
+        backgroundColor:'white',
+        textAlign:'center',
+        cursor:'pointer',
     },
     addFilms:{
         display:'flex',
@@ -289,7 +311,7 @@ const styles = makeStyles(theme => ({
         left:'30%',
         //border: '2px solid rgba(234, 65, 101)',
         backgroundColor:'mistyrose',
-        height:'75%',
+        height:'90%',
         width:'65%'
     },
    importFilms:{
@@ -316,7 +338,7 @@ const styles = makeStyles(theme => ({
         display:'flex',
         flexDirection:'row',
         position:'absolute',
-        marginTop:'40%',
+        marginTop:'50%',
         left:'20%',
         width:'65%'
    },
@@ -324,9 +346,17 @@ const styles = makeStyles(theme => ({
         display:'flex',
         flexDirection:'row',
         position:'absolute',
-        marginTop:'49%',
+        marginTop:'59%',
         left:'20%',
         width:'65%'
+   },
+   descriptions:{
+    display:'flex',
+    flexDirection:'row',
+    position:'absolute',
+    marginTop:'11%',
+    left:'20%',
+    width:'65%'
    },
     footerMainDiv:{
         padding:'4% 3% 4% 0%', 

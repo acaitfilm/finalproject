@@ -48,6 +48,8 @@ function Film(props){
                     <img 
                         src = {props.image}
                         className = {classes.filmBlockImage}
+                        style={{width: '300px',height: '390px',cursor:'pointer'}}
+                        alt=''
                     />
                 </div>
                 <div 

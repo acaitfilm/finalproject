@@ -13,7 +13,35 @@ function Seats(props){
     const [seats, setSeats] = useState([]);
     const [userRequest, setUserRequest] = useState([]);
     const [currentRadio, setCurrentRadio] = useState(-1);
+    const [currentFilms, setCurrentFilms] = useState([]);
+
+    const selectFilm = (film) => {
+        let filmObj = localStorage.getItem('currentRequest');
+        filmObj = JSON.parse(filmObj);
+        let time = film[3] + ' - ' + film[4];
+        if(filmObj.filmdate === film[2] && time === filmObj.filmtime){
+            setCurrentFilms(film);
+        }
+    }
     useEffect(() => {
+        let formData = new FormData();
+        formData.append("sessionsGet", 1);
+            const url = `http://localhost/index.php`;
+            axios.post(url,formData)
+                .then(
+                function(res){
+                    let arrOfFilms = [];
+                    while(res.data.length){
+                        arrOfFilms.push(res.data.splice(0,9));
+                    }
+                    arrOfFilms.map(function(film){
+                        selectFilm(film);
+                    });
+                    console.log(currentFilms);
+
+                }
+                )
+                .catch(err => console.log(err));
         setCurrentRadio(-1);
         let seatsArr = [];
         for(let index = 50; index > 0; index--){
@@ -47,7 +75,7 @@ function Seats(props){
     const updateUsers = () => {
         let formData = new FormData();
         formData.append("userRequestInfo", 1);
-            const url = `http://127.0.0.1/index.php`;
+            const url = `http://localhost/index.php`;
             axios.post(url,formData)
                 .then(
                 function(res){
@@ -62,7 +90,6 @@ function Seats(props){
                         if(array[1] === currFilm.filmname){
                             currentFilmRequests.push(array);
                         }
-                        console.log(currentFilmRequests);
                         setUserRequest(currentFilmRequests);
                         return true;
                     });
@@ -96,6 +123,8 @@ function Seats(props){
     if(currentRadio === -1){
         window.scrollTo( 500, 0 );
     }
+    console.log(currentFilms);
+
     const checkoutCompleted = () => {
         let reqVal = localStorage.getItem('currentRequest');
         reqVal = JSON.parse(reqVal);
@@ -112,17 +141,15 @@ function Seats(props){
         currentRequest = JSON.stringify(currentRequest);
             let formData = new FormData();
             formData.append("userRequest", currentRequest);
-            const url = `http://127.0.0.1/index.php`;
+            const url = `http://localhost/index.php`;
             axios.post(url,formData)
                 .then(
                 function(res){
-                    console.log(res);
                 }
                 )
                 .catch(err => console.log(err));
         props.history.replace('/checkoutcompleted')
     }
-    console.log(userRequest);
     return (
         <>
         <Header 
@@ -186,7 +213,7 @@ function Seats(props){
             <div style = {{marginLeft:'32%',marginTop:'8%'}}>
             <Button 
                 id = 'checkout'
-                variant="contained" 
+                variant="contained"
                 style = {currentRadio !== -1 ? {width:'200px',height:'67px', boxShadow:'0 0 0 0', backgroundColor:'rgb(234, 65, 101)', color:'white',borderRadius:'4px', fontSize:'140%', fontWeight:'bold'} : {width:'200px',height:'67px', boxShadow:'0 0 0 0', opacity:'0.67', backgroundColor:'rgb(189,189,189)', color:'white',borderRadius:'4px', fontSize:'140%', fontWeight:'bold'}}
                 onMouseOver = {currentRadio !== -1 ? () => changeCheckoutStyles(26) : false}
                 onMouseOut = {() => changeCheckoutStyles(4)}
@@ -196,7 +223,7 @@ function Seats(props){
             </Button>
         </div>
         <div style = {{display:'inline-block', fontSize:'250%', marginTop:'-3.8%',position:'absolute', marginLeft:'52%',fontWeight:'bold'}}>
-            {"Total:   " + userRequest[0][4]}
+            {"Total:   " + localStorage.getItem('lang') === 'eng' ? currentFilms[5] + ' $' : localStorage.getItem('lang') === 'arm' ? currentFilms[6] + ' AMD' : currentFilms[7] + ' RUB'}
         </div>
             </> : false
         }

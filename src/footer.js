@@ -12,6 +12,7 @@ import Switch from '@material-ui/core/Switch';
 import axios from 'axios';
 
 function Footer(props){
+    const [update, setUpdate] = useState(true);
     const [isLight, setIsLight] = useState(localStorage.getItem('theme') === 'lightMode' ? true : false);
     const classes = styles();
     const backToTop = () => {
@@ -20,6 +21,12 @@ function Footer(props){
     const changeTheme = () => {
         localStorage.setItem('theme', localStorage.getItem('theme') === 'lightMode' ? 'darkMode' : 'lightMode');
         setIsLight(!isLight);
+    }
+    const changeLang = (lang) => {
+        localStorage.setItem('lang',lang);
+        window.scrollTo( 0, 0 );
+
+        window.location.reload();
     }
     return (
         <div
@@ -67,17 +74,26 @@ function Footer(props){
                 <div style = {{position:'absolute',width:'70%', marginLeft:'17.7%', color:'rgb(150,150,150)', marginTop:'11%'}}>
                     <ul style = {{listStyleType:'none', width: '100%', margin: 'auto', fontSize:'110%'}}>
                         <li style = {{float:'left', paddingLeft:'16%'}}>
-                            <span className = {classes.footerLanguages}>
+                            <span
+                                onClick = {() => changeLang('rus')}
+                                className = {classes.footerLanguages}
+                            >
                                 Русский 
                             </span>
                         </li>
                         <li style = {{float:'left', paddingLeft:'16%'}}>
-                            <span className = {classes.footerLanguages}>
+                            <span 
+                                onClick = {() => changeLang('eng')}
+                                className = {classes.footerLanguages}
+                            >
                                 English
                             </span>
                         </li>
                         <li style = {{float:'left', paddingLeft:'16%'}}>
-                            <span className = {classes.footerLanguages}>
+                            <span 
+                                onClick = {() => changeLang('arm')}
+                                className = {classes.footerLanguages}
+                            >
                                 Հայերեն
                             </span>
                         </li>

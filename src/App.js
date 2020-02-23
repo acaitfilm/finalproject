@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import SignUp from './signup';
 import LogIn from './login';
 import Main from './main';
@@ -17,6 +17,11 @@ import {
 } from "react-router-dom";
 
 function App(){
+  useEffect(() => {
+    if(!localStorage.getItem('lang')){
+      localStorage.setItem('lang','eng');
+    }
+  }, [])
   return (
     <>
     <Router>

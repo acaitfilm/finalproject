@@ -8,19 +8,21 @@ import Box from '@material-ui/core/Box';
 import { getDate } from 'date-fns';
 
 function FilmPage(props){
-    const [currentFilm, setCurrentFilm] = useState(
-            [1,'Fast and Furious','https://i.pinimg.com/736x/8b/ba/74/8bba7470a3db15cff42caedf93d0118a.jpg','Fast and Furious is an american film with Vin Diesel anbhjjjbjhbbjbjbjbjbj  bjbjb  jb j bjh bjh bjhb Fast and Furious is an american film with Vin Diesel anbhjjjbjhbbjbjbjbjbj bjbjb jb j bjh bjh bjhb hj bjbhj jb j bj jjb j bj bjbj h bjb hjbj jj jhb b jbd Paul Walker. One of the best movies that has ever been produced by original films. Produced by James Wanhj bjbhj jb j bj jjb j bj bjbj h bjb hjbj jj jhb  b jbd Paul Walker. One of the best movies that has ever been produced by original films. Produced by James Wan.', 'Action', '2020-1-5','12:00 - 13:45','5$', '2011','United States','Paul Walker, Vin Diesel, Dwayne Johnson, Michelle Rodriguez, Jordana Brewster, Ludachris, Tyrese Gibson','James Wan'],
+    const [currentFilm, setCurrentFilm] = useState([]
+           // [1,'Fast and Furious','https://i.pinimg.com/736x/8b/ba/74/8bba7470a3db15cff42caedf93d0118a.jpg','Fast and Furious is an american film with Vin Diesel anbhjjjbjhbbjbjbjbjbj  bjbjb  jb j bjh bjh bjhb Fast and Furious is an american film with Vin Diesel anbhjjjbjhbbjbjbjbjbj bjbjb jb j bjh bjh bjhb hj bjbhj jb j bj jjb j bj bjbj h bjb hjbj jj jhb b jbd Paul Walker. One of the best movies that has ever been produced by original films. Produced by James Wanhj bjbhj jb j bj jjb j bj bjbj h bjb hjbj jj jhb  b jbd Paul Walker. One of the best movies that has ever been produced by original films. Produced by James Wan.', 'Action', '2020-1-5','12:00 - 13:45','5$', '2011','United States','Paul Walker, Vin Diesel, Dwayne Johnson, Michelle Rodriguez, Jordana Brewster, Ludachris, Tyrese Gibson','James Wan'],
         )
     const [filmRequests, setFilmRequests] = useState(
         [
+            /*
             [1,'Fast and Furious','https://i.pinimg.com/736x/8b/ba/74/8bba7470a3db15cff42caedf93d0118a.jpg','Fast and Furious is an american film with Vin Diesel and Paul Walker. One of the best movies that has ever been produced by original films. Produced by James Wan.', 'Action', '2020-1-5','12:00 - 13:45','5$','2D'],
             [2,'Fast and Furious','https://i.pinimg.com/736x/8b/ba/74/8bba7470a3db15cff42caedf93d0118a.jpg','Fast and Furious is an american film with Vin Diesel and Paul Walker. One of the best movies that has ever been produced by original films. Produced by James Wan.', 'Action', '2020-1-7','14:00 - 15:45','5$','4K'],
             [3,'New ','https://i.pinimg.com/736x/8b/ba/74/8bba7470a3db15cff42caedf93d0118a.jpg','Fast and Furious is an american film with Vin Diesel and Paul Walker. One of the best movies that has ever been produced by original films. Produced by James Wan.', 'Action', '2020-1-10','16:00 - 17:45','5$','2D'],
             [3,'New film','https://i.pinimg.com/736x/8b/ba/74/8bba7470a3db15cff42caedf93d0118a.jpg','Fast and Furious is an american film with Vin Diesel and Paul Walker. One of the best movies that has ever been produced by original films. Produced by James Wan.', 'Action', '2020-1-10','16:00 - 17:45','5$','3D'],
             [3,'New film','https://i.pinimg.com/736x/8b/ba/74/8bba7470a3db15cff42caedf93d0118a.jpg','Fast and Furious is an american film with Vin Diesel and Paul Walker. One of the best movies that has ever been produced by original films. Produced by James Wan.', 'Action', '2020-1-10','16:00 - 17:45','5$','2D'],
             [3,'New film','https://i.pinimg.com/736x/8b/ba/74/8bba7470a3db15cff42caedf93d0118a.jpg','Fast and Furious is an american film with Vin Diesel and Paul Walker. One of the best movies that has ever been produced by original films. Produced by James Wan.', 'Action', '2020-1-10','16:00 - 17:45','5$','4K'],
-
-        ]);
+            */
+        ]
+        );
     const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
     const [currentUser, setCurrentUser] = useState([]);
     const replaceHistory = (newAddress) => {
@@ -32,10 +34,84 @@ function FilmPage(props){
         }
         document.title = 'Thank you!';
     },[]);
+    useEffect(()=>{
+        getFilms();
+        getNewSessions();
+    },[]);
+
+    const selectFilm = (film) => {
+        let filmName = localStorage.getItem('film');
+        if(filmName === film[1]){
+            setCurrentFilm(film);
+        }
+    }
+
+    const getFilms = () => {
+        let formData = new FormData();
+        formData.append("filmsGet", 1);
+            const url = `http://localhost/index.php`;
+            axios.post(url,formData)
+                .then(
+                function(res){
+                    let arrOfFilms = [];
+                    let lang = localStorage.getItem('lang');
+                    if(lang==='eng'){
+                        while(res.data[0].length){
+                        arrOfFilms.push(res.data[0].splice(0,9));
+                        }
+                    }
+                    else
+                    if(lang==='arm'){
+                        while(res.data[1].length){
+                            arrOfFilms.push(res.data[1].splice(0,9));
+                            }
+                    }
+                    else{
+                        while(res.data[2].length){
+                            arrOfFilms.push(res.data[2].splice(0,9));
+                            }
+                    }
+                    console.log(arrOfFilms);
+                    arrOfFilms.map(function(film){
+                        selectFilm(film);
+                    });
+
+                    
+                }
+                )
+                .catch(err => console.log(err));
+    }
+     const getNewSessions= () =>{
+        let formData = new FormData();
+        formData.append("sessionsGet", 1);
+            const url = `http://localhost/index.php`;
+            axios.post(url,formData)
+                .then(
+                function(res){
+                    let arr = [];
+                    while(res.data.length){
+                        arr.push(res.data.splice(0,9));
+                    }
+                    let filmName = localStorage.getItem('film');
+                    let filteredArr = arr.filter(session=>
+                        filmName === session[0]
+                       
+                    );
+                   setFilmRequests(filteredArr);
+               
+                   
+                     
+                }
+                )
+                .catch(err => console.log(err));
+        
+    }
+    console.log(currentFilm);
+    console.log(filmRequests);
     const updateUsers = () => {
         let formData = new FormData();
         formData.append("userGet", 1);
-            const url = `http://127.0.0.1/index.php`;
+            const url = `http://localhost/index.php`;
             axios.post(url,formData)
                 .then(
                 function(res){
@@ -86,12 +162,13 @@ function FilmPage(props){
             />
             <div style = {{marginTop:'4%', paddingBottom:'50%'}}>
                 <div style = {{marginLeft:'12.6%', fontSize:'220%', fontWeight:'bold', color:'rgb(234, 65, 101)', fontFamily:'Arial'}}>
-                    {'Fast and Furious' + ' (Action)'}
+                    {currentFilm[1] + ' ('+currentFilm[4]+')'}
                 </div>
                 <div style = {{position:'absolute', marginLeft:'12.8%', marginTop:'4%'}}>
                     <img 
                         src = {currentFilm[2]}
                         width = '45%'
+                        alt=''
                     />
                 </div>
                 <div style = {{position:'absolute', marginLeft:'40%', marginTop:'6%', fontSize:'120%'}}>
@@ -99,7 +176,7 @@ function FilmPage(props){
                         {'Year: '}
                     </span>
                     <span>
-                        {currentFilm[8]}
+                        {currentFilm[5]}
                     </span>
                     <br/>
                     <br/>
@@ -107,7 +184,7 @@ function FilmPage(props){
                         {'Country: '}
                     </span>
                     <span>
-                        {currentFilm[9]}
+                        {currentFilm[6]}
                     </span>
                     <br/>
                     <br/>
@@ -115,7 +192,7 @@ function FilmPage(props){
                         {'Actors: '}
                     </span>
                     <span style = {{width:'1%'}}>
-                        {currentFilm[10]}
+                        {currentFilm[7]}
                     </span>
                     <br/>
                     <br/>
@@ -123,7 +200,7 @@ function FilmPage(props){
                         {'Director: '}
                     </span>
                     <span>
-                        {currentFilm[11]}
+                        {currentFilm[8]}
                     </span>
                     <br/>
                     <br/>
@@ -176,22 +253,22 @@ function FilmPage(props){
                                 key = {index}
                             >
                                 <td style = {{padding:'2%'}}>
-                                    {film[1]}
+                                    {film[0]}
                                 </td>
                                 <td style = {{padding:'2%'}}>
-                                    {film[4]}
+                                    {currentFilm[4]}
                                 </td>
                                 <td style = {{padding:'2%'}}>
-                                    {decodeDate(film[5],'Day') + " " + months[decodeDate(film[5],'Month')] + ', ' + decodeDate(film[5],'Year')}
+                                    {decodeDate(film[2],'Day') + " " + months[decodeDate(film[2],'Month')] + ', ' + decodeDate(film[2],'Year')}
                                 </td>
                                 <td style = {{padding:'2%'}}>
-                                    {film[6]}
+                                    {film[3]+' - '+film[4]}
                                 </td>
                                 <td style = {{padding:'2%'}}>
                                     {film[8]}
                                 </td>
                                 <td style = {{padding:'2%'}}>
-                                    {film[7]}
+                                    {localStorage.getItem('lang')==='eng'?film[5]:localStorage.getItem('lang')==='arm'?film[6]:film[7]}
                                 </td>
                             </tr>
                         ))

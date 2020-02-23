@@ -14,8 +14,14 @@ import MuiPhoneNumber from "material-ui-phone-number";
 import IconButton from '@material-ui/core/IconButton';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import Delete from './delete';
-import ChangePW from './changePass';
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import AddFilm from './addFilm';
+import FilmList from './filmList';
+import UserList from './userList';
+
 
 export default function Admin(props){
     const [currentAdmin,setCurrentAdmin] = useState([]);
@@ -26,13 +32,16 @@ export default function Admin(props){
     const [showChange,setShowChange] = useState(false);
     const [showImportData,setShowImportData] = useState(true);
     const [showAddFields,setShowAddFields] = useState(false);
+    const [showFilmList, setShowFilmList] = useState(false);
+    const [showUserList, setShowUserList] = useState(false);
     const [error, setError] = useState({});
     const [firstname, setFirstname] = useState(currentAdmin[1]);
     const [lastname, setLastname] = useState(currentAdmin[2]);
     const [username, setUsername] = useState(currentAdmin[3]);
     const [email, setEmail] = useState(currentAdmin[4]);
     const [phone, setPhone] = useState(currentAdmin[5]);
-    //const [password, setPassword] = useState(currentAdmin[8]);
+    const [password, setPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
     const [gender, setGender] = useState(currentAdmin[6]);
     
     
@@ -41,7 +50,7 @@ export default function Admin(props){
     useEffect(() => {
         updateUsers(); 
 
-  },[]);
+  },[newPassword]);
   
   const updateUsers = () => {
       let formData = new FormData();
@@ -92,6 +101,50 @@ export default function Admin(props){
     const onChangeClose = () =>{
         setShowChange(false);
     }
+
+    const handleChange = () =>  {
+      
+        let errorCheck = false;
+        if(password !== currentAdmin[8]){
+            error.password = 'Wrong password';
+            errorCheck = true;
+        }else{
+            error.password = '';
+        }
+        if(!validatePassword(newPassword)){
+            error.newPassword = 'Too weak password.';
+            errorCheck = true;
+        }else if(newPassword.length < 8){
+            error.newPassword = 'Your password is too short.';
+            errorCheck = true;
+        }else
+        
+       {
+            error.newPassword = '';
+        }
+        
+        if(!errorCheck){
+               let arr =[currentAdmin[0],newPassword];
+          
+                arr = JSON.stringify(arr);
+                let formData = new FormData();
+                formData.append("pwChange", arr);
+                const url = `http://localhost/index.php`;
+                axios.post(url,formData)
+                    .then(
+                    function(res){
+                        console.log('Success !'); 
+                        
+                    }
+                    )
+                    .catch(err => console.log(err));
+                   setPassword('');
+                   setNewPassword('');
+                    onChangeClose();
+                    
+            }
+            setError({...error});  
+      };
     const firstnameUpdater = (event) => {
         //firstname u lastname dashterum toxnuma menak tarer grel
         if(!(/^[a-zA-Z]+$/.test(event.target.value)) && event.target.value !== ''){
@@ -125,6 +178,15 @@ export default function Admin(props){
     const validateEmail = () => {
         let symbols = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return symbols.test(email);
+    }
+    const validatePassword = password => {
+        if(password.match(/[a-z]/g) && password.match( 
+            /[A-Z]/g) && password.match( 
+            /[0-9]/g) && password.match( 
+            /[^a-zA-Z\d]/g)){
+                return true;
+            }
+            return false;
     }
     //username@ kara lini A-Z, a-z, 0-9, u ._ simvolneric baxkacac
     const checkUsername = () => {
@@ -269,6 +331,8 @@ export default function Admin(props){
             handleSave();
         }
     } 
+
+
     useEffect(() => {
         window.addEventListener('keydown', handleKeyPress);
     
@@ -393,8 +457,7 @@ export default function Admin(props){
                             
                         /> 
                             
-            
-                    <p style={{marginLeft:'15px'}}>Gender</p>
+                    <p  style={{marginLeft:'15px'}}>Gender</p>
                     <Select
                     labelId="demo-simple-select-outlined-label"
                     id="demo-simple-select-outlined"
@@ -463,11 +526,65 @@ export default function Admin(props){
                      />
                      }
                      {showChange &&
-                     <ChangePW 
-                        currentUser = {currentAdmin}
-                        onClose = {onChangeClose}
-                     
-                     />
+                      <Dialog
+                      open={true}
+                      onClose={onChangeClose}
+                      aria-labelledby="form-dialog-title"
+                    >
+                      <DialogTitle id="form-dialog-title">Change password</DialogTitle>
+                      <DialogContent>
+                          
+                      <TextField 
+                          
+                          id="outlined-basic" 
+                          label='currentPassword'
+                          error = {!!error.password}
+                          helperText={error.password}
+                          value = {password}
+                          type = 'password'
+                          size = 'medium'
+                          margin="dense"
+                          fullWidth
+                          onChange = {(event) => setPassword(event.target.value)}
+                          InputProps={{
+                              classes: {
+                                  notchedOutline: classes.notchedOutline
+                                      }
+                                  }}
+                        />
+                   
+                      <TextField 
+                          
+                          id="outlined-basic" 
+                          label='newPassword'
+                          error = {!!error.newPassword}
+                          helperText={error.newPassword}
+                          value = {newPassword}
+                          type = 'password'
+                          size = 'medium'
+                          margin="dense"
+                          fullWidth
+                          onChange = {(event) => setNewPassword(event.target.value)}
+                          InputProps={{
+                              classes: {
+                                  notchedOutline: classes.notchedOutline
+                                      }
+                                  }}
+                      />
+                      </DialogContent>
+                      <DialogActions>
+                        <Button onClick={onChangeClose} color="primary">
+                          Cancel
+                        </Button>
+                        <Button 
+                        onClick={handleChange} 
+                        color="primary"
+                        disabled={!password || !newPassword}
+                        >
+                          Change
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
                         
                      }
                </div>
@@ -476,10 +593,16 @@ export default function Admin(props){
                         id='filmData'
                         onClick={()=>{setShowImportData(true);
                                          setShowAddFields(false);
+                                         setShowFilmList(false);
+                                         setShowUserList(false);
                                         document.getElementById('filmData').style.color='white';
                                         document.getElementById('impFilmData').style.backgroundColor='rgba(234, 65, 101)';
                                         document.getElementById('addData').style.color='rgba(234, 65, 101)';
                                         document.getElementById('addfilm').style.backgroundColor='white';
+                                        document.getElementById('filmlistdata').style.color='rgba(234, 65, 101)';
+                                        document.getElementById('filmlist').style.backgroundColor='white';
+                                        document.getElementById('userlistdata').style.color='rgba(234, 65, 101)';
+
                                 }}
                         style={{color:'white'}}
                      >
@@ -492,10 +615,16 @@ export default function Admin(props){
                         id='addData'
                         onClick={()=>{setShowImportData(false);
                                         setShowAddFields(true);
+                                        setShowFilmList(false);
+                                        setShowUserList(false);
                                         document.getElementById('addData').style.color='white';
                                         document.getElementById('addfilm').style.backgroundColor='rgba(234, 65, 101)';
                                         document.getElementById('filmData').style.color='rgba(234, 65, 101)';
                                         document.getElementById('impFilmData').style.backgroundColor='white';
+                                        document.getElementById('filmlistdata').style.color='rgba(234, 65, 101)';
+                                        document.getElementById('filmlist').style.backgroundColor='white';
+                                        document.getElementById('userlistdata').style.color='rgba(234, 65, 101)';
+
                                 }}
                         style={{color:'rgba(234, 65, 101)'}}
                      >
@@ -503,11 +632,58 @@ export default function Admin(props){
                      </h2>
                      
                 </div>
+                <div id='filmlist' className={classes.filmListDiv}>
+                    <h2 
+                        id='filmlistdata'
+                        onClick={()=>{setShowImportData(false);
+                                        setShowAddFields(false);
+                                        setShowFilmList(true);
+                                        setShowUserList(false);
+                                        document.getElementById('addData').style.color='rgba(234, 65, 101)';
+                                        document.getElementById('addfilm').style.backgroundColor='white';
+                                        document.getElementById('filmData').style.color='rgba(234, 65, 101)';
+                                        document.getElementById('impFilmData').style.backgroundColor='white';
+                                        document.getElementById('filmlistdata').style.color='white';
+                                        document.getElementById('filmlist').style.backgroundColor='rgba(234, 65, 101)';
+                                        document.getElementById('userlistdata').style.color='rgba(234, 65, 101)';
+                                        document.getElementById('userlist').style.backgroundColor='white';
+                                }}
+                        style={{color:'rgba(234, 65, 101)'}}
+                     >
+                         Film list 
+                     </h2>
+                     
+                </div>
+                <div id='userlist' className={classes.userListDiv}>
+                    <h2 
+                        id='userlistdata'
+                        onClick={()=>{setShowImportData(false);
+                                        setShowAddFields(false);
+                                        setShowFilmList(false);
+                                        setShowUserList(true);
+
+                                        document.getElementById('addData').style.color='rgba(234, 65, 101)';
+                                        document.getElementById('addfilm').style.backgroundColor='white';
+                                        document.getElementById('filmData').style.color='rgba(234, 65, 101)';
+                                        document.getElementById('impFilmData').style.backgroundColor='white';
+                                        document.getElementById('filmlistdata').style.color='rgba(234, 65, 101)';
+                                        document.getElementById('filmlist').style.backgroundColor='white';
+                                        document.getElementById('userlistdata').style.color='white';
+                                        document.getElementById('userlist').style.backgroundColor='rgba(234, 65, 101)';
+                                }}
+                        style={{color:'rgba(234, 65, 101)'}}
+                     >
+                         User list 
+                     </h2>
+                     
+                </div>
                 <br></br>
-                {showImportData && <NewFilm visualChange={visualChange}/>}
-                 {showAddFields && <AddFilm visualChange={visualChange}/>}
+                {showImportData && <NewFilm visualChange={visualChange} />}
+                 {showAddFields && <AddFilm visualChange={visualChange} />}
+                 {showFilmList && <FilmList visualChange={visualChange} />}
+                 {showUserList && <UserList/> }
                     
-               <div style={{position:'relative',marginTop:'55%'}}>
+               <div style={{position:'relative',marginTop:'57%'}}>
                 <Footer/>
             </div>
             </>

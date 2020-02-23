@@ -11,8 +11,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 function Main(props){
     const [currentUser, setCurrentUser] = useState([]);
-    const [currentFilms, setCurrentFilms] = useState(
-        [
+    const [currentFilms, setCurrentFilms] = useState([]
+        /*[
             [1,'Fast and Furious 4','https://i.pinimg.com/736x/8b/ba/74/8bba7470a3db15cff42caedf93d0118a.jpg','Fast and Furious is an american film with Vin Diesel and Paul Walker. One of the best movies that has ever been produced by original films. Produced by James Wan.', 'Action', '2020-1-10','12:00 - 13:45','5$','2D'],
             [2,'Insidious 3','https://m.media-amazon.com/images/M/MV5BMTUwNDU4NjE1N15BMl5BanBnXkFtZTgwOTc0MzA5NDE@._V1_.jpg','Fast and Furious is an american film with Vin Diesel and Paul Walker. One of the best movies that has ever been produced by original films. Produced by James Wan.', 'Horror', '2020-1-10','14:00 - 15:45','5$','4K'],
             [3,'Nemo','https://greekcity.com/wp-content/uploads/2016/10/Finding-Nemo-dvd-e1481580817586.jpeg','Fast and Furious is an american film with Vin Diesel and Paul Walker. One of the best movies that has ever been produced by original films. Produced by James Wan.', 'Adventure', '2020-1-10','16:00 - 17:45','5$','2D'],
@@ -20,14 +20,19 @@ function Main(props){
             [5,'Everest','https://ic.pics.livejournal.com/olgamitireva/76910304/17591/17591_900.png','Fast and Furious is an american film with Vin Diesel and Paul Walker. One of the best movies that has ever been produced by original films. Produced by James Wan.', 'Science', '2020-1-10','16:00 - 17:45','5$','2D'],
             [6,'Brick mansions','https://occ-0-1001-999.1.nflxso.net/art/72f57/b31c8a08bec49318f14e53cb78db72a7f2872f57.jpg','Fast and Furious is an american film with Vin Diesel and Paul Walker. One of the best movies that has ever been produced by original films. Produced by James Wan.', 'Criminal', '2020-1-10','16:00 - 17:45','5$','4K'],
 
-        ]);
+        ]
+        */);
+    const [eng, setEng] = useState([]);
+    const [arm, setArm] = useState([]);
+    const [rus, setRus] = useState([]);
     const [date, setDate] = useState();
     const [genrePicked, setGenrePicked] = useState('Genre');
     const [datePicked, setDatePicked] = useState('Today');
-    const [users,setUsers] =useState([]);
+    const [users, setUsers] =useState([]);
     useEffect(() => {
         setDate(getDate(0));
         updateFilms();
+        getFilms();
         if(localStorage.getItem('username')){
             updateUsers();
         }
@@ -62,8 +67,8 @@ function Main(props){
     
     const updateFilms = () => {
         let formData = new FormData();
-        formData.append("filmsGet", 1);
-            const url = `http://127.0.0.1/index.php`;
+        formData.append("sessionsGet", 1);
+            const url = `http://localhost/index.php`;
             axios.post(url,formData)
                 .then(
                 function(res){
@@ -71,15 +76,47 @@ function Main(props){
                     while(res.data.length){
                         arrOfFilms.push(res.data.splice(0,9));
                     }
-                    //setCurrentFilms(arrOfFilms);
+                    console.log(arrOfFilms);
+                    setCurrentFilms(arrOfFilms);
                 }
                 )
                 .catch(err => console.log(err));
     }
+    const getFilms = () => {
+        let formData = new FormData();
+        formData.append("filmsGet", 1);
+            const url = `http://localhost/index.php`;
+            axios.post(url,formData)
+                .then(
+                function(res){
+                    let arrEng = [];
+                    let arrArm = [];
+                    let arrRus = [];
+                    while(res.data[0].length){
+                        arrEng.push(res.data[0].splice(0,9));
+                    }
+                    while(res.data[1].length){
+                        arrArm.push(res.data[1].splice(0,9));
+                    }
+                    while(res.data[2].length){
+                        arrRus.push(res.data[2].splice(0,9));
+                    }
+                    setEng(arrEng); 
+                    setArm(arrArm);   
+                    setRus(arrRus); 
+                }
+                )
+                .catch(err => console.log(err));
+    }
+    
+    console.log(currentFilms);
+    console.log(eng);
+    console.log(arm);
+    console.log(rus);
     const getDate = (adder) => {
         let date = new Date();
         date.setDate(date.getDate() + adder);
-        let dateString = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
+        let dateString = date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate();
         return dateString;
     }
     const logOut = () => {
@@ -113,19 +150,24 @@ function Main(props){
         }
     }
     const createFilmBlock = (film,index) => {
+        let filmUrl;
+        for(let index = 0; index < eng.length; index++){
+            if(film[0]===eng[index][1]) 
+                filmUrl =  eng[index][2]
+        };
         nothingFound = false;
         return (
             <Film
                 key = {index}
                 props = {props}
-                name = {film[1]}
-                image = {film[2]}
-                description = {film[3]}
-                genre = {film[4]}
-                date = {film[5]}
-                hours = {film[6]}
+                name = {film[0]}
+                image = {filmUrl}
+                description = {film[1]}
+                genre = {eng.map(arr=>(film[0]===arr[1]?arr[4]:false))}
+                date = {film[2]}
+                hours = {film[3]+' - '+film[4]}
                 type = {film[8]}
-                cost = {film[7]}
+                cost = {film[5]}
             />
         );
     }
@@ -195,12 +237,16 @@ function Main(props){
                     <MenuItem value={'After 6 Days'}>After 6 Days</MenuItem>
                     <MenuItem value={'Next Week'}>Next Week</MenuItem>
                 </Select>
-            {
+            {   
+                    
+                    
                 currentFilms.map((film,index) => (
-                    film[5] === date && (genrePicked === 'Genre' || film[4] === genrePicked) ? 
+                    film[2] === date //&& (genrePicked === 'Genre' || film[4] === genrePicked)
+                     ? 
                     createFilmBlock(film,index)
+                   
                      : false
-                ))
+               ))
             }
             {
                 nothingFound ? <div style = {{textAlign:'center', marginTop:'6%',fontWeight:'bold',fontSize:'180%', paddingBottom:'8%'}}>

@@ -12,14 +12,7 @@ import { TableBody } from '@material-ui/core';
 
 function Header(props){
     const [searchValue, setSearchValue] = useState('');
-    const [currentFilms, setCurrentFilms] = useState([
-        [1,'Fast and Furious 4','Action','2011'],
-        [2, 'Running Scared','Criminal','2006'],
-        [3, 'Nemo', 'Adventures', '2005'],
-        [4, 'Insidious 3','Horror','2015'],
-        [5, 'College','Comedy','2016'],
-        [6, 'Insidious 2','Horror','2013'],
-    ]);
+    const [currentFilms, setCurrentFilms] = useState([]);
     const searchValueUpdater = (event) => {
         let str = '';
         if(event.target.value.length > 0){
@@ -40,14 +33,30 @@ function Header(props){
                 .then(
                 function(res){
                     let arrOfFilms = [];
-                    while(res.data.length){
-                        arrOfFilms.push(res.data.splice(0,9));
+                    let lang = localStorage.getItem('lang');
+                    if(lang==='eng'){
+                        while(res.data[0].length){
+                        arrOfFilms.push(res.data[0].splice(0,9));
+                        }
                     }
-                    //setCurrentFilms(arrOfFilms);
+                    else
+                    if(lang==='arm'){
+                        while(res.data[1].length){
+                            arrOfFilms.push(res.data[1].splice(0,9));
+                            }
+                    }
+                    else{
+                        while(res.data[2].length){
+                            arrOfFilms.push(res.data[2].splice(0,9));
+                            }
+                    }
+
+                    setCurrentFilms(arrOfFilms);
                 }
                 )
                 .catch(err => console.log(err));
     }
+    console.log(currentFilms);
     const changeBlockStyle = (id, bgColor, color) => {
         if(id === 'More Films' && color !== 'white'){
             color = 'rgba(234, 65, 101)';
@@ -231,13 +240,13 @@ function Header(props){
                 >
                     {
                         currentFilms.map(function(film, index){
-                            if((film[1].match(searchValue) || film[2].match(searchValue) || film[3].match(searchValue)) && checkFilms <= 5){
+                            if((film[1].match(searchValue) || film[4].match(searchValue) || film[5].match(searchValue)) && checkFilms <= 5){
                                 checkFilms++;
                                 filmsCount++;
                                 if(checkFilms === 6){
                                     return createFilmBlock('More Films','','',filmsCount);
                                 }
-                                return createFilmBlock(film[1],film[2],film[3],filmsCount,film[0]);
+                                return createFilmBlock(film[1],film[4],film[5],filmsCount,film[0]);
                             }else if(index === currentFilms.length - 1 && !checkFilms){
                                 return nothingFound();
                             }

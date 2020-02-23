@@ -13,9 +13,14 @@ import TextField from "@material-ui/core/TextField";
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Delete from './delete';
-import ChangePW from './changePass';
 import SeenPics from './seenpics';
 import BookedFilms from './bookList';
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+
+
 
 
 const list = [['1','Underwater','2D','2020-2-20','16:05','17:25','0.7','7','4th row 5th place','Booked','lian_98'],
@@ -44,7 +49,8 @@ function User(props){
     const [username, setUsername] = useState(currentUser[3]);
     const [email, setEmail] = useState(currentUser[4]);
     const [phone, setPhone] = useState(currentUser[5]);
-    //const [password, setPassword] = useState(currentUser[8]);
+    const [password, setPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
     const [gender, setGender] = useState(currentUser[6]);
     const [users,setUsers] = useState([]);
     
@@ -52,7 +58,7 @@ function User(props){
     useEffect(() => {
           updateUsers(); 
 
-    },[]);
+    },[newPassword]);
     const logOut = () => {
         localStorage.removeItem('username');
         props.history.replace('/main');
@@ -136,6 +142,16 @@ const validateEmail = () => {
 const checkUsername = () => {
     let symbols = /^[a-z0-9\._]+$/g;
     return symbols.test(username);
+}
+
+const validatePassword = password => {
+    if(password.match(/[a-z]/g) && password.match( 
+        /[A-Z]/g) && password.match( 
+        /[0-9]/g) && password.match( 
+        /[^a-zA-Z\d]/g)){
+            return true;
+        }
+        return false;
 }
 //stuguma firstname, lastname linen anpayman tarer
 const checkName = (name) => {
@@ -304,6 +320,49 @@ useEffect(() => {
     const onChangeClose = () =>{
         setShowChange(false);
     }
+    const handleChange = () =>  {
+      
+        let errorCheck = false;
+        if(password !== currentUser[8]){
+            error.password = 'Wrong password';
+            errorCheck = true;
+        }else{
+            error.password = '';
+        }
+        if(!validatePassword(newPassword)){
+            error.newPassword = 'Too weak password.';
+            errorCheck = true;
+        }else if(newPassword.length < 8){
+            error.newPassword = 'Your password is too short.';
+            errorCheck = true;
+        }else
+        
+       {
+            error.newPassword = '';
+        }
+        
+        if(!errorCheck){
+               let arr =[currentUser[0],newPassword];
+          
+                arr = JSON.stringify(arr);
+                let formData = new FormData();
+                formData.append("pwChange", arr);
+                const url = `http://localhost/index.php`;
+                axios.post(url,formData)
+                    .then(
+                    function(res){
+                        console.log('Success !'); 
+                        
+                    }
+                    )
+                    .catch(err => console.log(err));
+                   setPassword('');
+                   setNewPassword('');
+                    onChangeClose();
+                    
+            }
+            setError({...error});  
+      };
 
    
    document.body.style.backgroundColor='#FFF5EE';
@@ -525,11 +584,65 @@ useEffect(() => {
                      />
                 }
                 {showChange &&
-                    <ChangePW 
-                        currentUser = {currentUser}
-                        onClose = {onChangeClose}
+                    <Dialog
+                    open={true}
+                    onClose={onChangeClose}
+                    aria-labelledby="form-dialog-title"
+                  >
+                    <DialogTitle id="form-dialog-title">Change password</DialogTitle>
+                    <DialogContent>
                         
+                    <TextField 
+                        
+                        id="outlined-basic" 
+                        label='currentPassword'
+                        error = {!!error.password}
+                        helperText={error.password}
+                        value = {password}
+                        type = 'password'
+                        size = 'medium'
+                        margin="dense"
+                        fullWidth
+                        onChange = {(event) => setPassword(event.target.value)}
+                        InputProps={{
+                            classes: {
+                                notchedOutline: classes.notchedOutline
+                                    }
+                                }}
+                      />
+                 
+                    <TextField 
+                        
+                        id="outlined-basic" 
+                        label='newPassword'
+                        error = {!!error.newPassword}
+                        helperText={error.newPassword}
+                        value = {newPassword}
+                        type = 'password'
+                        size = 'medium'
+                        margin="dense"
+                        fullWidth
+                        onChange = {(event) => setNewPassword(event.target.value)}
+                        InputProps={{
+                            classes: {
+                                notchedOutline: classes.notchedOutline
+                                    }
+                                }}
                     />
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={onChangeClose} color="primary">
+                        Cancel
+                      </Button>
+                      <Button 
+                      onClick={handleChange} 
+                      color="primary"
+                      disabled={!password || !newPassword}
+                      >
+                        Change
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
 
                 }
             </div>
